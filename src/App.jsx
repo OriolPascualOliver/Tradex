@@ -33,6 +33,34 @@ const servicios = [
 
 export default function App() {
   const [showPopup, setShowPopup] = useState("");
+  const [formData, setFormData] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+   const handleSubmit = async (e) => {
+    e.preventDefault();
+    const sheetMap = {
+      pro: "Profesionales",
+      cli: "Clientes",
+      idk: "Indefinidos",
+    };
+    const scriptURL = `https://script.google.com/macros/s/AKfycbyKYL662PKpdmUYW9KmcAGBcA6cZj6rZ70UKZ9nH7oE_8rHEcQf4KrwQ74Lyv5LRMEg4A/exec`;
+    const form = new FormData();
+    for (const field in formData) {
+      form.append(field, formData[field]);
+    }
+    try {
+      await fetch(scriptURL, { method: "POST", body: form });
+      alert("Formulario enviado correctamente");
+      setFormData({});
+      setShowPopup("");
+    } catch (error) {
+      alert("Error al enviar formulario");
+    }
+  };
 
   return (
     <div className="bg-gradient-to-b from-[#0F172A] to-[#1E3A8A] text-white min-h-screen font-sans">
@@ -67,57 +95,60 @@ export default function App() {
       </section>
 
       {/* Popups */}
-      {showPopup === "cli" && (
-        <div>
-          <h2 className="text-lg font-bold mb-4">¿Eres profesional?</h2>
-          <form className="flex flex-col gap-3">
-            <input className="border p-2 rounded" type="text" placeholder="Nombre" />
-            <input className="border p-2 rounded" type="email" placeholder="Email" />
-            <input className="border p-2 rounded" type="tel" placeholder="Teléfono" />
-            <input className="border p-2 rounded" type="text" placeholder="Zona de trabajo" />
-            <select className="border p-2 rounded">
-              <option>Selecciona tu oficio</option>
-              <option>Electricista</option>
-              <option>Fontanero</option>
-              <option>Reformas</option>
-              <option>Aire acondicionado</option>
-              <option>Calefacción</option>
-              <option>Pintor</option>
-              <option>Montador de muebles</option>
-              <option>Otros</option>
-            </select>
-            <button className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
-              Enviar
-            </button>
-          </form>
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+          <div className="bg-white text-black p-8 rounded-xl shadow-xl w-96 relative overflow-auto max-h-[90vh]">
+            <button className="absolute top-2 right-3 text-xl" onClick={() => setShowPopup("")}>×</button>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+              {showPopup === "pro" && (
+                <>
+                  <h2 className="text-lg font-bold mb-2">¿Eres profesional?</h2>
+                  <input name="nombre" type="text" placeholder="Nombre" className="border p-2 rounded" value={formData.nombre || ""} onChange={handleChange} required />
+                  <input name="email" type="email" placeholder="Email" className="border p-2 rounded" value={formData.email || ""} onChange={handleChange} required />
+                  <input name="telefono" type="tel" placeholder="Teléfono" className="border p-2 rounded" value={formData.telefono || ""} onChange={handleChange} required />
+                  <input name="ubicacion" type="text" placeholder="Ubicación o código postal" className="border p-2 rounded" value={formData.ubicacion || ""} onChange={handleChange} required />
+                  <label className="text-sm">Distancia máxima de desplazamiento (km)</label>
+                  <input name="distancia" type="range" min="1" max="100" value={formData.distancia || 25} onChange={handleChange} className="w-full" />
+                  <select name="oficio" className="border p-2 rounded" value={formData.oficio || ""} onChange={handleChange} required>
+                    <option value="">Selecciona tu oficio</option>
+                    {servicios.map(({ nombre }) => <option key={nombre}>{nombre}</option>)}
+                  </select>
+                </>
+              )}
+              {showPopup === "cli" && (
+                <>
+                  <h2 className="text-lg font-bold mb-2">¿Qué necesitas?</h2>
+                  <input name="nombre" type="text" placeholder="Nombre" className="border p-2 rounded" value={formData.nombre || ""} onChange={handleChange} required />
+                  <input name="email" type="email" placeholder="Email" className="border p-2 rounded" value={formData.email || ""} onChange={handleChange} required />
+                  <input name="telefono" type="tel" placeholder="Teléfono" className="border p-2 rounded" value={formData.telefono || ""} onChange={handleChange} required />
+                  <input name="ubicacion" type="text" placeholder="Ubicación" className="border p-2 rounded" value={formData.ubicacion || ""} onChange={handleChange} required />
+                  <input name="fecha" type="date" className="border p-2 rounded" value={formData.fecha || ""} onChange={handleChange} />
+                  <textarea name="descripcion" placeholder="Describe la tarea" className="border p-2 rounded" rows="4" value={formData.descripcion || ""} onChange={handleChange}></textarea>
+                  <input name="fotos" type="file" accept="image/*" multiple className="border p-2 rounded" />
+                </>
+              )}
+              {showPopup === "idk" && (
+                <>
+                  <h2 className="text-lg font-bold mb-2">Ayuda general</h2>
+                  <input name="nombre" type="text" placeholder="Nombre" className="border p-2 rounded" value={formData.nombre || ""} onChange={handleChange} required />
+                  <input name="email" type="email" placeholder="Email" className="border p-2 rounded" value={formData.email || ""} onChange={handleChange} required />
+                  <input name="telefono" type="tel" placeholder="Teléfono" className="border p-2 rounded" value={formData.telefono || ""} onChange={handleChange} required />
+                  <input name="ubicacion" type="text" placeholder="Ubicación" className="border p-2 rounded" value={formData.ubicacion || ""} onChange={handleChange} required />
+                  <textarea name="descripcion" placeholder="Explica lo mejor que puedas la situación" className="border p-2 rounded" rows="4" value={formData.descripcion || ""} onChange={handleChange}></textarea>
+                  <input name="media" type="file" accept="image/*,video/*" multiple className="border p-2 rounded" />
+                  <label className="flex items-center gap-2 text-sm">
+                    <input type="checkbox" name="urgente" onChange={(e) => setFormData(prev => ({ ...prev, urgente: e.target.checked }))} /> Es urgente
+                  </label>
+                  {!formData.urgente && (
+                    <input name="fecha" type="date" className="border p-2 rounded" value={formData.fecha || ""} onChange={handleChange} />
+                  )}
+                </>
+              )}
+              <button type="submit" className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">Enviar</button>
+            </form>
+          </div>
         </div>
       )}
-      {showPopup === "pro" && (
-        <div>
-          <h2 className="text-lg font-bold mb-4">¿Eres profesional?</h2>
-          <form className="flex flex-col gap-3">
-            <input className="border p-2 rounded" type="text" placeholder="Nombre" />
-            <input className="border p-2 rounded" type="email" placeholder="Email" />
-            <input className="border p-2 rounded" type="tel" placeholder="Teléfono" />
-            <input className="border p-2 rounded" type="text" placeholder="Zona de trabajo" />
-            <select className="border p-2 rounded">
-              <option>Selecciona tu oficio</option>
-              <option>Electricista</option>
-              <option>Fontanero</option>
-              <option>Reformas</option>
-              <option>Aire acondicionado</option>
-              <option>Calefacción</option>
-              <option>Pintor</option>
-              <option>Montador de muebles</option>
-              <option>Otros</option>
-            </select>
-            <button className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
-              Enviar
-            </button>
-          </form>
-        </div>
-      )}
-
 
       {/* Servicios */}
       <section className="bg-gray-100 text-gray-900 py-12 px-4">
