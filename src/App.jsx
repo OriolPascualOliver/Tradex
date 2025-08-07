@@ -34,6 +34,7 @@ const servicios = [
 export default function App() {
   const [showPopup, setShowPopup] = useState("");
   const [formData, setFormData] = useState({});
+  const [selectedOficios, setSelectedOficios] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -113,9 +114,9 @@ export default function App() {
           </button>
           <button onClick={() => setShowPopup("cli")} className="bg-green-600 px-6 py-3 rounded-xl hover:bg-green-700 transition flex items-center gap-2">
             <FaHome /> Busco un professional - Necesito ayuda
-          </button>
-          <button onClic={() => setShowPopup("idk")} className="bg-red-600 px-6 py-3 rounded-xl hover:bg-red-700 transition flex items-center gap-2">
+          <button onClick={() => setShowPopup("idk")} className="bg-red-600 px-6 py-3 rounded-xl hover:bg-red-700 transition flex items-center gap-2">
             <FaSuperpowers /> ¡Ayuda! - No se lo que necesito
+          </button>
           </button>
 
         </div>
@@ -125,7 +126,7 @@ export default function App() {
       {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
           <div className="bg-white text-black p-8 rounded-xl shadow-xl w-96 relative overflow-auto max-h-[90vh]">
-            <button className="absolute top-2 right-3 text-xl" onClick={() => setShowPopup("")}>×</button>
+            <button className="absolute top-2 right-3 text-xl" onClick={() => setShowPopup("")}></button>
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               {showPopup === "pro" && (
                 <>
@@ -152,7 +153,7 @@ export default function App() {
                   </div>
                 </>
               )}
-
+            </form>
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               {showPopup === "cli" && (
                 <>
@@ -179,7 +180,8 @@ export default function App() {
 
                   <input name="fotos" type="file" accept="image/*" capture="environment" className="border p-2 rounded" multiple onChange={(e) => setFormData((prev) => ({ ...prev, fotos: e.target.files[0] }))} />
                 </>
-              )}             
+              )}     
+
               {showPopup === "idk" && (
                 <>
                   <h2 className="text-lg font-bold mb-2">Ayuda general</h2>
@@ -201,7 +203,7 @@ export default function App() {
             </form>
           </div>
         </div>
-      }
+      )}
 
       {/* Servicios */}
       <section className="bg-gray-100 text-gray-900 py-12 px-4">
@@ -276,3 +278,4 @@ export default function App() {
     </div>
   );
 }
+
