@@ -1,5 +1,6 @@
 // src/App.jsx
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import NewsletterModal from "./components/NewsletterModal";
 import {
   FaBolt,
   FaWrench,
