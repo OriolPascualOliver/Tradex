@@ -63,14 +63,19 @@ export default function App() {
   };
 
   return (
+    
     <div className="bg-gradient-to-b from-[#0F172A] to-[#1E3A8A] text-white min-h-screen font-sans">
-      {/* Header */}
       <header className="flex justify-between items-center px-6 py-4">
         <div className="flex items-center gap-2">
           <FaUserShield className="text-2xl text-green-400" />
           <h1 className="text-xl font-bold">Fixhub</h1>
         </div>
-        <a href="#" className="text-sm underline">¿Eres profesional?</a>
+        <a href="#condiciones" className="hover:text-blue-400 transition">¿Eres profesional? Por eso deberías elegirnos</a>
+        <nav className="flex gap-4">
+          <a href="#servicios" className="hover:text-blue-400 transition">Servicios</a>
+          <a href="#como-funciona" className="hover:text-blue-400 transition">¿Cómo funciona?</a>
+          <a href="#contacto" className="hover:text-blue-400 transition">Contacto</a>
+        </nav>
       </header>
 
       {/* Hero */}
@@ -78,7 +83,7 @@ export default function App() {
         <h2 className="text-4xl sm:text-6xl font-extrabold leading-tight">
           Encuentra tu <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">profesional de confianza</span><br /> cerca de ti
         </h2>
-        <p className="mt-4 text-lg text-gray-300">Electricistas, fontaneros, pintores, instaladores de aire acondicionados, reformas, superheroes para emergencias,<br /> y más!</p>
+        <p className="mt-4 text-lg text-gray-300">Electricistas, fontaneros, pintores, instaladores de aire acondicionados,<br /> reformas, superheroes para emergencias,<br /> y más!</p>
 
         <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center">
           <button onClick={() => setShowPopup("pro")} className="bg-blue-600 px-6 py-3 rounded-xl hover:bg-blue-700 transition flex items-center gap-2">
@@ -102,7 +107,7 @@ export default function App() {
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               {showPopup === "pro" && (
                 <>
-                  <h2 className="text-lg font-bold mb-2">¿Eres profesional?</h2>
+                  <h2 className="text-lg font-bold mb-2">¿Eres profesional? Por eso deberías elegirnos</h2>
                   <input name="nombre" type="text" placeholder="Nombre" className="border p-2 rounded" value={formData.nombre || ""} onChange={handleChange} required />
                   <input name="email" type="email" placeholder="Email" className="border p-2 rounded" value={formData.email || ""} onChange={handleChange} required />
                   <input name="telefono" type="tel" placeholder="Teléfono" className="border p-2 rounded" value={formData.telefono || ""} onChange={handleChange} required />
