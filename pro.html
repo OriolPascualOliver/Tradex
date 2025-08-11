@@ -1,81 +1,134 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Condiciones de Uso - Fixhub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 1rem;
-            line-height: 1.6;
-            color: #1f2937;
-            background-color: #f9fafb;
-        }
-        h1, h2 {
-            color: #111827;
-        }
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-        h2 {
-            font-size: 1.25rem;
-            margin-top: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        p {
-            margin-bottom: 1rem;
-        }
-        a {
-            color: #2563eb;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        footer {
-            margin-top: 3rem;
-            font-size: 0.9rem;
-            color: #6b7280;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fixhub – Usuario no identificado</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9fafb; --card: #ffffff; --text: #111827; --muted: #6b7280;
+      --primary: #2563eb; --error: #dc2626; --error-bg: #fee2e2;
+      --border: #e5e7eb; --ring: rgba(37,99,235,.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: radial-gradient(1200px 600px at 50% -100px, #e0f2fe 0%, transparent 60%) var(--bg);
+      color: var(--text); min-height: 100svh; display: grid; place-items: center; padding: 2rem;
+    }
+    .card { width: 100%; max-width: 440px; background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,.06); padding: 1.25rem; }
+    .header { display: flex; align-items: center; gap: .6rem; margin-bottom: .75rem; }
+    .logo { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #2563eb, #60a5fa); }
+    h1 { font-size: 1.25rem; margin: 0; }
+    .subtitle { font-size: .95rem; color: var(--muted); margin: .25rem 0 1rem; }
+    .alert {
+      display: flex; gap: .6rem; align-items: flex-start;
+      background: var(--error-bg); color: var(--error);
+      border: 1px solid #fecaca; border-radius: 12px; padding: .8rem .9rem;
+      margin-bottom: 1rem; animation: pop .2s ease-out;
+    }
+    .alert svg { flex: 0 0 auto; margin-top: 2px; }
+    @keyframes pop { from { transform: scale(.98); opacity: .6 } to { transform: scale(1); opacity: 1 } }
+    label { display: block; font-weight: 600; font-size: .9rem; margin: .6rem 0 .35rem; }
+    .input {
+      width: 100%; padding: .75rem .85rem; border: 1px solid var(--border); border-radius: 12px;
+      font-size: .95rem; background: #fff; outline: none; transition: box-shadow .15s ease, border-color .15s ease, transform .08s ease;
+    }
+    .input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+    .hint { font-size: .85rem; color: var(--muted); margin-top: .35rem; }
+    .row { display: flex; gap: .6rem; align-items: center; }
+    .btn {
+      appearance: none; border: 0; cursor: pointer; background: var(--primary); color: #fff; font-weight: 600;
+      padding: .8rem 1rem; border-radius: 12px; width: 100%;
+      transition: transform .06s ease, filter .15s ease, box-shadow .15s ease;
+      box-shadow: 0 8px 14px rgba(37,99,235,.25); margin-top: 1rem;
+    }
+    .btn:active { transform: translateY(1px); }
+    .link { color: var(--primary); text-decoration: none; font-weight: 600; }
+    .foot { margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; font-size: .9rem; }
+    .shake { animation: shake .3s ease-in-out; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0) }
+      20% { transform: translateX(-6px) }
+      40% { transform: translateX(6px) }
+      60% { transform: translateX(-4px) }
+      80% { transform: translateX(4px) }
+    }
+    /* NEW: utility to hide the alert initially */
+    .hidden { display: none; }
+  </style>
 </head>
 <body>
-    <h1>¿Eres profesional y quieres disfrutar del futuro?</h1>
+  <main class="card" aria-labelledby="t">
+    <div class="header">
+      <div class="logo" aria-hidden="true"></div>
+      <h1 id="t">Fixhub - Área Pro</h1>
+    </div>
+    <p class="subtitle">Acceso a la plataforma</p>
 
-    
-    <h2>Lanzamiento PRO_V2.1108</h2>
-    <p>Esta es la versión 2.1108.0 de Fixhub, que añade funcionalidades para profesionales. 
-        - Generación de presupuestos automaticamente
-        - Generacion de listas de materiales automaticamente
-        - Generación de facturas automaticamente (no cumplen con legislación española)
+    <!-- Hidden at start -->
+    <div id="alert" class="alert hidden" role="alert" aria-live="assertive" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <strong>Usuario no identificado o credenciales incorrectas.</strong>
+        <div class="hint">Comprueba tus datos e inténtalo de nuevo.</div>
+      </div>
+    </div>
 
-        Actualmente, la plataforma está en fase de pruebas y no se aplican comisiones por trabajos realizados ni se cobra por su uso. 
-        Si eres profesional y quieres probar la plataforma, puedes registrarte en <a href="https://fixhub.app/pro">https://fixhub.app/pro</a>.
-    
-    <h2>¿Por qué somos mejores?</h2>
-    <p>En Fixhub nos diferenciamos porque no te cobramos por compartir un presupuesto ni por contactar con clientes. Preferimos aportar valor real.
-        Actualmente, tampoco aplicamos ninguna comisión por los trabajos realizados. 
-        Nuestro objetivo es garantizar la calidad del servicio validando a los profesionales que deciden confiar en nosotros, 
-        para poder asegurar una experiencia positiva y fiable para cada cliente.
-    </p>
-    <h2>¿Qué nos depara el futuro juntos?</h2>
-    <p> En fixhub nos apasiona la tecnología y la innovación. Por ello queremos implementar un sistema de reputación que permita a los profesionales destacar
-        por la calidad de su trabajo. Facilitando así a los clientes la elección del profesional más adecuado para sus necesidades.
-        Estamos trabajando en programas para facilitar el trabajo del profesional, desde planificar automaticamente rutas, 
-        mostrar exactamente el material que necesitará o integrar parte de la burrocracia para que te puedas centrar en lo que realmente aporta valor. 
-        Entre estas cosas esta: Facturación integrada (con verifactu), compartir presupuestos, tu agenda y la de tus compañeros, y mas </p>
-    </p>
+    <form id="loginForm" novalidate>
+      <label for="email">Correo electrónico</label>
+      <input id="email" name="Email" type="email" className="input" placeholder="tu@email.com"
+             autocomplete="off" autofocus>
 
+      <label for="password">Contraseña</label>
+      <div class="row">
+        <input id="password" name="password" type="password" class="input" autocomplete="off"
+               aria-describedby="pwd-hint" style="flex:1">
+        <button type="button" id="togglePwd" class="input" style="width:auto; padding:.6rem .8rem;">Mostrar</button>
+      </div>
 
-    <h2>Contacto</h2>
-    <p>Para cualquier duda o consulta, puede escribirnos a <a href="mailto:opotek+fixhub@protonmail.com">opotek+fixhub@protonmail.com</a>.</p>
+      <button class="btn" type="submit">Iniciar sesión</button>
+    </form>
 
-    <footer>© 2025 Fixhub. Proyecto de OPOTEK. Todos los derechos reservados.</footer>
+    <div class="foot">
+      <a class="link" href="/gorila.html">¿Olvidaste la contraseña?</a>
+      <a class="link" href="/">Volver al inicio</a>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const alertBox = document.getElementById('alert');
+    const toggle = document.getElementById('togglePwd');
+    const pwd = document.getElementById('password');
+
+    toggle.addEventListener('click', () => {
+      const isPwd = pwd.type === 'password';
+      pwd.type = isPwd ? 'text' : 'password';
+      toggle.textContent = isPwd ? 'Ocultar' : 'Mostrar';
+      pwd.focus();
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Show the alert only after submit
+      alertBox.classList.remove('hidden');
+      alertBox.removeAttribute('aria-hidden');
+
+      // re-trigger shake
+      alertBox.classList.remove('shake');
+      void alertBox.offsetWidth; // force reflow
+      alertBox.classList.add('shake');
+
+      // optional: move focus to alert for a11y
+      alertBox.setAttribute('tabindex', '-1');
+      alertBox.focus({ preventScroll: true });
+    });
+  </script>
 </body>
 </html>
