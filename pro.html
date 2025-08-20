@@ -1,144 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fixhub – Usuario no identificado</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #f9fafb; --card: #ffffff; --text: #111827; --muted: #6b7280;
-      --primary: #2563eb; --error: #dc2626; --error-bg: #fee2e2;
-      --border: #e5e7eb; --ring: rgba(37,99,235,.35);
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      background: radial-gradient(1200px 600px at 50% -100px, #e0f2fe 0%, transparent 60%) var(--bg);
-      color: var(--text); min-height: 100svh; display: grid; place-items: center; padding: 2rem;
-    }
-    .card { width: 100%; max-width: 440px; background: var(--card); border: 1px solid var(--border);
-      border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,.06); padding: 1.25rem; }
-    .header { display: flex; align-items: center; gap: .6rem; margin-bottom: .75rem; }
-    .logo { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #2563eb, #60a5fa); }
-    h1 { font-size: 1.25rem; margin: 0; }
-    .subtitle { font-size: .95rem; color: var(--muted); margin: .25rem 0 1rem; }
-    .alert {
-      display: flex; gap: .6rem; align-items: flex-start;
-      background: var(--error-bg); color: var(--error);
-      border: 1px solid #fecaca; border-radius: 12px; padding: .8rem .9rem;
-      margin-bottom: 1rem; animation: pop .2s ease-out;
-    }
-    .alert svg { flex: 0 0 auto; margin-top: 2px; }
-    @keyframes pop { from { transform: scale(.98); opacity: .6 } to { transform: scale(1); opacity: 1 } }
-    label { display: block; font-weight: 600; font-size: .9rem; margin: .6rem 0 .35rem; }
-    .input {
-      width: 100%; padding: .75rem .85rem; border: 1px solid var(--border); border-radius: 12px;
-      font-size: .95rem; background: #fff; outline: none; transition: box-shadow .15s ease, border-color .15s ease, transform .08s ease;
-    }
-    .input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
-    .hint { font-size: .85rem; color: var(--muted); margin-top: .35rem; }
-    .row { display: flex; gap: .6rem; align-items: center; }
-    .btn {
-      appearance: none; border: 0; cursor: pointer; background: var(--primary); color: #fff; font-weight: 600;
-      padding: .8rem 1rem; border-radius: 12px; width: 100%;
-      transition: transform .06s ease, filter .15s ease, box-shadow .15s ease;
-      box-shadow: 0 8px 14px rgba(37,99,235,.25); margin-top: 1rem;
-    }
-    .btn:active { transform: translateY(1px); }
-    .link { color: var(--primary); text-decoration: none; font-weight: 600; }
-    .foot { margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; font-size: .9rem; }
-    .shake { animation: shake .3s ease-in-out; }
-    @keyframes shake {
-      0%,100% { transform: translateX(0) }
-      20% { transform: translateX(-6px) }
-      40% { transform: translateX(6px) }
-      60% { transform: translateX(-4px) }
-      80% { transform: translateX(4px) }
-    }
-    .hidden { display: none; }
-  </style>
-</head>
-<body>
-  <main class="card" aria-labelledby="t">
-    <div class="header">
-      <div class="logo" aria-hidden="true"></div>
-      <h1 id="t">Fixhub - Área Pro</h1>
-    </div>
-    <p class="subtitle">Acceso a la plataforma</p>
-
-    <!-- Oculto al inicio -->
-    <div id="alert" class="alert hidden" role="alert" aria-live="assertive" aria-hidden="true">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <div>
-        <strong>Usuario no identificado o credenciales incorrectas.</strong>
-        <div class="hint">Comprueba tus datos e inténtalo de nuevo.</div>
-      </div>
-    </div>
-
-    <form id="loginForm" novalidate>
-      <label for="email">Correo electrónico</label>
-      <div class="row">
-        <input id="email" name="email" type="email" class="input" style="flex:1"
-               autocomplete="off" placeholder="tu-email" />
-        <button type="button" id="toggleEmail" class="input" style="width:auto; padding:.6rem .8rem;">Mostrar</button>
-      </div>
-
-      <label for="password">Contraseña</label>
-      <div class="row">
-        <input id="password" name="password" type="password" class="input" autocomplete="off"
-               aria-describedby="pwd-hint" style="flex:1" />
-        <button type="button" id="togglePwd" class="input" style="width:auto; padding:.6rem .8rem;">Mostrar</button>
-      </div>
-
-      <button class="btn" type="submit">Iniciar sesión</button>
-    </form>
-
-    <div class="foot">
-      <a class="link" href="/gorila.html">¿Olvidaste la contraseña?</a>
-      <a class="link" href="/">Volver al inicio</a>
-    </div>
-  </main>
-
-  <script>
-    const form = document.getElementById('loginForm');
-    const alertBox = document.getElementById('alert');
-
-    // Toggles
-    const emailInput = document.getElementById('email');
-    const toggleEmail = document.getElementById('toggleEmail');
-    toggleEmail.addEventListener('click', () => {
-      const isPwd = emailInput.type === 'password';
-      emailInput.type = isPwd ? 'text' : 'password';
-      toggleEmail.textContent = isPwd ? 'Ocultar' : 'Mostrar';
-      emailInput.focus();
-    });
-
-    const pwd = document.getElementById('password');
-    const togglePwd = document.getElementById('togglePwd');
-    togglePwd.addEventListener('click', () => {
-      const isPwd = pwd.type === 'password';
-      pwd.type = isPwd ? 'text' : 'password';
-      togglePwd.textContent = isPwd ? 'Ocultar' : 'Mostrar';
-      pwd.focus();
-    });
-
-    // Fake submit → muestra alerta
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      alertBox.classList.remove('hidden');
-      alertBox.removeAttribute('aria-hidden');
-
-      // re-trigger shake
-      alertBox.classList.remove('shake');
-      void alertBox.offsetWidth;
-      alertBox.classList.add('shake');
-
-      alertBox.setAttribute('tabindex', '-1');
-      alertBox.focus({ preventScroll: true });
-    });
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fixhub – Área Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="/assets/pro-CA89L-GJ.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/index-swYVa5qP.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-DPqcXPMV.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>
