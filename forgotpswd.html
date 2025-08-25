@@ -1,42 +1,82 @@
-<!-- /gorila.html -->
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gorilla</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recuperar contraseña - Fixhub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Reset + full-viewport canvas */
-    html, body { margin: 0; height: 100%; }
-    body { background: #000; overflow: hidden; }
-
-    /* Wrapper fills the screen, also on mobile with dynamic toolbars */
-    .wrap {
-      width: 100vw;
-      height: 100vh;   /* fallback */
-      height: 100dvh;  /* modern browsers */
-      display: grid;
-      place-items: center;
+    :root {
+      --bg: #f9fafb; --card: #ffffff; --text: #111827; --muted: #6b7280;
+      --primary: #2563eb; --border: #e5e7eb; --ring: rgba(37,99,235,.35);
     }
-
-    /* Image scales to fit the screen without cropping */
-    img {
-      max-width: 100vw;
-      max-height: 100dvh;
-      width: 100vw;          /* box = screen size */
-      height: 100dvh;
-      object-fit: contain;   /* no cropping; letterbox if needed */
-      object-position: center;
-      display: block;
-      user-select: none;
-      -webkit-user-drag: none;
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: radial-gradient(1200px 600px at 50% -100px, #e0f2fe 0%, transparent 60%) var(--bg);
+      color: var(--text); min-height: 100svh; display: grid; place-items: center; padding: 2rem;
     }
+    .card { width: 100%; max-width: 440px; background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,.06); padding: 1.25rem; }
+    .header { display: flex; align-items: center; gap: .6rem; margin-bottom: .75rem; }
+    .logo { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #2563eb, #60a5fa); }
+    h1 { font-size: 1.25rem; margin: 0; }
+    .subtitle { font-size: .95rem; color: var(--muted); margin: .25rem 0 1rem; }
+    label { display: block; font-weight: 600; font-size: .9rem; margin: .6rem 0 .35rem; }
+    .input {
+      width: 100%; padding: .75rem .85rem; border: 1px solid var(--border); border-radius: 12px;
+      font-size: .95rem; background: #fff; outline: none; transition: box-shadow .15s ease, border-color .15s ease;
+    }
+    .input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+    .btn {
+      appearance: none; border: 0; cursor: pointer; background: var(--primary); color: #fff; font-weight: 600;
+      padding: .8rem 1rem; border-radius: 12px; width: 100%;
+      transition: transform .06s ease, filter .15s ease, box-shadow .15s ease;
+      box-shadow: 0 8px 14px rgba(37,99,235,.25); margin-top: 1rem;
+    }
+    .btn:active { transform: translateY(1px); }
+    .link { color: var(--primary); text-decoration: none; font-weight: 600; }
+    .foot { margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; font-size: .9rem; }
+    .hint { font-size: .85rem; color: var(--muted); margin-top: .75rem; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <!-- Replace the src with your real path -->
-    <img src="/images/gorilla.jpg" alt="Gorilla">
-  </div>
+  <main class="card" aria-labelledby="t">
+    <div class="header">
+      <div class="logo" aria-hidden="true"></div>
+      <h1 id="t">Recupera tu contraseña</h1>
+    </div>
+    <p class="subtitle">Introduce tu correo o usuario para recibir instrucciones</p>
+    <form id="forgotForm">
+      <label for="email">Correo electrónico o usuario</label>
+      <input id="email" name="email" type="text" class="input" autocomplete="off" required />
+      <button class="btn" type="submit">Enviar</button>
+    </form>
+    <div id="msg" class="hint"></div>
+    <div class="foot">
+      <a class="link" href="/pro-login.html">Volver a iniciar sesión</a>
+      <a class="link" href="/">Inicio</a>
+    </div>
+  </main>
+  <script>
+    const form = document.getElementById('forgotForm');
+    const msg = document.getElementById('msg');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      msg.textContent = '';
+      try {
+        const res = await fetch('https://tradex-be-production.up.railway.app/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+        if (!res.ok) throw new Error();
+        msg.textContent = 'Si existe una cuenta asociada, recibirás un correo con instrucciones.';
+      } catch (err) {
+        msg.textContent = 'No se pudo procesar la solicitud. Inténtalo de nuevo más tarde.';
+      }
+    });
+  </script>
 </body>
 </html>
