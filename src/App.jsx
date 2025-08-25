@@ -86,10 +86,10 @@ export default function App() {
       alert("Formulario enviado correctamente");
       setFormData({});
       setShowPopup("");
-    } catch (error) {
-      alert("Error al enviar formulario,", error);
-    }
-  };
+      } catch (error) {
+        alert("Error al enviar formulario: " + error.message);
+      }
+    };
 
   return (
     <div className="bg-gradient-to-b from-[#0F172A] to-[#1E3A8A] text-white min-h-screen font-sans">
@@ -113,11 +113,17 @@ export default function App() {
           <button onClick={() => setShowPopup("pro")} className="bg-blue-600 px-6 py-3 rounded-xl hover:bg-blue-700 transition flex items-center gap-2">
             <FaWrench /> Soy profesional - Quiero ofrecer mis servicios
           </button>
-          <button onClick={() => setShowPopup("cli")} className="bg-green-600 px-6 py-3 rounded-xl hover:bg-green-700 transition flex items-center gap-2">
+          <button
+            onClick={() => setShowPopup("cli")}
+            className="bg-green-600 px-6 py-3 rounded-xl hover:bg-green-700 transition flex items-center gap-2"
+          >
             <FaHome /> Busco un professional - Necesito ayuda
-          <button onClick={() => setShowPopup("idk")} className="bg-red-600 px-6 py-3 rounded-xl hover:bg-red-700 transition flex items-center gap-2">
-            <FaSuperpowers /> ¡Ayuda! - No se lo que necesito
           </button>
+          <button
+            onClick={() => setShowPopup("idk")}
+            className="bg-red-600 px-6 py-3 rounded-xl hover:bg-red-700 transition flex items-center gap-2"
+          >
+            <FaSuperpowers /> ¡Ayuda! - No sé lo que necesito
           </button>
 
         </div>
