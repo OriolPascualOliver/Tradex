@@ -117,23 +117,36 @@
     });
 
     // Submit handler
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('email').value.trim();
       const password = pwd.value;
 
-      if (email === 'demo@fixhub.es' && password === 'demo123') {
-        window.location.href = 'pro.html';
-        return;
-      }
+      try {
+        const response = await fetch('https://tradex-be-production.up.railway.app/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
 
-      alertBox.classList.remove('hidden');
-      alertBox.removeAttribute('aria-hidden');
-      alertBox.classList.remove('shake');
-      void alertBox.offsetWidth;
-      alertBox.classList.add('shake');
-      alertBox.setAttribute('tabindex', '-1');
-      alertBox.focus({ preventScroll: true });
+        if (!response.ok) throw new Error('Invalid credentials');
+
+        const data = await response.json();
+        if (data && data.token) {
+          localStorage.setItem('token', data.token);
+        }
+        window.location.href = 'pro.html';
+      } catch (error) {
+        alertBox.classList.remove('hidden');
+        alertBox.removeAttribute('aria-hidden');
+        alertBox.classList.remove('shake');
+        void alertBox.offsetWidth;
+        alertBox.classList.add('shake');
+        alertBox.setAttribute('tabindex', '-1');
+        alertBox.focus({ preventScroll: true });
+      }
     });
   </script>
 </body>
