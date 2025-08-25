@@ -1,6 +1,5 @@
 // src/App.jsx
-import React, { useState, useRef, useEffect } from "react";
-import NewsletterModal from "./components/NewsletterModal";
+import React, { useState } from "react";
 import {
   FaBolt,
   FaWrench,
@@ -17,7 +16,7 @@ import {
   FaClock,
   FaKey,
   FaSuperpowers,
-  FaMapMarkerAlt,
+
 } from "react-icons/fa";
 
 const servicios = [
@@ -35,49 +34,21 @@ const servicios = [
 export default function App() {
   const [showPopup, setShowPopup] = useState("");
   const [formData, setFormData] = useState({});
-  const [selectedOficios, setSelectedOficios] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-    setSelectedOficios((prev) =>
-      checked ? [...prev, value] : prev.filter((v) => v !== value)
-    );
-  };
-
-  const getLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const { latitude, longitude } = position.coords;
-        try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-          );
-          const data = await res.json();
-          const direccion = data.display_name || `${latitude}, ${longitude}`;
-          setFormData((prev) => ({ ...prev, ubicacion: direccion }));
-        } catch {
-          setFormData((prev) => ({ ...prev, ubicacion: `${latitude}, ${longitude}` }));
-        }
-      });
-    } else {
-      alert("Geolocalización no soportada por tu navegador.");
-    }
-  };
-
-  const handleSubmit = async (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
     const sheetMap = {
       pro: "Profesionales",
       cli: "Clientes",
       idk: "Indefinidos",
     };
-  const scriptURL = `https://script.google.com/macros/s/AKfycbzf2so3sSLeUXvvxmKNECizTK7pVz1d7Ha3E1OOKIEabKxZ8F-3lqQ4KYyoy014OwuR9Q/exec?sheet=${sheetMap[showPopup]}`;
-  const form = new FormData();
+    const scriptURL = `https://script.google.com/macros/s/AKfycbyKYL662PKpdmUYW9KmcAGBcA6cZj6rZ70UKZ9nH7oE_8rHEcQf4KrwQ74Lyv5LRMEg4A/exec`;
+    const form = new FormData();
     for (const field in formData) {
       form.append(field, formData[field]);
     }
@@ -86,20 +57,25 @@ export default function App() {
       alert("Formulario enviado correctamente");
       setFormData({});
       setShowPopup("");
-      } catch (error) {
-        alert("Error al enviar formulario: " + error.message);
-      }
-    };
+    } catch (error) {
+      alert("Error al enviar formulario");
+    }
+  };
 
   return (
+    
     <div className="bg-gradient-to-b from-[#0F172A] to-[#1E3A8A] text-white min-h-screen font-sans">
-      {/* Header */}
       <header className="flex justify-between items-center px-6 py-4">
         <div className="flex items-center gap-2">
           <FaUserShield className="text-2xl text-green-400" />
           <h1 className="text-xl font-bold">Fixhub</h1>
         </div>
-        <a href="#" className="text-sm underline">¿Eres profesional?</a>
+        <a href="#condiciones" className="hover:text-blue-400 transition">¿Eres profesional? Por eso deberías elegirnos</a>
+        <nav className="flex gap-4">
+          <a href="#servicios" className="hover:text-blue-400 transition">Servicios</a>
+          <a href="#como-funciona" className="hover:text-blue-400 transition">¿Cómo funciona?</a>
+          <a href="#contacto" className="hover:text-blue-400 transition">Contacto</a>
+        </nav>
       </header>
 
       {/* Hero */}
@@ -107,23 +83,17 @@ export default function App() {
         <h2 className="text-4xl sm:text-6xl font-extrabold leading-tight">
           Encuentra tu <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">profesional de confianza</span><br /> cerca de ti
         </h2>
-        <p className="mt-4 text-lg text-gray-300">Electricistas, fontaneros, pintores, instaladores de aire acondicionados, reformas, superheroes para emergencias,<br /> y más!</p>
+        <p className="mt-4 text-lg text-gray-300">Electricistas, fontaneros, pintores, instaladores de aire acondicionados,<br /> reformas, superheroes para emergencias,<br /> y más!</p>
 
         <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center">
           <button onClick={() => setShowPopup("pro")} className="bg-blue-600 px-6 py-3 rounded-xl hover:bg-blue-700 transition flex items-center gap-2">
             <FaWrench /> Soy profesional - Quiero ofrecer mis servicios
           </button>
-          <button
-            onClick={() => setShowPopup("cli")}
-            className="bg-green-600 px-6 py-3 rounded-xl hover:bg-green-700 transition flex items-center gap-2"
-          >
+          <button onClick={() => setShowPopup("cli")} className="bg-green-600 px-6 py-3 rounded-xl hover:bg-green-700 transition flex items-center gap-2">
             <FaHome /> Busco un professional - Necesito ayuda
           </button>
-          <button
-            onClick={() => setShowPopup("idk")}
-            className="bg-red-600 px-6 py-3 rounded-xl hover:bg-red-700 transition flex items-center gap-2"
-          >
-            <FaSuperpowers /> ¡Ayuda! - No sé lo que necesito
+          <button onClic={() => setShowPopup("idk")} className="bg-red-600 px-6 py-3 rounded-xl hover:bg-red-700 transition flex items-center gap-2">
+            <FaSuperpowers /> ¡Ayuda! - No se lo que necesito
           </button>
 
         </div>
@@ -133,62 +103,35 @@ export default function App() {
       {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
           <div className="bg-white text-black p-8 rounded-xl shadow-xl w-96 relative overflow-auto max-h-[90vh]">
-            <button className="absolute top-2 right-3 text-xl" onClick={() => setShowPopup("")}></button>
+            <button className="absolute top-2 right-3 text-xl" onClick={() => setShowPopup("")}>×</button>
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               {showPopup === "pro" && (
                 <>
-                  <h2 className="text-lg font-bold mb-2">¿Eres profesional?</h2>
-                  <input name="nombre" type="text" placeholder="Tu nombre completo" className="border p-2 rounded" value={formData.nombre || ""} onChange={handleChange} required />
-                  <input name="email" type="email" placeholder="Correo electrónico" className="border p-2 rounded" value={formData.email || ""} onChange={handleChange} required />
-                  <input name="telefono" type="tel" placeholder="Teléfono de contacto" className="border p-2 rounded" value={formData.telefono || ""} onChange={handleChange} required />
+                  <h2 className="text-lg font-bold mb-2">¿Eres profesional? Por eso deberías elegirnos</h2>
+                  <input name="nombre" type="text" placeholder="Nombre" className="border p-2 rounded" value={formData.nombre || ""} onChange={handleChange} required />
+                  <input name="email" type="email" placeholder="Email" className="border p-2 rounded" value={formData.email || ""} onChange={handleChange} required />
+                  <input name="telefono" type="tel" placeholder="Teléfono" className="border p-2 rounded" value={formData.telefono || ""} onChange={handleChange} required />
                   <input name="ubicacion" type="text" placeholder="Ubicación o código postal" className="border p-2 rounded" value={formData.ubicacion || ""} onChange={handleChange} required />
-                  <label className="text-sm">Distancia máxima de desplazamiento: {formData.distancia || 25} km</label>
+                  <label className="text-sm">Distancia máxima de desplazamiento (km)</label>
                   <input name="distancia" type="range" min="1" max="100" value={formData.distancia || 25} onChange={handleChange} className="w-full" />
-                  <label className="text-sm font-medium">Selecciona tus oficios:</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {servicios.map(({ nombre }) => (
-                      <label key={nombre} className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          value={nombre}
-                          checked={selectedOficios.includes(nombre)}
-                          onChange={handleCheckboxChange}
-                        />
-                        {nombre}
-                      </label>
-                    ))}
-                  </div>
+                  <select name="oficio" className="border p-2 rounded" value={formData.oficio || ""} onChange={handleChange} required>
+                    <option value="">Selecciona tu oficio</option>
+                    {servicios.map(({ nombre }) => <option key={nombre}>{nombre}</option>)}
+                  </select>
                 </>
               )}
-            </form>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               {showPopup === "cli" && (
                 <>
-                  <h2 className="text-lg font-bold mb-2">Necesito ayuda profesional</h2>
-                  <input name="nombre" type="text" placeholder="Tu nombre completo" className="border p-2 rounded" value={formData.nombre || ""} onChange={handleChange} required />
-                  <input name="email" type="email" placeholder="Correo electrónico" className="border p-2 rounded" value={formData.email || ""} onChange={handleChange} required />
-                  <input name="telefono" type="tel" placeholder="Teléfono de contacto" className="border p-2 rounded" value={formData.telefono || ""} onChange={handleChange} required />
-
-                  <div className="flex gap-2 items-center">
-                    <input name="ubicacion" type="text" placeholder="Dirección o zona" className="border p-2 rounded w-full" value={formData.ubicacion || ""} onChange={handleChange} required />
-                    <button type="button" onClick={getLocation} className="text-blue-600 text-sm underline">Usar mi ubicación</button>
-                  </div>
-
+                  <h2 className="text-lg font-bold mb-2">¿Qué necesitas?</h2>
+                  <input name="nombre" type="text" placeholder="Nombre" className="border p-2 rounded" value={formData.nombre || ""} onChange={handleChange} required />
+                  <input name="email" type="email" placeholder="Email" className="border p-2 rounded" value={formData.email || ""} onChange={handleChange} required />
+                  <input name="telefono" type="tel" placeholder="Teléfono" className="border p-2 rounded" value={formData.telefono || ""} onChange={handleChange} required />
+                  <input name="ubicacion" type="text" placeholder="Ubicación" className="border p-2 rounded" value={formData.ubicacion || ""} onChange={handleChange} required />
                   <input name="fecha" type="date" className="border p-2 rounded" value={formData.fecha || ""} onChange={handleChange} />
-
-                  <textarea name="descripcion" placeholder="Describe el problema lo mejor que puedas..." className="border p-2 rounded" rows="4" value={formData.descripcion || ""} onChange={handleChange} />
-
-                  <select name="tipoProfesional" className="border p-2 rounded" value={formData.tipoProfesional || ""} onChange={handleChange}>
-                    <option value="">Selecciona un tipo de profesional</option>
-                    {servicios.map(({ nombre }) => (
-                      <option key={nombre} value={nombre}>{nombre}</option>
-                    ))}
-                  </select>
-
-                  <input name="fotos" type="file" accept="image/*" capture="environment" className="border p-2 rounded" multiple onChange={(e) => setFormData((prev) => ({ ...prev, fotos: e.target.files[0] }))} />
+                  <textarea name="descripcion" placeholder="Describe la tarea" className="border p-2 rounded" rows="4" value={formData.descripcion || ""} onChange={handleChange}></textarea>
+                  <input name="fotos" type="file" accept="image/*" multiple className="border p-2 rounded" />
                 </>
-              )}     
-
+              )}
               {showPopup === "idk" && (
                 <>
                   <h2 className="text-lg font-bold mb-2">Ayuda general</h2>
@@ -285,4 +228,3 @@ export default function App() {
     </div>
   );
 }
-

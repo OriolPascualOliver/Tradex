@@ -1,0 +1,42 @@
+<!-- /gorila.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gorilla</title>
+  <style>
+    /* Reset + full-viewport canvas */
+    html, body { margin: 0; height: 100%; }
+    body { background: #000; overflow: hidden; }
+
+    /* Wrapper fills the screen, also on mobile with dynamic toolbars */
+    .wrap {
+      width: 100vw;
+      height: 100vh;   /* fallback */
+      height: 100dvh;  /* modern browsers */
+      display: grid;
+      place-items: center;
+    }
+
+    /* Image scales to fit the screen without cropping */
+    img {
+      max-width: 100vw;
+      max-height: 100dvh;
+      width: 100vw;          /* box = screen size */
+      height: 100dvh;
+      object-fit: contain;   /* no cropping; letterbox if needed */
+      object-position: center;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Replace the src with your real path -->
+    <img src="/images/gorilla.jpg" alt="Gorilla">
+  </div>
+</body>
+</html>
