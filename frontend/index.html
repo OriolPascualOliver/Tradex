@@ -1,11 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Tradex Frontend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FixHub</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   </head>
   <body>
-    <h1>Welcome to Tradex</h1>
-    <p>Frontend powered by Node.</p>
+    <header class="site-header">
+      <div class="logo">FixHub</div>
+      <nav>
+        <ul>
+          <li><a href="/login.html">Login</a></li>
+          <li><a href="/contact.html">Contacto</a></li>
+          <li><a href="/about.html">Sobre Nosotros</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section class="hero">
+        <p class="intro">Bienvenido a FixHub</p>
+        <h2>Encuentra tu profesional de confianza cerca de ti</h2>
+        <div class="cta-buttons">
+          <a href="/login.html" class="btn primary">Soy profesional - Quiero ofrecer mis servicios</a>
+          <a href="#" class="btn secondary">Busco un profesional - Necesito ayuda</a>
+          <a href="/contact.html" class="btn danger">Ayuda - No sé lo que necesito</a>
+        </div>
+      </section>
+      <section class="services">
+        <h3>Servicios Populares</h3>
+        <div class="service-grid">
+          <div class="service-card">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Electricista</span>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-faucet"></i>
+            <span>Fontanero</span>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-hammer"></i>
+            <span>Reformas</span>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-snowflake"></i>
+            <span>Aire Acondicionado</span>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-paint-roller"></i>
+            <span>Pintor</span>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-couch"></i>
+            <span>Montador de Muebles</span>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-key"></i>
+            <span>Cerrajero</span>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-ellipsis-h"></i>
+            <span>Otros</span>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <a href="/terms.html">Términos de servicio</a> |
+      <a href="/privacy.html">Política de privacidad</a>
+    </footer>
   </body>
 </html>
