@@ -2,6 +2,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+
   background: #f9fafb;
   color: #333;
 }
@@ -28,10 +29,13 @@ nav ul {
   padding: 0;
 }
 
+
+
 nav a {
   color: #fff;
   text-decoration: none;
 }
+
 
 .hero {
   background: linear-gradient(135deg, #1b2a4e, #0d1b2a);
@@ -109,6 +113,7 @@ nav a {
   color: #2563eb;
   margin-bottom: 10px;
 }
+
 
 footer {
   background: #f0f0f0;
