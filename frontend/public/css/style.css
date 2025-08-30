@@ -291,3 +291,24 @@ footer a:hover{ text-decoration:underline; }
   .btn{ width:100%; text-align:center; }
   nav ul{ gap:12px; }
 }
+
+/* Checkbox inline styling */
+.input-inline {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-top: var(--s3);
+}
+
+.input-inline input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--sky); /* azul brand */
+  cursor: pointer;
+}
+
+.input-inline span {
+  font-size: 0.95rem;
+  color: var(--steel);
+}
