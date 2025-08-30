@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Precios · FixHub</title>
+  <link rel="stylesheet" href="./style.css?v={cachebust}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    .pricing-hero {
+      background: linear-gradient(135deg, var(--sky), var(--sky-600));
+      color: #fff; text-align: center;
+      padding: var(--s8) var(--s5) var(--s7);
+    }
+    .pricing-hero h2 { margin: 0 0 var(--s3); font-size: var(--h1); }
+    .pricing-hero p { opacity:.9; max-width:720px; margin:0 auto; }
+
+    .pricing-grid {
+      max-width:1100px; margin: var(--s7) auto;
+      display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--s5);
+      padding: 0 var(--s5);
+    }
+    .price-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--s6);
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+      display:flex; flex-direction:column; gap: var(--s4);
+    }
+    .price-card h3 { margin:0; font-size: var(--h2); }
+    .price { font-weight:800; font-size:2rem; }
+    .price small { font-size:.9rem; color:var(--muted); }
+    .features { margin:0; padding-left:1.1rem; text-align:left; }
+    .features li { margin:.4rem 0; color:var(--muted); }
+    .badge {
+      display:inline-block; font-size:.8rem; font-weight:700;
+      padding:.35rem .75rem; border-radius:999px;
+      background:rgba(37,99,235,.1); color:var(--sky);
+    }
+    .select-row{ display:flex; justify-content:center; align-items:center; gap:.4rem; }
+    .select-row select{
+      padding:6px 10px;
+      border-radius:8px; border:1px solid var(--border); font:inherit;
+    }
+    .card-cta{ margin-top:auto; }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="logo">FixHub</div>
+  <nav>
+    <ul>
+      <li><a href="./about.html">Sobre Nosotros</a></li>
+      <li><a href="./features.html">Funciones</a></li>
+      <li><a href="./pricing.html">Precios</a></li>
+      <li><a href="./contact.html">Contacto</a></li>
+      <li><a href="./login.html">Área PRO</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="pricing-hero">
+    <h2>Planes claros, para cada tipo de profesional</h2>
+    <p>Desde una prueba gratuita hasta la gestión completa de tu equipo. Elige el plan que más te conviene y 
+      leva tu negocio al siguiente nivel.</p>
+  </section>
+
+
+  <section class="pricing-grid">
+    <!-- Gratis -->
+    <article class="price-card">
+      <span class="badge">Prueba</span>
+      <h3>Gratis</h3>
+      <div class="price">0€ <small>/ 2 meses</small></div>
+      <p>Accede a todas las funcionalidades <strong>excepto facturación electrónica</strong> durante 60 días naturales.</p>
+      <ul class="features">
+        <li>Gestión de trabajos</li>
+        <li>Planificación y sincronización</li>
+        <li>Presupuestos automáticos en minutos</li>
+        <li>Partes con fotos y firma</li>
+        <li>Gestión de materiales</li>
+        <li>Integraciones (WhatsApp, Drive, correo…)</li>
+        <li style="text-decoration: line-through;">Facturación electrónica</li>
+      </ul>
+      <div class="card-cta">
+        <a class="btn primary" href="./login.html">Empieza gratis</a>
+      </div>
+    </article>
+
+    <!-- Solo -->
+    <article class="price-card">
+      <span class="badge">Autónomos</span>
+      <h3>Han Solo</h3>
+      <div class="price">49€ <small>/ mes*</small></div>
+      <p>Todas las funcionalidades de FixHub que un profesional necesita.</p>
+      <ul class="features">
+        <li>Incluye facturación electrónica</li>
+        <li>Incluye pago integrado desde la aplicación</li>
+        <li>Presupuestos automátizados y fáciles, tal y como los harías tú</li>
+        <li>Gestión de clientes y materiales</li>
+        <li>Soporte estándar</li>
+      </ul>
+      <div class="card-cta">
+        <a class="btn secondary" href="./login.html">Elegir plan Solo</a>
+      </div>
+    </article>
+
+    <!-- Equipo -->
+    <article class="price-card" id="teamCard">
+      <span class="badge">Empresas</span>
+      <h3>Equipo</h3>
+      <div class="select-row">
+        <label for="teamSize"><strong>Personas:</strong></label>
+        <select id="teamSize">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8+</option>
+
+        </select>
+      </div>
+      <div class="price" id="teamPrice">105€ <small>/ mes*</small></div>
+      <p class="note" id="teamNote">Precio por persona: <strong>35€</strong></p>
+      <ul class="features">
+        <li>Plan Han Solo</li>
+        <li>Roles y permisos por equipo</li>
+        <li>Agenda compartida y coordinación</li>
+        <li>Soporte prioritario</li>
+        <li>Próximamente: métricas y SLA</li>
+      </ul>
+      <div class="card-cta">
+        <a class="btn primary" href="./login.html">Crear equipo</a>
+      </div>
+    </article>
+    <h4> * IVA no incluido</h4>
+  </section>
+</main>
+
+<footer>
+  © 2025 Fixhub. Proyecto de OPOTEK. Todos los derechos reservados. | 
+  <a href="./condiciones.html">Términos de servicio</a> |
+  <a href="./privacy.html">Política de privacidad</a>
+</footer>
+
+<script>
+  function perSeatPrice(n){
+    if(n <= 1) return 45;
+    if(n == 2) return 45;
+    if(n == 3) return 35;
+    if(n == 4) return 33;
+    if(n == 5) return 30;
+    if(n == 6) return 28;
+    if(n == 7) return 27;
+    return 27;
+  }
+  const teamSizeEl = document.getElementById('teamSize');
+  const teamPriceEl = document.getElementById('teamPrice');
+  const teamNoteEl  = document.getElementById('teamNote');
+
+  function updateTeamPrice(){
+    const n = parseInt(teamSizeEl.value, 10);
+    const seat = perSeatPrice(n);
+    const total = n * seat;
+    teamPriceEl.innerHTML = total + '€ <small>/ mes*</small>';
+    teamNoteEl.innerHTML  = 'Precio por persona: <strong>' + seat + '€</strong>';
+  }
+
+  teamSizeEl.addEventListener('change', updateTeamPrice);
+  updateTeamPrice();
+</script>
+</body>
+</html>

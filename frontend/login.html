@@ -3,33 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - FixHub</title>
-    <link rel="stylesheet" href="/style.css" />
+    <title>FixHub — Sistema unificado de gestión de trabajos</title>
+    <link rel="stylesheet" href="./style.css?v={cachebust}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <meta name="description" content="Unifica presupuestos, partes, materiales y facturas. Planifica rutas y coordina a todo tu equipo de oficio con FixHub."/>
   </head>
   <body>
-
     <header class="site-header">
       <div class="logo">FixHub</div>
-
       <nav>
         <ul>
-          <li><a href="/">Inicio</a></li>
-          <li><a href="/contact.html">Contacto</a></li>
-          <li><a href="/about.html">Sobre Nosotros</a></li>
+          <li><a href="./about.html">Sobre Nosotros</a></li>
+          <li><a href="./condiciones.html">Condiciones</a></li>
+          <li><a href="./pricing.html">Precios y Servicios</a></li>
+          <li><a href="./contact.html">Contacto</a></li>
+          <li><a href="./login.html">Area PRO</a></li>
         </ul>
       </nav>
     </header>
-    <main>
-      <h2>Login</h2>
-      <form>
-        <label>Usuario: <input type="text" name="username" /></label><br />
-        <label>Contraseña: <input type="password" name="password" /></label><br />
-        <button type="submit">Entrar</button>
-      </form>
-    </main>
+
+  <main>
+    <h2>Entrar en FixHub</h2>
+    <form>
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="tu@empresa.com" required/>
+      <label for="password">Contraseña</label>
+      <input id="password" type="password" placeholder="••••••••" required/>
+      <button type="submit">Entrar</button>
+      <button type="submit" onclick="window.location.href='https://opotek.protonmail.com'">¿Olvidaste tu contraseña?</button>
+    </form>
+  </main>
+
     <footer>
-      <a href="/terms.html">Términos de servicio</a> |
-      <a href="/privacy.html">Política de privacidad</a>
+      © 2025 Fixhub. Proyecto de OPOTEK. Todos los derechos reservados. | 
+      <a href="./condiciones.html">Términos de servicio</a> |
+      <a href="./privacy.html">Política de privacidad</a>
     </footer>
   </body>
 </html>

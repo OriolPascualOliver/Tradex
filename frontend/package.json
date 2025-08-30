@@ -4,6 +4,7 @@
   "description": "Node frontend for Tradex",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "node -e \"console.log('Static site — nothing to build')\""
   }
 }
