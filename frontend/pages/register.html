@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crear cuenta · FixHub</title>
+  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    .form-row{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-row-3{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .hint{ color: var(--muted); font-size:.95rem; margin-top:6px; }
+    .chip{ display:inline-block; padding:.35rem .6rem; border-radius:999px; font-weight:700; font-size:.85rem; background:rgba(37,99,235,.08); color:var(--sky); border:1px solid rgba(37,99,235,.25); }
+    .input-inline{ display:flex; gap:10px; align-items:center; }
+    .hidden{ display:none !important; }
+
+    /* Password strength */
+    .pw-meter{ height:8px; border-radius:6px; background:#e5e7eb; margin-top:8px; position:relative; overflow:hidden; }
+    .pw-meter > span{ position:absolute; left:0; top:0; bottom:0; width:0%; transition:width .25s ease; }
+    .pw-w1{ background:#ef4444; } .pw-w2{ background:#f59e0b; } .pw-w3{ background:#10b981; }
+
+    /* Alerts */
+    .alert{ margin-top:14px; padding:12px 14px; border-radius:12px; border:1px solid var(--border); }
+    .alert.ok{ background:rgba(16,185,129,.1); color:#065f46; border-color:rgba(16,185,129,.3); }
+    .alert.err{ background:rgba(239,68,68,.08); color:#7f1d1d; border-color:rgba(239,68,68,.3); }
+
+    /* Modal PRO */
+    .modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; z-index:60; }
+    .modal{ position:fixed; inset:0; display:none; z-index:70; align-items:center; justify-content:center; padding:20px; }
+    .modal-card{ max-width:560px; width:100%; background:var(--paper); border:1px solid var(--border); border-radius:14px; padding:22px; box-shadow:var(--shadow-lg); }
+    .modal h4{ margin:0 0 8px; }
+    .modal .actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:14px; }
+    .btn.ghost{ background:#fff; color:var(--steel); border:1px solid var(--border); }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="logo">FixHub</div>
+  <nav>
+    <ul>
+      <li><a href="./about.html">Sobre Nosotros</a></li>
+      <li><a href="./features.html">Funciones</a></li>
+      <li><a href="./pricing.html">Precios</a></li>
+      <li><a href="./contact.html">Contacto</a></li>
+      <li><a href="./login.html">Área PRO</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <h2>Crear tu cuenta</h2>
+  <form id="signupForm" novalidate>
+    <!-- PLAN -->
+    <label>Plan <span class="chip">requerido</span></label>
+    <div class="input-inline" role="group" aria-label="Seleccionar plan">
+      <label class="input-inline"><input type="radio" name="plan" value="Trial" checked> Trial</label>
+      <label class="input-inline"><input type="radio" name="plan" value="Solo"> Solo</label>
+      <label class="input-inline"><input type="radio" name="plan" value="Team"> Team</label>
+      <div id="teamSeatsWrap" class="input-inline hidden">
+        <span>Personas:</span>
+        <select id="teamSeats" name="team_seats">
+          <option value="2">2</option><option value="3" selected>3</option>
+          <option value="4">4</option><option value="5">5</option>
+          <option value="6">6</option><option value="7">7</option>
+          <option value="8">8+</option>
+        </select>
+      </div>
+    </div>
+    <p class="hint">En planes <strong>Solo</strong> o <strong>Team</strong> pediremos verificación fiscal.</p>
+
+    <!-- IDENTIDAD -->
+    <div class="form-row">
+      <div>
+        <label for="email">Email *</label>
+        <input id="email" name="email" type="email" required placeholder="tu@empresa.com"/>
+      </div>
+      <div>
+        <label for="phone">Teléfono *</label>
+        <input id="phone" name="phone" type="tel" required placeholder="+34 6XX XXX XXX"/>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div>
+        <label for="name">Nombre *</label>
+        <input id="name" name="name" required/>
+      </div>
+      <div>
+        <label for="surname1">Apellido 1 *</label>
+        <input id="surname1" name="surname1" required/>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div>
+        <label for="surname2">Apellido 2 *</label>
+        <input id="surname2" name="surname2" required/>
+      </div>
+      <div id="nifWrap" class="hidden">
+        <label for="nif">NIF / DNI *</label>
+        <input id="nif" name="nif" placeholder="00000000A"/>
+        <p class="hint">Obligatorio en cuentas PRO (Solo/Team).</p>
+      </div>
+    </div>
+
+    <!-- CONTRASEÑA -->
+    <div>
+      <label for="password">Contraseña *</label>
+      <input id="password" name="password" type="password" required minlength="8" placeholder="Mínimo 8 caracteres"/>
+      <div class="pw-meter"><span id="pwBar" class="pw-w1"></span></div>
+      <p id="pwMsg" class="hint">Usa mayúsculas, minúsculas, número y símbolo.</p>
+    </div>
+
+    <!-- EMPRESA -->
+    <div class="form-row">
+      <div>
+        <label for="company">Empresa</label>
+        <input id="company" name="company" placeholder="Opcional"/>
+      </div>
+      <div>
+        <label for="sector">Sector / Industria *</label>
+        <select id="sector" name="sector" required>
+          <option value="" disabled selected>Selecciona sector</option>
+          <option>Electricidad</option>
+          <option>Fontanería</option>
+          <option>Climatización</option>
+          <option>Mantenimiento</option>
+          <option>Pintura / Reformas</option>
+          <option value="Otro">Otro…</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="sectorOtherWrap" class="hidden">
+      <label for="sector_other">Especifica tu sector *</label>
+      <input id="sector_other" name="sector_other" placeholder="Describe tu actividad"/>
+    </div>
+
+    <!-- UBICACIÓN -->
+    <div class="form-row-3">
+      <div>
+        <label for="country">País *</label>
+        <select id="country" name="country" required>
+          <option value="ES" selected>España</option>
+          <option value="PT">Portugal</option>
+          <option value="FR">Francia</option>
+          <option value="IT">Italia</option>
+        </select>
+      </div>
+      <div>
+        <label for="region">Comunidad autónoma *</label>
+        <select id="region" name="region" required>
+          <option value="" disabled selected>Selecciona comunidad</option>
+          <option>Andalucía</option><option>Aragón</option><option>Asturias</option>
+          <option>Illes Balears</option><option>Canarias</option><option>Cantabria</option>
+          <option>Castilla-La Mancha</option><option>Castilla y León</option><option>Cataluña</option>
+          <option>Comunidad Valenciana</option><option>Extremadura</option><option>Galicia</option>
+          <option>La Rioja</option><option>Comunidad de Madrid</option><option>Región de Murcia</option>
+          <option>Navarra</option><option>País Vasco</option><option>Ceuta</option><option>Melilla</option>
+        </select>
+      </div>
+      <div>
+        <label for="zip">Código Postal</label>
+        <input id="zip" name="zip" inputmode="numeric" pattern="[0-9]{5}" placeholder="28001"/>
+        <p class="hint">Formato ES: 5 dígitos (01xxx–52xxx).</p>
+      </div>
+    </div>
+
+    <div id="formAlert" class="alert err hidden"></div>
+
+    <button type="submit" class="btn primary" style="margin-top:22px">Crear cuenta</button>
+    <p class="hint">Al continuar aceptas nuestras <a href="./condiciones.html">Condiciones</a> y la <a href="./privacy.html">Privacidad</a>.</p>
+  </form>
+</main>
+
+<footer>
+  © 2025 Fixhub. Proyecto de OPOTEK. Todos los derechos reservados. |
+  <a href="./condiciones.html">Términos de servicio</a> |
+  <a href="./privacy.html">Política de privacidad</a>
+</footer>
+
+<!-- Modal PRO -->
+<div id="modalBackdrop" class="modal-backdrop"></div>
+<div id="proModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="proTitle">
+  <div class="modal-card">
+    <h4 id="proTitle">¡Gracias! Verificación PRO</h4>
+    <p>Has seleccionado un plan <strong>PRO (Solo/Team)</strong>. Te contactaremos para completar la documentación y firma antes de activar la cuenta.</p>
+    <div class="actions">
+      <button id="modalCancel" class="btn ghost">Cerrar</button>
+      <a class="btn primary" href="./login.html">Entendido</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ----- Elements
+  const planRadios = document.querySelectorAll('input[name="plan"]');
+  const teamSeatsWrap = document.getElementById('teamSeatsWrap');
+  const teamSeats = document.getElementById('teamSeats');
+  const nifWrap = document.getElementById('nifWrap');
+  const nifInput = document.getElementById('nif');
+
+  const sector = document.getElementById('sector');
+  const sectorOtherWrap = document.getElementById('sectorOtherWrap');
+  const sectorOther = document.getElementById('sector_other');
+
+  const pwInput = document.getElementById('password');
+  const pwBar = document.getElementById('pwBar');
+  const pwMsg = document.getElementById('pwMsg');
+
+  const form = document.getElementById('signupForm');
+  const alertBox = document.getElementById('formAlert');
+
+  // Modal
+  const proModal = document.getElementById('proModal');
+  const modalBackdrop = document.getElementById('modalBackdrop');
+  const modalCancel = document.getElementById('modalCancel');
+
+  // ----- Helpers
+  function isProSelected(){
+    const v = document.querySelector('input[name="plan"]:checked').value;
+    return v === 'Solo' || v === 'Team';
+  }
+  function planValue(){
+    const v = document.querySelector('input[name="plan"]:checked').value;
+    if (v === 'Team') return `Team_${teamSeats.value}`;
+    return v; // Trial o Solo
+  }
+
+  // DNI/NIF/NIE validator (ES)
+  function validateSpanishNifNie(value) {
+    if (!value) return false;
+    const v = value.toUpperCase().replace(/\s|-/g,'');
+    const nie = /^[XYZ]\d{7}[TRWAGMYFPDXBNJZSQVHLCKE]$/;
+    const nif = /^\d{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/;
+
+    const letters = 'TRWAGMYFPDXBNJZSQVHLCKE';
+
+    if (nif.test(v)) {
+      const num = parseInt(v.substring(0,8), 10);
+      const control = letters[num % 23];
+      return v[8] === control;
+    }
+    if (nie.test(v)) {
+      const map = {X: '0', Y: '1', Z: '2'};
+      const num = map[v[0]] + v.substring(1,8);
+      const control = letters[parseInt(num,10) % 23];
+      return v[8] === control;
+    }
+    // CIF (empresas) — validación básica: letra inicial + 7 dígitos + control (no exhaustiva)
+    const cifBasic = /^[A-HJNPQRSUVW]\d{7}[0-9A-J]$/;
+    if (cifBasic.test(v)) return true; // aceptamos; la validación completa se hará en backend
+    return false;
+  }
+
+  // ES postal code: 5 dígitos y provincias 01–52
+  function validatePostalCodeES(zip) {
+    if (!zip) return true; // opcional
+    return /^((0[1-9]|[1-4][0-9]|5[0-2])[0-9]{3})$/.test(zip);
+  }
+
+  // Password strength
+  function scorePassword(pw){
+    let s = 0;
+    if (pw.length >= 8) s++;
+    if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) s++;
+    if (/\d/.test(pw) && /[^A-Za-z0-9]/.test(pw)) s++;
+    return s; // 0..3
+  }
+  function renderPwMeter(){
+    const s = scorePassword(pwInput.value);
+    const widths = ['0%','33%','66%','100%'];
+    pwBar.style.width = widths[s];
+    pwBar.className = '';
+    pwBar.classList.add(s<=1 ? 'pw-w1' : (s===2 ? 'pw-w2' : 'pw-w3'));
+    pwMsg.textContent = s < 3 ? 'Usa mayúsculas, minúsculas, número y símbolo.' : 'Contraseña segura.';
+  }
+
+  // UI toggles
+  function togglePlanExtras(){
+    const v = document.querySelector('input[name="plan"]:checked').value;
+    teamSeatsWrap.classList.toggle('hidden', v !== 'Team');
+    const pro = isProSelected();
+    nifWrap.classList.toggle('hidden', !pro);
+    nifInput.required = pro;
+  }
+
+  planRadios.forEach(r => r.addEventListener('change', togglePlanExtras));
+  togglePlanExtras();
+  sector.addEventListener('change', () => {
+    const isOther = sector.value === 'Otro';
+    sectorOtherWrap.classList.toggle('hidden', !isOther);
+    sectorOther.required = isOther;
+  });
+  pwInput.addEventListener('input', renderPwMeter);
+  renderPwMeter();
+
+  function showError(msg){
+    alertBox.textContent = msg;
+    alertBox.classList.remove('hidden');
+    alertBox.classList.remove('ok');
+    alertBox.classList.add('err');
+  }
+  function showOk(msg){
+    alertBox.textContent = msg;
+    alertBox.classList.remove('hidden');
+    alertBox.classList.remove('err');
+    alertBox.classList.add('ok');
+  }
+
+  // Modal
+  function openProModal(){ modalBackdrop.style.display='block'; proModal.style.display='flex'; }
+  function closeProModal(){ modalBackdrop.style.display='none'; proModal.style.display='none'; }
+  modalBackdrop.addEventListener('click', closeProModal);
+  modalCancel.addEventListener('click', closeProModal);
+
+  // Submit
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    alertBox.classList.add('hidden');
+
+    // HTML5
+    if (!form.checkValidity()){
+      form.reportValidity();
+      return;
+    }
+
+    // Extra validations
+    const zip = document.getElementById('zip').value.trim();
+    if (!validatePostalCodeES(zip)){
+      showError('Código postal inválido para España (debe ser 01xxx–52xxx).');
+      return;
+    }
+    if (isProSelected()){
+      const nifv = nifInput.value.trim();
+      if (!validateSpanishNifNie(nifv)){
+        showError('NIF/DNI/NIE inválido. Revisa el formato y la letra de control.');
+        return;
+      }
+    }
+
+    // Build payload
+    const payload = {
+      plan: planValue(),                                    // Trial | Solo | Team_n
+      email: document.getElementById('email').value.trim(),
+      name: document.getElementById('name').value.trim(),
+      surname1: document.getElementById('surname1').value.trim(),
+      surname2: document.getElementById('surname2').value.trim(),
+      password: document.getElementById('password').value,
+      NIF: (isProSelected() ? document.getElementById('nif').value.trim() : ''), // opcional si Trial
+      tlf: document.getElementById('phone').value.trim(),
+      org: document.getElementById('company').value.trim(),
+      location: `${document.getElementById('country').value}, ${document.getElementById('region').value}${zip ? ', '+zip : ''}`,
+      Sector: (sector.value === 'Otro' ? sectorOther.value.trim() : sector.value)
+    };
+
+    // Call API
+    try{
+      const res = await fetch('/v1/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      // Handle statuses
+      if (res.status === 201){
+        showOk('Cuenta creada correctamente.');
+        // Si es PRO, mostrar aviso de documentación
+        if (isProSelected()) { openProModal(); }
+        else { window.location.href = './login.html'; }
+        return;
+      }
+      if (res.status === 409){ showError('Ya existe una cuenta con ese email.'); return; }
+      if (res.status === 422){ 
+        const data = await res.json().catch(()=> ({}));
+        showError(data?.message || 'Datos inválidos. Revisa los campos.'); 
+        return; 
+      }
+      if (res.status === 429){ showError('Demasiadas solicitudes. Inténtalo más tarde.'); return; }
+      if (res.status === 403){ showError('No tienes permisos para este plan actualmente.'); return; }
+      if (res.status === 500){ showError('Error del servidor. Inténtalo de nuevo.'); return; }
+
+      // Fallback para otros códigos esperados en tu contrato
+      if (res.status === 200 || res.status === 204 || res.status === 401){
+        const data = await res.json().catch(()=> ({}));
+        showError(data?.message || `Estado inesperado: ${res.status}`);
+        return;
+      }
+
+      showError(`Respuesta no controlada: ${res.status}`);
+
+    } catch (err){
+      showError('No se pudo conectar con el servidor.');
+      console.error(err);
+    }
+  });
+</script>
+</body>
+</html>
