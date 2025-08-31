@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Administración · FixHub</title>
+  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
+</head>
+<body>
+<header class="site-header">
+  <div class="logo">FixHub</div>
+  <nav>
+    <ul>
+      <li><a href="./dashboard.html">Dashboard</a></li>
+      <li><a href="./settings.html">Configuración</a></li>
+      <li><a href="./reports.html">Informes</a></li>
+      <li><a href="./team.html">Equipo</a></li>
+      <li><a href="./admin.html" class="active">Administración</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="grid" style="grid-template-columns: 2fr 1fr;">
+  <section class="card">
+    <h3>Suscripción y facturación</h3>
+    <div class="grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="wire" style="padding:12px;">
+        <p class="muted">Plan actual, asientos, método de pago, próximas renovaciones.</p>
+        <button class="btn secondary">Gestionar suscripción</button>
+      </div>
+      <div class="wire" style="padding:12px;">
+        <p class="muted">Histórico de facturas</p>
+        <button class="btn secondary">Descargar últimas facturas</button>
+      </div>
+    </div>
+  </section>
+
+  <aside class="aside-card">
+    <h3>Integraciones</h3>
+    <ul style="list-style:none; padding-left:0; display:grid; gap:10px;">
+      <li class="wire" style="padding:10px;">Google Calendar</li>
+      <li class="wire" style="padding:10px;">Fiskaly SIGN ES</li>
+      <li class="wire" style="padding:10px;">WhatsApp / Email</li>
+    </ul>
+  </aside>
+
+  <section class="card">
+    <h3>Exportaciones</h3>
+    <div class="toolbar">
+      <select class="input"><option>CSV</option><option>XML</option></select>
+      <select class="input"><option>Trabajos</option><option>Facturas</option><option>Clientes</option></select>
+      <button class="btn secondary">Exportar</button>
+    </div>
+  </section>
+
+  <section class="card wire">
+    <h3>Logs y auditoría</h3>
+    <p class="muted">Acciones de usuarios, cambios de plan, descargas, etc.</p>
+  </section>
+
+  <section class="card wire">
+    <h3>Privacidad / GDPR</h3>
+    <button class="btn secondary">Descargar mis datos</button>
+    <button class="btn secondary">Solicitar borrado</button>
+  </section>
+</main>
+
+<footer>
+  © 2025 Fixhub. Proyecto de OPOTEK. Todos los derechos reservados. |
+  <a href="./condiciones.html">Términos de servicio</a> |
+  <a href="./privacy.html">Política de privacidad</a>
+</footer>
+</body>
+</html>

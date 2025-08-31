@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Configuración · FixHub</title>
+  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
+</head>
+<body>
+<header class="site-header">
+  <div class="logo">FixHub</div>
+  <nav>
+    <ul>
+      <li><a href="./dashboard.html">Dashboard</a></li>
+      <li><a href="./settings.html" class="active">Configuración</a></li>
+      <li><a href="./reports.html">Informes</a></li>
+      <li><a href="./team.html">Equipo</a></li>
+      <li><a href="./admin.html">Administración</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="layout">
+  <aside class="sidebar">
+    <nav class="aside-card">
+      <strong>Configuración</strong>
+      <ul style="list-style:none; padding-left:0; margin-top:10px; display:grid; gap:8px;">
+        <li><a href="#ia">IA y presets</a></li>
+        <li><a href="#tarifas">Tarifas y márgenes</a></li>
+        <li><a href="#proveedor">Proveedor por defecto</a></li>
+        <li><a href="#prefijos">Prefijos de documentos</a></li>
+        <li><a href="#fiscal">Datos fiscales</a></li>
+        <li><a href="#branding">Branding</a></li>
+        <li><a href="#email">Modelo de email</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <section class="grid">
+    <article id="ia" class="card">
+      <h3>IA y presets</h3>
+      <p class="muted">Sube mínimo 3 presupuestos previos para entrenar la IA.</p>
+      <div class="wire" style="padding:12px;">
+        <input type="file" multiple>
+        <div class="hint">0/3 subidos</div>
+        <button class="btn secondary" disabled>Entrenar IA</button>
+      </div>
+    </article>
+
+    <article id="tarifas" class="card">
+      <h3>Tarifas y márgenes</h3>
+      <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+        <label>€/hora <input class="input" type="number" placeholder="45"></label>
+        <label>Markup materiales (%) <input class="input" type="number" placeholder="20"></label>
+        <label>IVA (%) <input class="input" type="number" placeholder="21"></label>
+      </div>
+    </article>
+
+    <article id="proveedor" class="card">
+      <h3>Proveedor de materiales por defecto</h3>
+      <select class="input" style="max-width:320px;">
+        <option>Bricomart</option>
+        <option>Leroy Merlin</option>
+        <option>Amazon Business</option>
+        <option>Otro (manual)</option>
+      </select>
+    </article>
+
+    <article id="prefijos" class="card">
+      <h3>Prefijos de documentos</h3>
+      <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+        <label>Presupuestos <input class="input" placeholder="PRES-2025-"/></label>
+        <label>Facturas <input class="input" placeholder="FACT-"/></label>
+        <label>Partes <input class="input" placeholder="PAR-"/></label>
+      </div>
+      <p class="hint">Siguiente número se calculará automáticamente.</p>
+    </article>
+
+    <article id="fiscal" class="card">
+      <h3>Datos fiscales</h3>
+      <div class="grid" style="grid-template-columns: repeat(2, 1fr);">
+        <label>Nombre fiscal <input class="input" /></label>
+        <label>NIF/CIF <input class="input" /></label>
+        <label>Dirección <input class="input" /></label>
+        <label>Ciudad / CP <input class="input" /></label>
+      </div>
+    </article>
+
+    <article id="branding" class="card">
+      <h3>Branding de documentos</h3>
+      <div class="grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="wire" style="padding:12px;">
+          <label>Logo <input type="file" /></label>
+        </div>
+        <div>
+          <label>Modelo de factura</label>
+          <select class="input">
+            <option>Modelo A</option><option>Modelo B</option>
+          </select>
+          <label>Modelo de presupuesto</label>
+          <select class="input">
+            <option>Modelo A</option><option>Modelo B</option>
+          </select>
+        </div>
+      </div>
+    </article>
+
+    <article id="email" class="card">
+      <h3>Modelo de email</h3>
+      <div class="wire" style="padding:12px; min-height:120px;">
+        <p class="muted">Editor de plantilla (asunto, cuerpo, variables: {cliente}, {importe}, {enlace}).</p>
+      </div>
+    </article>
+  </section>
+</main>
+
+<footer>
+  © 2025 Fixhub. Proyecto de OPOTEK. Todos los derechos reservados. |
+  <a href="./condiciones.html">Términos de servicio</a> |
+  <a href="./privacy.html">Política de privacidad</a>
+</footer>
+</body>
+</html>

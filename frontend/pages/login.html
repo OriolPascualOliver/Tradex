@@ -277,7 +277,7 @@
       forgotMsg.textContent = '';
 
       try {
-        const res = await fetch('/v1/auth/forgotpasword', {
+        const res = await fetch('/v1/auth/forgotpassword', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, device: getDeviceId() })

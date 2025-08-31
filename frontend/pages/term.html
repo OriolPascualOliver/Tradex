@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Equipo · FixHub</title>
+  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
+</head>
+<body>
+<header class="site-header">
+  <div class="logo">FixHub</div>
+  <nav>
+    <ul>
+      <li><a href="./dashboard.html">Dashboard</a></li>
+      <li><a href="./settings.html">Configuración</a></li>
+      <li><a href="./reports.html">Informes</a></li>
+      <li><a href="./team.html" class="active">Equipo</a></li>
+      <li><a href="./admin.html">Administración</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="layout">
+  <aside class="sidebar">
+    <div class="aside-card">
+      <strong>Plan</strong>
+      <p class="muted">Solo / Team_n</p>
+      <div class="upgrade">
+        <p><strong>¿Necesitas más plazas?</strong></p>
+        <button class="btn secondary" id="btnUpgrade">Aumentar plazas</button>
+      </div>
+    </div>
+  </aside>
+
+  <section class="grid">
+    <article class="card">
+      <h3>Mi equipo</h3>
+      <div class="toolbar">
+        <button class="btn" id="btnAdd">Añadir trabajador</button>
+      </div>
+      <table class="table" style="margin-top: var(--s3);">
+        <thead><tr><th>Usuario</th><th>Categoría</th><th>Rol</th><th>Estado</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>—</td><td>—</td><td>—</td><td>—</td><td><a class="link" href="#">Editar</a></td></tr>
+        </tbody>
+      </table>
+    </article>
+
+    <article class="card wire">
+      <h3>Permisos</h3>
+      <p class="muted">Definir quién puede editar presupuestos, emitir facturas, cerrar trabajos…</p>
+    </article>
+  </section>
+
+  <!-- Modal: añadir trabajador -->
+  <dialog id="modalAdd" style="border:none; border-radius:14px; padding:0; max-width:520px; width:100%;">
+    <div class="card" style="margin:0;">
+      <h3>Añadir trabajador</h3>
+      <div class="grid" style="grid-template-columns:1fr 1fr;">
+        <label>Usuario <input class="input" placeholder="email o usuario"/></label>
+        <label>Contraseña <input class="input" type="password"/></label>
+        <label>Categoría
+          <select class="input">
+            <option>Electricista</option><option>Fontanero</option><option>Climatización</option>
+          </select>
+        </label>
+        <label>Rol
+          <select class="input">
+            <option>Técnico</option><option>Supervisor</option><option>Administrador</option>
+          </select>
+        </label>
+      </div>
+      <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s4);">
+        <button class="btn secondary" onclick="document.getElementById('modalAdd').close()">Cancelar</button>
+        <button class="btn">Guardar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal: upsell/confirmación -->
+  <dialog id="modalUpgrade" style="border:none; border-radius:14px; padding:0; max-width:520px; width:100%;">
+    <div class="card" style="margin:0;">
+      <h3>Ajustar plazas</h3>
+      <p class="muted">Añadir +1 plaza incrementará tu coste a <strong>X €/mes</strong>. ¿Quieres continuar?</p>
+      <div class="toolbar" style="justify-content:flex-end;">
+        <button class="btn secondary" onclick="document.getElementById('modalUpgrade').close()">Cancelar</button>
+        <button class="btn">Confirmar</button>
+      </div>
+    </div>
+  </dialog>
+</main>
+
+<footer>
+  © 2025 Fixhub. Proyecto de OPOTEK. Todos los derechos reservados. |
+  <a href="./condiciones.html">Términos de servicio</a> |
+  <a href="./privacy.html">Política de privacidad</a>
+</footer>
+
+<script>
+  const btnAdd = document.getElementById('btnAdd');
+  const btnUpgrade = document.getElementById('btnUpgrade');
+  btnAdd?.addEventListener('click', () => document.getElementById('modalAdd').showModal());
+  btnUpgrade?.addEventListener('click', () => document.getElementById('modalUpgrade').showModal());
+</script>
+</body>
+</html>

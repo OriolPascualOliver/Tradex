@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard · FixHub</title>
+  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
+</head>
+<body>
+<header class="site-header">
+  <div class="logo">FixHub</div>
+  <nav>
+    <ul>
+      <li><a href="./dashboard.html" class="active">Dashboard</a></li>
+      <li><a href="./settings.html">Configuración</a></li>
+      <li><a href="./reports.html">Informes</a></li>
+      <li><a href="./team.html">Equipo</a></li>
+      <li><a href="./admin.html">Administración</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <h2>Dashboard</h2>
+
+  <section class="kpis">
+    <div class="kpi">
+      <div class="title">Facturación (mes)</div>
+      <div class="value">— €</div>
+    </div>
+    <div class="kpi">
+      <div class="title">Trabajos hoy</div>
+      <div class="value">—</div>
+    </div>
+    <div class="kpi">
+      <div class="title">Tiempo real vs. presup.</div>
+      <div class="value">—%</div>
+    </div>
+    <div class="kpi">
+      <div class="title">Valoración media</div>
+      <div class="value">— ★</div>
+    </div>
+  </section>
+
+  <section class="grid" style="grid-template-columns: 2fr 1fr;">
+    <div class="card wire">
+      <h3>Evolución de facturación</h3>
+      <div style="height:260px;"></div>
+    </div>
+    <div class="card wire">
+      <h3>Trabajos por empleado</h3>
+      <div style="height:260px;"></div>
+    </div>
+  </section>
+
+  <section class="card wire" style="margin-top: var(--s5);">
+    <h3>Tiempo estimado vs. real (últimos trabajos)</h3>
+    <table class="table">
+      <thead><tr><th>Trabajo</th><th>Empleado</th><th>Estimado</th><th>Real</th><th>Δ</th></tr></thead>
+      <tbody><tr><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody>
+    </table>
+  </section>
+</main>
+
+<footer>
+  © 2025 Fixhub. Proyecto de OPOTEK. Todos los derechos reservados. |
+  <a href="./condiciones.html">Términos de servicio</a> |
+  <a href="./privacy.html">Política de privacidad</a>
+</footer>
+</body>
+</html>

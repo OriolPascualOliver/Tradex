@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tareas · FixHub</title>
+  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+<header class="site-header">
+  <div class="logo">FixHub</div>
+  <nav>
+    <ul>
+      <li><a href="./pro.html">Volver</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="grid" style="max-width: 980px;">
+  <section class="card">
+    <h3>Tareas</h3>
+
+    <form id="taskForm" class="toolbar" style="margin-top: .5rem;">
+      <input id="taskTitle" class="input" placeholder="Nueva tarea…" required/>
+      <label class="input-inline" title="Urgente">
+        <input id="taskUrgent" type="checkbox"/>
+        <span>Urgente</span>
+      </label>
+      <button class="btn" type="submit" style="width:auto;">Añadir</button>
+    </form>
+
+    <div id="tasksBox" style="margin-top: var(--s4);">
+      <!-- rows injected -->
+    </div>
+  </section>
+</main>
+
+<footer>
+  © 2025 Fixhub. Proyecto de OPOTEK. Todos los derechos reservados. |
+  <a href="./condiciones.html">Términos de servicio</a> |
+  <a href="./privacy.html">Política de privacidad</a>
+</footer>
+
+<script>
+  const box = document.getElementById('tasksBox');
+  const form = document.getElementById('taskForm');
+  const title = document.getElementById('taskTitle');
+  const urgent = document.getElementById('taskUrgent');
+
+  async function loadTasks(){
+    const res = await fetch('/v1/tasks');
+    const data = await res.json().catch(()=>({}));
+    const items = Array.isArray(data?.items) ? data.items : [];
+    box.innerHTML = '';
+    if (!items.length) {
+      box.innerHTML = '<p class="muted">No hay tareas.</p>';
+      return;
+    }
+    items.forEach(t => {
+      const row = document.createElement('div');
+      row.className = 'job-pill';
+      row.style.marginBottom = '.5rem';
+      row.innerHTML = `
+        <label class="input-inline" style="gap:.6rem;">
+          <input type="checkbox" ${t.done ? 'checked' : ''} data-id="${t.id}" class="chk">
+          <span ${t.done ? 'style="text-decoration:line-through; opacity:.7;"' : ''}>${t.title}</span>
+        </label>
+        <div style="display:flex; gap:.5rem; align-items:center;">
+          ${t.urgent ? '<span class="pill" title="Urgente">⚠</span>' : ''}
+          <button class="btn secondary del" data-id="${t.id}" style="padding:.45rem .7rem;">Eliminar</button>
+        </div>
+      `;
+      box.appendChild(row);
+    });
+
+    // bind events
+    box.querySelectorAll('.chk').forEach(chk => {
+      chk.addEventListener('change', async (e) => {
+        const id = e.target.dataset.id;
+        await fetch(`/v1/tasks/${id}`, {
+          method: 'PATCH',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ done: e.target.checked })
+        });
+        loadTasks(); // re-render
+      });
+    });
+    box.querySelectorAll('.del').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.id;
+        await fetch(`/v1/tasks/${id}`, { method:'DELETE' });
+        loadTasks();
+      });
+    });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const payload = { title: title.value.trim(), urgent: urgent.checked };
+    if (!payload.title) return;
+    await fetch('/v1/tasks', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    title.value = ''; urgent.checked = false;
+    loadTasks();
+  });
+
+  loadTasks();
+</script>
+</body>
+</html>
