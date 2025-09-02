@@ -65,6 +65,21 @@ function resolveFilePath(pathname) {
   return safeJoin(publicDir, p);
 }
 
+function renderWithIncludes(filePath) {
+  let content = fs.readFileSync(filePath, 'utf8');
+  const includeRegex = /<!--#include\s+"([^"]+)"\s*-->/g;
+  content = content.replace(includeRegex, (m, includeFile) => {
+    const full = safeJoin(pagesDir, includeFile);
+    if (!full) return '';
+    try {
+      return fs.readFileSync(full, 'utf8');
+    } catch {
+      return '';
+    }
+  });
+  return content;
+}
+
 const server = http.createServer(async (req, res) => {
   try {
     const { pathname } = new URL(req.url, 'http://localhost');
@@ -89,6 +104,12 @@ const server = http.createServer(async (req, res) => {
         ? 'public, max-age=31536000, immutable'
         : 'no-cache'
     };
+    if (ext === '.html' && filePath.startsWith(pagesDir)) {
+      const html = renderWithIncludes(filePath);
+      res.writeHead(200, headers);
+      res.end(html);
+      return;
+    }
 
     const stream = fs.createReadStream(filePath);
     stream.on('error', () => {

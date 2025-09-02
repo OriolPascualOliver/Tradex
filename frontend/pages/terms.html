@@ -7,18 +7,7 @@
   <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
 </head>
 <body>
-<header class="site-header">
-  <a class="logo" href="./index.html">FixHub</a>
-  <nav>
-    <ul>
-      <li><a href="./dashboard.html">Dashboard</a></li>
-      <li><a href="./settings.html">Configuración</a></li>
-      <li><a href="./reports.html">Informes</a></li>
-      <li><a href="./team.html" class="active">Equipo</a></li>
-      <li><a href="./admin.html">Administración</a></li>
-    </ul>
-  </nav>
-</header>
+<!--#include "partials/header.html" -->
 
 <main class="layout">
   <aside class="sidebar">
@@ -90,11 +79,7 @@
   </dialog>
 </main>
 
-<footer>
-  © 2025 Fixhub. Proyecto de OPOTEK. Todos los derechos reservados. |
-  <a href="./condiciones.html">Términos de servicio</a> |
-  <a href="./privacy.html">Política de privacidad</a>
-</footer>
+<!--#include "partials/footer.html" -->
 
 <script>
   const btnAdd = document.getElementById('btnAdd');
