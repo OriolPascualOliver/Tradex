@@ -1,7 +1,14 @@
+import os
+import sys
+
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
+
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+os.environ.setdefault("DATABASE_URL", "sqlite://")
 
 from backend.core.database import Base
 import backend.core.database as database
