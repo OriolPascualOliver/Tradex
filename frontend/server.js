@@ -27,6 +27,8 @@ const mimeTypes = {
   '.webp': 'image/webp'
 };
 
+const notFoundPath = path.join(pagesDir, '404.html');
+
 function safeJoin(base, reqPath) {
   // remove any leading slashes and normalize
   const clean = reqPath.replace(/^\/+/, '');
@@ -80,14 +82,27 @@ function renderWithIncludes(filePath) {
   return content;
 }
 
+function send404(res) {
+  try {
+    const html = renderWithIncludes(notFoundPath);
+    res.writeHead(404, {
+      'Content-Type': mimeTypes['.html'],
+      'Cache-Control': 'no-cache'
+    });
+    res.end(html);
+  } catch {
+    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('404 Not Found');
+  }
+}
+
 const server = http.createServer(async (req, res) => {
   try {
     const { pathname } = new URL(req.url, 'http://localhost');
     const filePath = resolveFilePath(pathname);
 
     if (!filePath) {
-      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-      res.end('404 Not Found');
+      send404(res);
       return;
     }
 
@@ -120,8 +135,7 @@ const server = http.createServer(async (req, res) => {
     stream.pipe(res);
   } catch (e) {
     if (e.code === 'ENOENT') {
-      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-      res.end('404 Not Found');
+      send404(res);
     } else {
       res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
       res.end('500 Server Error');
