@@ -42,4 +42,40 @@
 
     <!--#include "partials/footer.html" -->
 </body>
+<script src="/js/apiClient.js"></script>
+<script>
+  const form = document.querySelector('form');
+  const status = document.createElement('p');
+  status.id = 'formStatus';
+  form.appendChild(status);
+
+  function ensureDeviceId(){
+    if (!localStorage.getItem('deviceId')){
+      const newId = self.crypto?.randomUUID ? self.crypto.randomUUID() : Math.random().toString(36).slice(2);
+      localStorage.setItem('deviceId', newId);
+    }
+    return localStorage.getItem('deviceId');
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    status.textContent = '';
+    const deviceId = ensureDeviceId();
+    const data = {
+      name: document.getElementById('name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      message: document.getElementById('msg').value.trim(),
+      deviceId
+    };
+    try {
+      await apiClient.post('contact', data);
+      status.style.color = 'green';
+      status.textContent = 'Mensaje enviado correctamente.';
+      form.reset();
+    } catch (err) {
+      status.style.color = 'red';
+      status.textContent = err.message || 'No se pudo enviar el mensaje.';
+    }
+  });
+</script>
 </html>
