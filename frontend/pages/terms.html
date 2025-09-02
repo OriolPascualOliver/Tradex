@@ -3,89 +3,93 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Equipo · FixHub</title>
+  <title>Términos de servicio · FixHub</title>
   <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
+    <style>
+    .legal-hero {
+      background: linear-gradient(135deg, var(--sky), var(--sky-600));
+      color:#fff; text-align:center; padding: var(--s8) var(--s5) var(--s7);
+    }
+    .legal-hero h1{ font-size:var(--h1); margin:0 0 var(--s3); }
+    .legal-section { max-width:900px; margin: var(--s7) auto; padding:0 var(--s5); display:grid; gap: var(--s5); }
+    .legal-section h2{ font-size:var(--h2); margin-top:var(--s5); }
+    .legal-section p{ color:var(--ink-2); line-height:1.6; }
+  </style>
 </head>
 <body>
-<!--#include "partials/header.html" -->
+  <!--#include "partials/header.html" -->
 
-<main class="layout">
-  <aside class="sidebar">
-    <div class="aside-card">
-      <strong>Plan</strong>
-      <p class="muted">Solo / Team_n</p>
-      <div class="upgrade">
-        <p><strong>¿Necesitas más plazas?</strong></p>
-        <button class="btn secondary" id="btnUpgrade">Aumentar plazas</button>
-      </div>
-    </div>
-  </aside>
+<section class="legal-hero">
+  <h1>Términos de servicio</h1>
+  <p class="lead">Lee atentamente nuestras condiciones antes de usar FixHub.</p>
+</section>
 
-  <section class="grid">
-    <article class="card">
-      <h3>Mi equipo</h3>
-      <div class="toolbar">
-        <button class="btn" id="btnAdd">Añadir trabajador</button>
-      </div>
-      <table class="table" style="margin-top: var(--s3);">
-        <thead><tr><th>Usuario</th><th>Categoría</th><th>Rol</th><th>Estado</th><th></th></tr></thead>
-        <tbody>
-          <tr><td>—</td><td>—</td><td>—</td><td>—</td><td><a class="link" href="#">Editar</a></td></tr>
-        </tbody>
-      </table>
-    </article>
+<main class="legal-section">
+  <h2>1. Introducción</h2>
+  <p>
+    Bienvenido a FixHub. Estos Términos de Servicio regulan el uso de nuestra plataforma 
+    de gestión de trabajos, presupuestos, materiales y facturación. 
+    Al registrarte aceptas cumplir con estas condiciones.
+  </p>
 
-    <article class="card wire">
-      <h3>Permisos</h3>
-      <p class="muted">Definir quién puede editar presupuestos, emitir facturas, cerrar trabajos…</p>
-    </article>
-  </section>
+  <h2>2. Cuentas de usuario</h2>
+  <p>
+    Para utilizar FixHub necesitas crear una cuenta con información veraz y actualizada 
+    (nombre, apellidos, correo electrónico, NIF/NIE en caso de cuenta profesional, etc.).  
+    Eres responsable de la confidencialidad de tus credenciales y de toda la actividad 
+    que se realice desde tu cuenta.
+  </p>
 
-  <!-- Modal: añadir trabajador -->
-  <dialog id="modalAdd" style="border:none; border-radius:14px; padding:0; max-width:520px; width:100%;">
-    <div class="card" style="margin:0;">
-      <h3>Añadir trabajador</h3>
-      <div class="grid" style="grid-template-columns:1fr 1fr;">
-        <label>Usuario <input class="input" placeholder="email o usuario"/></label>
-        <label>Contraseña <input class="input" type="password"/></label>
-        <label>Categoría
-          <select class="input">
-            <option>Electricista</option><option>Fontanero</option><option>Climatización</option>
-          </select>
-        </label>
-        <label>Rol
-          <select class="input">
-            <option>Técnico</option><option>Supervisor</option><option>Administrador</option>
-          </select>
-        </label>
-      </div>
-      <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s4);">
-        <button class="btn secondary" onclick="document.getElementById('modalAdd').close()">Cancelar</button>
-        <button class="btn">Guardar</button>
-      </div>
-    </div>
-  </dialog>
+  <h2>3. Planes y precios</h2>
+  <p>
+    FixHub ofrece planes <strong>Free, Solo y Team</strong>, cada uno con distintas funcionalidades 
+    y número de usuarios. Los precios de suscripción se publican en la página de <a href="./pricing.html" class="link">Precios</a>.  
+    <br><br>
+    Nos reservamos el derecho de actualizar o modificar los precios y condiciones de los planes. 
+    En caso de cambios, se notificará previamente a los usuarios con suscripción activa y podrás 
+    decidir si continúas o cancelas el servicio.
+  </p>
 
-  <!-- Modal: upsell/confirmación -->
-  <dialog id="modalUpgrade" style="border:none; border-radius:14px; padding:0; max-width:520px; width:100%;">
-    <div class="card" style="margin:0;">
-      <h3>Ajustar plazas</h3>
-      <p class="muted">Añadir +1 plaza incrementará tu coste a <strong>X €/mes</strong>. ¿Quieres continuar?</p>
-      <div class="toolbar" style="justify-content:flex-end;">
-        <button class="btn secondary" onclick="document.getElementById('modalUpgrade').close()">Cancelar</button>
-        <button class="btn">Confirmar</button>
-      </div>
-    </div>
-  </dialog>
+  <h2>4. Facturación y datos legales</h2>
+  <p>
+    Al generar facturas electrónicas o manuales en FixHub, el usuario se compromete a proporcionar 
+    información completa, veraz y legal (datos fiscales, NIF/NIE, direcciones, etc.).  
+    FixHub no se responsabiliza de errores derivados de datos incorrectos o incompletos introducidos 
+    por el usuario.
+  </p>
+
+  <h2>5. Pagos y reembolsos</h2>
+  <p>
+    Los pagos se procesan de forma segura a traves de nuestros proveedores autorizados. <br>
+    Los impuestos aplicables se añadirn según la legislación vigente en España. <br>
+    Los pagos con tarjeta se renuevan automáticamente al final de cada período de suscripción,
+    salvo que el usuario cancele con al menos 48 horas de antelación. <br>
+    Una vez abonada la suscripción, <strong>no se ofrecen reembolsos</strong>, salvo que lo exija la ley.
+  </p>
+
+  <h2>6. Propiedad intelectual</h2>
+  <p>
+    Todo el software, diseño, logotipos, marcas y contenidos de FixHub son propiedad de OPOTEK y/o de 
+    sus licenciantes, y están protegidos por la legislación de propiedad intelectual.  
+    El usuario recibe únicamente un derecho de uso limitado, personal y no transferible para el 
+    desarrollo de su actividad profesional dentro de los términos del plan contratado.
+  </p>
+
+  <h2>7. Uso aceptable</h2>
+  <p>
+    No está permitido utilizar FixHub para actividades ilícitas, fraudulentas o que vulneren derechos 
+    de terceros. El incumplimiento de estas condiciones puede dar lugar a la suspensión o cancelación 
+    de la cuenta.
+  </p>
+
+  <h2>8. Contacto</h2>
+  <p>
+    Para cualquier duda sobre estas condiciones, puedes escribirnos a 
+    <a href="mailto:opotek+fixhub@protonmail.com" class="link">opotek+fixhub@protonmail.com</a>.
+  </p>
 </main>
 
-<!--#include "partials/footer.html" -->
 
-<script>
-  const btnAdd = document.getElementById('btnAdd');
-  const btnUpgrade = document.getElementById('btnUpgrade');
-  btnAdd?.addEventListener('click', () => document.getElementById('modalAdd').showModal());
-  btnUpgrade?.addEventListener('click', () => document.getElementById('modalUpgrade').showModal());
-</script>
-</body>
+    <!--#include "partials/footer.html" -->
+  </body>
 </html>
