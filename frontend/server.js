@@ -65,16 +65,18 @@ function resolveFilePath(pathname) {
   return safeJoin(publicDir, p);
 }
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
   try {
     const { pathname } = new URL(req.url, 'http://localhost');
     const filePath = resolveFilePath(pathname);
 
-    if (!filePath || !fs.existsSync(filePath)) {
+    if (!filePath) {
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
       res.end('404 Not Found');
       return;
     }
+
+    await fs.promises.access(filePath);
 
     const ext = path.extname(filePath).toLowerCase();
     const contentType = mimeTypes[ext] || 'application/octet-stream';
@@ -88,18 +90,21 @@ const server = http.createServer((req, res) => {
         : 'no-cache'
     };
 
-    fs.readFile(filePath, (err, content) => {
-      if (err) {
-        res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
-        res.end('500 Server Error');
-        return;
-      }
-      res.writeHead(200, headers);
-      res.end(content);
+    const stream = fs.createReadStream(filePath);
+    stream.on('error', () => {
+      res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('500 Server Error');
     });
+    res.writeHead(200, headers);
+    stream.pipe(res);
   } catch (e) {
-    res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
-    res.end('500 Server Error');
+    if (e.code === 'ENOENT') {
+      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('404 Not Found');
+    } else {
+      res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('500 Server Error');
+    }
   }
 });
 
