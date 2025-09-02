@@ -125,6 +125,11 @@
       <p id="pwMsg" class="hint">Usa mayúsculas, minúsculas, números y símbolos.</p>
     </div>
 
+    <div>
+      <label for="password_confirm">Repetir contraseña *</label>
+      <input id="password_confirm" name="password_confirm" type="password" required minlength="8" placeholder="Repite la contraseña"/>
+    </div>
+
     <!-- EMPRESA -->
     <div class="form-row">
       <div>
@@ -379,20 +384,32 @@
       }
     }
 
+    const pw = document.getElementById('password').value;
+    const pw2 = document.getElementById('password_confirm').value;
+    if (pw !== pw2){
+      showError('Las contraseñas no coinciden.');
+      return;
+    }
+
     // Build payload
+    const planVal = document.querySelector('input[name="plan"]:checked').value;
     const payload = {
-      plan: (document.querySelector('input[name="plan"]:checked').value === 'Team')
-        ? `Team_${teamSeats.value}` : document.querySelector('input[name="plan"]:checked').value,
+      license: planVal,
+      team_members: planVal === 'Team' ? parseInt(teamSeats.value, 10) : 1,
       email: document.getElementById('email').value.trim(),
-      name: document.getElementById('name').value.trim(),
+      telephone: document.getElementById('phone').value.trim(),
+      first_name: document.getElementById('name').value.trim(),
       surname1: document.getElementById('surname1').value.trim(),
       surname2: document.getElementById('surname2').value.trim(),
-      password: document.getElementById('password').value,
-      NIF: (isProSelected() ? document.getElementById('nif').value.trim() : ''),
-      tlf: document.getElementById('phone').value.trim(),
-      org: document.getElementById('company').value.trim(),
-      location: `${document.getElementById('country').value}, ${document.getElementById('region').value}${zip ? ', '+zip : ''}`,
-      Sector: (sector.value === 'Otro' ? sectorOther.value.trim() : sector.value)
+      nif: (isProSelected() ? document.getElementById('nif').value.trim() : ''),
+      password: pw,
+      confirm_password: pw2,
+      company_name: document.getElementById('company').value.trim(),
+      sector: (sector.value === 'Otro' ? sectorOther.value.trim() : sector.value),
+      country: document.getElementById('country').value,
+      state: document.getElementById('region').value,
+      zip_code: zip,
+      terms_accepted: terms.checked,
     };
 
     try{
