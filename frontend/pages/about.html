@@ -1,42 +1,226 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FixHub </title>
-    <link rel="stylesheet" href="/css/style.css?v={cachebust}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <meta name="description" content="Unifica presupuestos, partes, materiales y facturas. Planifica rutas y coordina a todo tu equipo de oficio con FixHub."/>
-  </head>
-  <body>
-    <header class="site-header">
-      <a class="logo" href="./index.html">FixHub</a>
-      <nav>
-        <ul>
-          <li><a href="/"> Inicio</a></li>
-          <li><a href="./condiciones.html">Condiciones</a></li>
-          <li><a href="./pricing.html">Precios y Servicios</a></li>
-          <li><a href="./contact.html">Contacto</a></li>
-          <li><a href="./login.html">Area PRO</a></li>
-        </ul>
-      </nav>
-    </header>
-    </header>
-    <main>
-      <h2>Sobre Nosotros</h2>
-      <h4>FixHub es una solución creada para profesionales del sector de las 
-        reparaciones y el mantenimiento. Nuestro objetivo es simplificar la gestión diaria de técnicos 
-        y empresas, permitiéndote centrarte en lo que realmente importa y aporta valor a la sociedad: 
-        ofrecer un servicio excepcional a tus clientes. <br>
-      Actualmente, FixHub está en construcción y se ofrece de forma gratuita para que puedas probar todas 
-      sus funcionalidades sin compromiso. Es por eso que agradecemos cualquier sugerencia o feedback que nos 
-      ayude a mejorar y adaptar la herramienta a tus necesidades reales. Puedes escribirnos a "opotek+fixhub@protonmail.com". <br>
-      </h4>
-    </main>
-    <footer>
-      © 2025 Fixhub. Proyecto de OPOTEK. Todos los derechos reservados. | 
-      <a href="./condiciones.html">Términos de servicio</a> |
-      <a href="./privacy.html">Política de privacidad</a>
-    </footer>
-  </body>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sobre Nosotros · FixHub</title>
+  <link rel="stylesheet" href="/css/style.css?v=2025-09-02-03"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <meta name="description" content="Conoce FixHub: de técnicos para técnicos. Nuestra misión es liberar tu tiempo automatizando presupuestos, partes, materiales y facturas."/>
+  <style>
+    .about-hero{
+      padding: var(--s8) var(--s5) var(--s7);
+      text-align:center; color:#fff;
+      background: linear-gradient(135deg, #16233a 0%, #0d1b2a 48%, #162a4e 100%);
+      position: relative; overflow: hidden;
+    }
+    .about-hero::before{
+      content:""; position:absolute; inset:0;
+      background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),
+                       linear-gradient(90deg, rgba(255,255,255,.06) 1px,transparent 1px);
+      background-size: 28px 28px; opacity:.35; pointer-events:none;
+    }
+    .about-hero h1{ font-size: var(--h1); margin:0 0 var(--s3); }
+    .about-hero p{ max-width: 820px; margin:0 auto; font-size: var(--lead); opacity:.95; }
+
+    .about-grid{ max-width:1100px; margin: var(--s7) auto; padding: 0 var(--s5); display:grid; gap: var(--s5); }
+    .about-2col{ display:grid; grid-template-columns: 1.2fr .8fr; gap: var(--s5); }
+    @media (max-width: 980px){ .about-2col{ grid-template-columns: 1fr; } }
+
+    .card { background:var(--paper); border:1px solid var(--border); border-radius: var(--radius); padding: var(--s6); }
+    .card h3{ margin-top:0; }
+
+    .list-check{ display:grid; gap:.6rem; margin-top: var(--s3); }
+    .list-check li{ list-style:none; display:flex; gap:.6rem; align-items:flex-start; }
+    .list-check i{ color: var(--sky); margin-top: .15rem; }
+
+    .stat-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap: var(--s4); }
+    @media (max-width: 780px){ .stat-grid{ grid-template-columns: 1fr; } }
+    .stat { text-align:center; background:var(--paper); border:1px solid var(--border); border-radius: var(--radius); padding: var(--s5); }
+    .stat .num{ font-weight:800; font-size:1.8rem; }
+    .stat .muted{ display:block; margin-top:.35rem; }
+
+    .cta-row{ display:flex; gap: var(--s3); flex-wrap:wrap; }
+    .divider{ height:1px; background:var(--border); margin: var(--s5) 0; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="./index.html">FixHub</a>
+    <nav>
+      <ul>
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./pricing.html">Precios y Servicios</a></li>
+        <li><a href="./features.html">Funciones</a></li>
+        <li><a href="./contact.html">Contacto</a></li>
+        <li><a href="./login.html">Área PRO</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="about-hero">
+    <h1>De técnicos para técnicos</h1>
+    <p>Sabemos lo que es acabar un día de trabajo y tener que pelear con presupuestos, facturas y calendario. 
+      Por eso hicimos FixHub: tu oficina en el bolsillo para recuperar horas cada semana.</p>
+  </section>
+
+  <main>
+    <section class="about-grid">
+      <!-- Historia / Propósito -->
+      <article class="card">
+        <h3>Por qué existe FixHub</h3>
+        <p class="muted">
+          En el sector de reparaciones y mantenimiento, muchos profesionales pierden entre <strong>4 y 10 horas a la semana</strong> 
+          en tareas administrativas. Con FixHub automatizas presupuestos, partes, materiales y facturación para 
+          ganar hasta <strong>520 horas al año</strong> (¡6 semanas!). Menos papeleo, más trabajo real y más vida.
+        </p>
+        <div class="list-check">
+          <li><i class="fa-regular fa-circle-check"></i> Presupuestos en minutos, con IA y tus propios modelos.</li>
+          <li><i class="fa-regular fa-circle-check"></i> Facturación integrada y compatible con Verifactu.</li>
+          <li><i class="fa-regular fa-circle-check"></i> Calendario interno + Google Calendar, partes con fotos y firmas.</li>
+          <li><i class="fa-regular fa-circle-check"></i> Equipo y permisos cuando creces de autónomo a empresa.</li>
+        </div>
+      </article>
+
+      <!-- Quiénes somos + valores -->
+      <div class="about-2col">
+        <article class="card">
+          <h3>Quiénes somos</h3>
+          <p class="muted">
+            FixHub es un proyecto de <strong>OPOTEK</strong>. Empezamos tirando cable, haciendo regatas y montando cuadros en 2017.
+            Conocemos el oficio y construimos software con mentalidad de taller: robusto, sencillo y útil.
+          </p>
+          <div class="divider"></div>
+          <h4 style="margin:0 0 .5rem;">Nuestros principios</h4>
+          <div class="list-check">
+            <li><i class="fa-solid fa-screwdriver-wrench"></i> <strong>Utilidad primero:</strong> menos clics, más trabajo real.</li>
+            <li><i class="fa-solid fa-lock"></i> <strong>Privacidad:</strong> tus datos son tuyos (descarga/borrado bajo demanda).</li>
+            <li><i class="fa-solid fa-bolt"></i> <strong>Velocidad:</strong> todo rápido en móvil y PC, incluso te puede acompañar en las visitas para salir con el presupuesto hecho.</li>
+
+          </div>
+        </article>
+
+        <!-- Cifras / beneficios rápidos -->
+        <aside class="stat-grid">
+          <div class="stat">
+            <div class="num">−70%</div>
+            <span class="muted">Tiempo preparando presupuestos</span>
+          </div>
+          <div class="stat">
+            <div class="num">+30%</div>
+            <span class="muted">Trabajos cerrados (respuestas rápidas)</span>
+          </div>
+          <div class="stat">
+            <div class="num">6&nbsp;sem.</div>
+            <span class="muted">Horas recuperadas/año</span>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Cómo funciona -->
+      <article class="card">
+        <h3>Cómo funciona</h3>
+        <div class="list-check">
+          <li><i class="fa-solid fa-file-lines"></i> Sube 3 presupuestos previos para entrenar la IA con tu estilo.</li>
+          <li><i class="fa-solid fa-calendar-days"></i> Conecta Google Calendar o usa el calendario interno.</li>
+          <li><i class="fa-solid fa-credit-card"></i> Activa SafePay (opcional) para cobrar al instante.</li>
+          <li><i class="fa-solid fa-users-gear"></i> ¿Equipo? Añade trabajadores y define permisos en minutos.</li>
+        </div>
+        <div class="cta-row" style="margin-top: var(--s4);">
+          <a class="btn primary" href="./pricing.html">Probar gratis 2 meses</a>
+          <a class="btn secondary" href="./features.html">Ver funcionalidades</a>
+        </div>
+      </article>
+
+      <!-- Contacto / Feedback -->
+      <article class="card" id="contacto">
+        <h3>Cuéntanos tu caso</h3>
+        <p class="muted">Estamos en construcción y escuchamos todo el feedback. Resolvemos dudas y te guiamos en la puesta en marcha.</p>
+        <form id="aboutForm" novalidate>
+          <div class="grid" style="grid-template-columns: 1fr 1fr;">
+            <label>Nombre
+              <input id="name" class="input" placeholder="Tu nombre" required/>
+            </label>
+            <label>Email
+              <input id="email" class="input" type="email" placeholder="tu@empresa.com" required/>
+            </label>
+          </div>
+
+          <label>Motivo
+            <select id="reason" class="input" required>
+              <option value="">Selecciona…</option>
+              <option>Quiero una demo</option>
+              <option>Dudas de facturación</option>
+              <option>Integraciones</option>
+              <option>Otro</option>
+            </select>
+          </label>
+
+          <label>Mensaje
+            <textarea id="message" class="input" placeholder="Cuéntanos qué necesitas…" required></textarea>
+          </label>
+
+          <!-- Honeypot -->
+          <input type="text" id="website" name="website" class="hidden" autocomplete="off"/>
+
+          <label class="input-inline">
+            <input type="checkbox" id="terms" required/>
+            <span>Acepto las <a href="./condiciones.html" target="_blank" rel="noopener">Condiciones</a> y la <a href="./privacy.html" target="_blank" rel="noopener">Política de privacidad</a>.</span>
+          </label>
+
+          <button class="btn primary" type="submit">Enviar</button>
+          <p id="formMsg" class="muted" style="margin-top:.6rem;"></p>
+        </form>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 Fixhub. Proyecto de OPOTEK. Todos los derechos reservados. |
+    <a href="./condiciones.html">Términos de servicio</a> |
+    <a href="./privacy.html">Política de privacidad</a>
+  </footer>
+
+  <script>
+    // Submit -> POST /v1/contact  (adjust path to your BE)
+    const form = document.getElementById('aboutForm');
+    const msg  = document.getElementById('formMsg');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = '';
+
+      // basic guard + honeypot
+      if ((document.getElementById('website')?.value || '').trim()) return;
+      const payload = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        reason: document.getElementById('reason').value,
+        message: document.getElementById('message').value.trim(),
+        ts: Date.now()
+      };
+      if (!payload.name || !payload.email || !payload.reason || !payload.message || !document.getElementById('terms').checked){
+        msg.textContent = 'Revisa los campos obligatorios.';
+        return;
+      }
+
+      try {
+        const res = await fetch('/v1/contact', {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) {
+          msg.textContent = 'No se pudo enviar. Inténtalo de nuevo más tarde.';
+          return;
+        }
+        form.reset();
+        msg.textContent = '¡Gracias! Te responderemos pronto.';
+      } catch (err) {
+        console.error(err);
+        msg.textContent = 'No se pudo enviar. Inténtalo de nuevo más tarde.';
+      }
+    });
+  </script>
+</body>
 </html>
