@@ -45,8 +45,32 @@
     .price-card h3 { margin:0; font-size: var(--h2); }
     .price { font-weight:800; font-size:2rem; }
     .price small { font-size:.9rem; color:var(--muted); }
-    .features { margin:0; padding-left:1.1rem; text-align:left; }
-    .features li { margin:.4rem 0; color:var(--muted); }
+    .features {
+      margin:0;
+      padding:0;
+      list-style:none;
+      text-align:left;
+    }
+    .features li {
+      margin:.4rem 0;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      gap:.5rem;
+    }
+    .features li::before {
+      content:"\f00c";
+      font-family:"Font Awesome 6 Free";
+      font-weight:900;
+      color:var(--mint);
+    }
+    .features li.unavailable{
+      text-decoration:line-through;
+    }
+    .features li.unavailable::before{
+      content:"\f00d";
+      color:var(--muted);
+    }
     .badge {
       display:inline-block; font-size:.8rem; font-weight:700;
       padding:.35rem .75rem; border-radius:999px;
@@ -93,7 +117,7 @@
         <li>Partes con fotos y firma</li>
         <li>Gestión de materiales</li>
         <li>Pago integrado**</li>
-        <li style="text-decoration: line-through;">Facturación electrónica</li>
+        <li class="unavailable">Facturación electrónica</li>
       </ul>
       <div class="card-cta">
         <a id="freeBtn" class="btn primary" href="./register.html">Empieza gratis</a>
@@ -149,9 +173,12 @@
         <a class="btn primary" href="./register.html">Crear equipo</a>
       </div>
     </article>
-  </section>
-<a href="./features.html"> compara planes</a>
-    
+</section>
+
+  <div class="center" style="margin-top: var(--s5);">
+    <a href="./features.html" class="btn tertiary">Comparar características <i class="fa-solid fa-arrow-right"></i></a>
+  </div>
+
     <p class="foot-note">* IVA no incluido</p>
 </main>
 
