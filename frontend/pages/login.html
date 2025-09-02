@@ -194,13 +194,10 @@
 
     // --------- Device Id
     function getDeviceId(){
-      const k = 'fixhub_device_id';
-      let id = localStorage.getItem(k);
+      let id = localStorage.getItem('deviceId');
       if (!id) {
-        id = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
-        localStorage.setItem(k, id);
+        id = self.crypto?.randomUUID ? self.crypto.randomUUID() : Math.random().toString(36).slice(2);
+        localStorage.setItem('deviceId', id);
       }
       return id;
     }
@@ -222,32 +219,23 @@
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (throttled) return;
-      const username = document.getElementById('email').value.trim();
+      const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
-      if (!username || !password){ showAlert('Introduce usuario y contraseña.'); return; }
+      if (!email || !password){ showAlert('Introduce email y contraseña.'); return; }
 
       throttled = true; submitBtn.disabled = true;
       setTimeout(() => { throttled = false; submitBtn.disabled = false; }, 4000);
 
       try {
-        const res = await fetch('/v1/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password, device: getDeviceId() })
-        });
-
-        if (res.status !== 200) {
-          showAlert(errMsg(res.status), 'Comprueba tus datos e inténtalo de nuevo.');
-          return;
-        }
-        const data = await res.json().catch(()=> ({}));
-        // Guardar lo que devuelva tu backend (tokens/jwt)
+        const deviceId = getDeviceId();
+        const data = await apiClient.post('auth/login', { email, password, deviceId });
+        if (data?.token)  localStorage.setItem('token', data.token);
         if (data?.tokens) localStorage.setItem('tokens', JSON.stringify(data.tokens));
         if (data?.user)   localStorage.setItem('user', JSON.stringify(data.user));
-        window.location.href = '/'; // o /pro.html si ya lo tienes
+        window.location.href = '/';
       } catch (err) {
         console.error(err);
-        showAlert('No se pudo conectar con el servidor.', 'Inténtalo de nuevo más tarde.');
+        showAlert(errMsg(err.status), err.message);
       }
     });
 
