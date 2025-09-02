@@ -5,19 +5,25 @@ client = TestClient(app)
 
 
 def register_user(email: str = "user@example.com", password: str = "secret"):
-    return client.post("/register", json={"email": email, "password": password})
+    return client.post(
+        "/api-v1/auth/register", json={"email": email, "password": password}
+    )
 
 
 def login_user(email: str = "user@example.com", password: str = "secret"):
-    return client.post("/login", json={"email": email, "password": password})
+    return client.post(
+        "/api-v1/auth/login", json={"email": email, "password": password}
+    )
 
 
 def forgot_password(email: str = "user@example.com"):
-    return client.post("/forgotpassword", json={"email": email})
+    return client.post("/api-v1/auth/forgotpassword", json={"email": email})
 
 
 def reset_password(token: str, new_password: str):
-    return client.post("/reset", json={"token": token, "new_password": new_password})
+    return client.post(
+        "/api-v1/auth/reset", json={"token": token, "new_password": new_password}
+    )
 
 
 def test_register_and_login(db_session):

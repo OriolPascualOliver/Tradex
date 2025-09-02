@@ -8,7 +8,7 @@ from api.models.user import User
 from api.schemas import TaskCreate, TaskUpdate, TaskRead
 from core.database import SessionLocal
 
-router = APIRouter(prefix="/v1/tasks", tags=["tasks"])
+router = APIRouter(prefix="/api-v1/tasks", tags=["tasks"])
 
 
 def get_db():
