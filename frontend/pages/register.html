@@ -396,39 +396,21 @@
     };
 
     try{
-      const res = await fetch('/v1/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (res.status === 201){
-        showOk('Cuenta creada correctamente.');
-        if (isProSelected()) { openProModal(); }
-        else { window.location.href = './login.html'; }
-        return;
+      if (!localStorage.getItem('deviceId')) {
+        const newId = self.crypto?.randomUUID ? self.crypto.randomUUID() : Math.random().toString(36).slice(2);
+        localStorage.setItem('deviceId', newId);
       }
-      if (res.status === 409){ showError('Ya existe una cuenta con ese email.'); return; }
-      if (res.status === 422){ 
-        const data = await res.json().catch(()=> ({}));
-        showError(data?.message || 'Datos inválidos. Revisa los campos.'); 
-        return; 
-      }
-      if (res.status === 429){ showError('Demasiadas solicitudes. Inténtalo más tarde.'); return; }
-      if (res.status === 403){ showError('No tienes permisos para este plan actualmente.'); return; }
-      if (res.status === 500){ showError('Error del servidor. Inténtalo de nuevo.'); return; }
-
-      // Otros códigos previstos en tu contrato de API
-      if ([200,204,401].includes(res.status)){
-        const data = await res.json().catch(()=> ({}));
-        showError(data?.message || `Estado inesperado: ${res.status}`);
-        return;
-      }
-
-      showError(`Respuesta no controlada: ${res.status}`);
-
+      await apiClient.post('auth/register', payload);
+      showOk('Cuenta creada correctamente.');
+      if (isProSelected()) { openProModal(); }
+      else { window.location.href = './login.html'; }
     } catch (err){
-      showError('No se pudo conectar con el servidor.');
+      if (err.status === 409){ showError('Ya existe una cuenta con ese email.'); return; }
+      if (err.status === 422){ showError(err.body?.message || 'Datos inválidos. Revisa los campos.'); return; }
+      if (err.status === 429){ showError('Demasiadas solicitudes. Inténtalo más tarde.'); return; }
+      if (err.status === 403){ showError('No tienes permisos para este plan actualmente.'); return; }
+      if (err.status === 500){ showError('Error del servidor. Inténtalo de nuevo.'); return; }
+      showError(err.message || 'No se pudo conectar con el servidor.');
       console.error(err);
     }
   });
