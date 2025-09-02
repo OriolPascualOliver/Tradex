@@ -3,8 +3,10 @@ from main import app
 
 client = TestClient(app)
 
+API_PREFIX = "/api-v1"
+
 
 def test_health():
-    response = client.get("/api-v1/health")
+    response = client.get(f"{API_PREFIX}/health")
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
