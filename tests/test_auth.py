@@ -12,10 +12,26 @@ def register_user(
     password: str = "secret",
     device_id: str = "device_register",
 ):
-    return client.post(
-        "/api-v1/auth/register",
-        json={"email": email, "password": password, "device_id": device_id},
-    )
+    payload = {
+        "license": "solo",
+        "team_members": 1,
+        "email": email,
+        "telephone": "123456789",
+        "first_name": "John",
+        "surname1": "Doe",
+        "surname2": "Smith",
+        "nif": "12345678A",
+        "password": password,
+        "confirm_password": password,
+        "company_name": "Acme",
+        "sector": "Tech",
+        "country": "ES",
+        "state": "Madrid",
+        "zip_code": "28001",
+        "terms_accepted": True,
+        "device_id": device_id,
+    }
+    return client.post("/api-v1/auth/register", json=payload)
 
 
 def login_user(
@@ -53,6 +69,9 @@ def test_register_and_login(db_session):
     assert payload["device_id"] == register_device
     user = db_session.query(User).filter(User.email == "user@example.com").first()
     assert user.device_id == register_device
+    assert user.last_login is not None
+    first_login = user.last_login
+    assert user.sign_in_date is None
 
     response = login_user(device_id=login_device)
     assert response.status_code == 200
@@ -61,6 +80,15 @@ def test_register_and_login(db_session):
     assert payload["device_id"] == login_device
     user = db_session.query(User).filter(User.email == "user@example.com").first()
     assert user.device_id == login_device
+    assert user.last_login > first_login
+    assert user.sign_in_date is not None
+    first_sign_in = user.sign_in_date
+
+    # second login should not change sign_in_date
+    response = login_user(device_id="device_login2")
+    assert response.status_code == 200
+    user = db_session.query(User).filter(User.email == "user@example.com").first()
+    assert user.sign_in_date == first_sign_in
 
 
 def test_forgot_and_reset(db_session):
@@ -88,6 +116,7 @@ def test_forgot_and_reset(db_session):
     assert payload["device_id"] == new_login_device
     user = db_session.query(User).filter(User.email == "user@example.com").first()
     assert user.device_id == new_login_device
+    assert user.last_login is not None
 
     # old password should fail
     response = login_user(password="secret", device_id="invalid")

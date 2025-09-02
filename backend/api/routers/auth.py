@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from jose import JWTError, jwt
@@ -37,27 +37,77 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
 class UserBase(BaseModel):
     email: EmailStr
     password: str
-    device_id: str
+    device_id: str = Field(..., alias="deviceId")
+
+    model_config = ConfigDict(populate_by_name=True)
 
 
 class ForgotPasswordRequest(BaseModel):
     email: EmailStr
-    device_id: str
+    device_id: str = Field(..., alias="deviceId")
+
+    model_config = ConfigDict(populate_by_name=True)
 
 
 class ResetPasswordRequest(BaseModel):
     token: str
     new_password: str
-    device_id: str
+    device_id: str = Field(..., alias="deviceId")
+
+    model_config = ConfigDict(populate_by_name=True)
+
+
+class RegisterRequest(BaseModel):
+    license: str
+    team_members: int | None = None
+    email: EmailStr
+    telephone: str
+    first_name: str
+    surname1: str
+    surname2: str
+    nif: str | None = None
+    password: str
+    confirm_password: str
+    company_name: str | None = None
+    sector: str
+    country: str
+    state: str
+    zip_code: str | None = None
+    terms_accepted: bool
+    device_id: str = Field(..., alias="deviceId")
+
+    model_config = ConfigDict(populate_by_name=True)
 
 
 @router.post("/register")
-def register(user: UserBase, db: Session = Depends(get_db)):
+def register(user: RegisterRequest, db: Session = Depends(get_db)):
+    if user.password != user.confirm_password:
+        raise HTTPException(status_code=400, detail="Passwords do not match")
+    if not user.terms_accepted:
+        raise HTTPException(status_code=400, detail="Terms must be accepted")
+
     existing = db.query(User).filter(User.email == user.email).first()
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
+
     db_user = User(
-        email=user.email, hashed_password=pwd_context.hash(user.password), device_id=user.device_id
+        email=user.email,
+        hashed_password=pwd_context.hash(user.password),
+        device_id=user.device_id,
+        license=user.license,
+        team_members=user.team_members,
+        telephone=user.telephone,
+        first_name=user.first_name,
+        surname1=user.surname1,
+        surname2=user.surname2,
+        nif=user.nif,
+        company_name=user.company_name,
+        sector=user.sector,
+        country=user.country,
+        state=user.state,
+        zip_code=user.zip_code,
+        terms_accepted=user.terms_accepted,
+        last_login=datetime.utcnow(),
     )
     db.add(db_user)
     db.commit()
@@ -72,6 +122,9 @@ def login(user: UserBase, db: Session = Depends(get_db)):
     if not db_user or not pwd_context.verify(user.password, db_user.hashed_password):
         raise HTTPException(status_code=400, detail="Incorrect email or password")
     db_user.device_id = user.device_id
+    if db_user.sign_in_date is None:
+        db_user.sign_in_date = datetime.utcnow()
+    db_user.last_login = datetime.utcnow()
     db.commit()
     token = create_access_token({"sub": str(db_user.id), "device_id": user.device_id})
     return {"access_token": token}
