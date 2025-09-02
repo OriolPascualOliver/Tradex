@@ -12,7 +12,7 @@
     .card { background: var(--paper); border:1px solid var(--border); border-radius: var(--radius); padding: var(--s5); }
     .kicker { font-weight:800; color: var(--muted); letter-spacing:.2px; }
     .btn.sm { padding:.45rem .7rem; border-radius:10px; font-weight:700; }
-    .btn.gray { background-image: linear-gradient(180deg, #6b7280, #4b5563); }
+    .btn.gray { background-image: linear-gradient(180deg, var(--muted), var(--steel)); }
     .toolbar { display:flex; gap: var(--s3); align-items:center; justify-content:space-between; margin-bottom: var(--s3); flex-wrap:wrap;}
     .table { width:100%; border-collapse: collapse; }
     .table th, .table td { border-bottom:1px solid var(--border); padding:.75rem; text-align:left; }
@@ -65,7 +65,7 @@
         </div>
         <div class="row">
           <button class="btn secondary sm" id="btnAdd"><i class="fa-solid fa-user-plus"></i>&nbsp; Añadir</button>
-          <button class="btn sm" id="btnRefresh"><i class="fa-solid fa-rotate"></i>&nbsp; Actualizar</button>
+          <button class="btn gray sm" id="btnRefresh"><i class="fa-solid fa-rotate"></i>&nbsp; Actualizar</button>
         </div>
       </div>
 
