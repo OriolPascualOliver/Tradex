@@ -15,3 +15,17 @@ To stop and remove containers:
 ```bash
 docker-compose down
 ```
+
+## Running tests
+
+Install the application and development dependencies:
+
+```bash
+pip install -r backend/requirements.txt -r requirements-dev.txt
+```
+
+Then execute the test suite:
+
+```bash
+pytest backend/tests
+```
