@@ -6,6 +6,9 @@ from backend.api.models.user import User
 
 client = TestClient(app)
 
+# All authentication endpoints are served under a versioned API prefix.
+API_PREFIX = "/api-v1"
+
 
 def register_user(
     email: str = "user@example.com",
@@ -31,7 +34,7 @@ def register_user(
         "terms_accepted": True,
         "device_id": device_id,
     }
-    return client.post("/api-v1/auth/register", json=payload)
+    return client.post(f"{API_PREFIX}/auth/register", json=payload)
 
 
 def login_user(
@@ -40,20 +43,20 @@ def login_user(
     device_id: str = "device_login",
 ):
     return client.post(
-        "/api-v1/auth/login",
+        f"{API_PREFIX}/auth/login",
         json={"email": email, "password": password, "device_id": device_id},
     )
 
 
 def forgot_password(email: str = "user@example.com", device_id: str = "device_forgot"):
     return client.post(
-        "/api-v1/auth/forgotpassword", json={"email": email, "device_id": device_id}
+        f"{API_PREFIX}/auth/forgotpassword", json={"email": email, "device_id": device_id}
     )
 
 
 def reset_password(token: str, new_password: str, device_id: str = "device_forgot"):
     return client.post(
-        "/api-v1/auth/reset",
+        f"{API_PREFIX}/auth/reset",
         json={"token": token, "new_password": new_password, "device_id": device_id},
     )
 
