@@ -4,6 +4,7 @@ from backend.api.models.user import User
 
 client = TestClient(app)
 
+
 def create_user(db):
     user = User(email="user@example.com", hashed_password="pwd")
     db.add(user)
@@ -15,7 +16,7 @@ def create_user(db):
 def test_create_and_list_tasks(db_session):
     user = create_user(db_session)
     response = client.post(
-        "/v1/tasks",
+        "/api-v1/tasks",
         json={"title": "Test", "description": "desc"},
         headers={"X-User-Id": str(user.id)},
     )
@@ -24,7 +25,7 @@ def test_create_and_list_tasks(db_session):
     assert data["title"] == "Test"
     assert data["owner_id"] == user.id
 
-    resp = client.get("/v1/tasks", headers={"X-User-Id": str(user.id)})
+    resp = client.get("/api-v1/tasks", headers={"X-User-Id": str(user.id)})
     assert resp.status_code == 200
     tasks = resp.json()
     assert len(tasks) == 1
@@ -34,14 +35,14 @@ def test_create_and_list_tasks(db_session):
 def test_update_and_delete_task(db_session):
     user = create_user(db_session)
     create_resp = client.post(
-        "/v1/tasks",
+        "/api-v1/tasks",
         json={"title": "Task", "description": None},
         headers={"X-User-Id": str(user.id)},
     )
     task_id = create_resp.json()["id"]
 
     update_resp = client.patch(
-        f"/v1/tasks/{task_id}",
+        f"/api-v1/tasks/{task_id}",
         json={"title": "Updated"},
         headers={"X-User-Id": str(user.id)},
     )
@@ -49,10 +50,10 @@ def test_update_and_delete_task(db_session):
     assert update_resp.json()["title"] == "Updated"
 
     delete_resp = client.delete(
-        f"/v1/tasks/{task_id}", headers={"X-User-Id": str(user.id)}
+        f"/api-v1/tasks/{task_id}", headers={"X-User-Id": str(user.id)}
     )
     assert delete_resp.status_code == 200
 
-    list_resp = client.get("/v1/tasks", headers={"X-User-Id": str(user.id)})
+    list_resp = client.get("/api-v1/tasks", headers={"X-User-Id": str(user.id)})
     assert list_resp.status_code == 200
     assert list_resp.json() == []

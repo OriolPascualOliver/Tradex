@@ -2,11 +2,11 @@ from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
-from backend.api.routers import routers
+from backend.api.routers import routers as api_routers
 from backend.core.exceptions import AppException
 
 app = FastAPI()
-for router in routers:
+for router in api_routers:
     app.include_router(router)
 
 
