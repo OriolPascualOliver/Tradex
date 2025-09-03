@@ -3,10 +3,10 @@ from typing import List
 from fastapi import APIRouter, Depends, Header, HTTPException, status
 from sqlalchemy.orm import Session
 
-from api.models.task import Task
-from api.models.user import User
-from api.schemas import TaskCreate, TaskUpdate, TaskRead
-from core.database import SessionLocal
+from backend.api.models.task import Task
+from backend.api.models.user import User
+from backend.api.schemas import TaskCreate, TaskUpdate, TaskRead
+from backend.core.database import SessionLocal
 
 router = APIRouter(prefix="/api-v1/tasks", tags=["tasks"])
 

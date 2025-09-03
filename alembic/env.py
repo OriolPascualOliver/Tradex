@@ -23,8 +23,8 @@ if config.config_file_name is not None:
 
 # ---------- Project imports ----------
 # With BACKEND_DIR on sys.path, these work: 'core' and 'api' are under backend/
-from core.database import Base           # must define: Base = declarative_base()
-from api.models import user, task        # import ALL model modules that declare tables
+from backend.core.database import Base           # must define: Base = declarative_base()
+from backend.api.models import user, task        # import ALL model modules that declare tables
 
 target_metadata = Base.metadata
 

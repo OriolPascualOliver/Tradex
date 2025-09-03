@@ -9,8 +9,8 @@ sys.path.append(os.path.join(BASE_DIR, "backend"))
 # Default to SQLite if no DB configured
 os.environ.setdefault("DATABASE_URL", "sqlite:///./sql_app.db")
 
-from core.database import SessionLocal, Base, engine
-from api.models.user import User
+from backend.core.database import SessionLocal, Base, engine
+from backend.api.models.user import User
 from passlib.context import CryptContext
 
 # Create tables if they don't exist
