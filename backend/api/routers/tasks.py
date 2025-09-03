@@ -1,36 +1,19 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from backend.api.models.task import Task
 from backend.api.models.user import User
 from backend.api.schemas import TaskCreate, TaskUpdate, TaskRead
-from backend.core.database import SessionLocal
+from backend.api.dependencies import get_db, get_current_user
 
 router = APIRouter(prefix="/api-v1/tasks", tags=["tasks"])
 
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-def get_current_user(
-    db: Session = Depends(get_db), user_id: int = Header(..., alias="X-User-Id")
-):
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid user")
-    return user
-
-
 @router.get("", response_model=List[TaskRead])
 def list_tasks(
-    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+    db: Session = Depends(get_db), current_user: User = Depends(get_current_user),
 ):
     return db.query(Task).filter(Task.owner_id == current_user.id).all()
 
