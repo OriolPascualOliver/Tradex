@@ -162,10 +162,33 @@
     </div>
   </div>
 
-<script>
+<script type="module">
+import { formatEUR, computeTeamMonthly } from '/js/pricing-lib.js';
+
 /* ====== Config ====== */
 const API_PREFIX = '/api-v1'; // <-- requerido
 const token = localStorage.getItem('token') || '';
+
+let PRICING = null;
+async function loadPricing(){
+  try{
+    const res = await fetch('/api-v1/pricing');
+    if(!res.ok) throw 0;
+    PRICING = await res.json();
+  }catch(e){
+    PRICING = {
+      currency:'EUR', vatIncluded:false, annualDiscount:0.10,
+      solo:{ monthly:49 },
+      team:{ tiers:[
+        {maxSeats:1,price:45},{maxSeats:2,price:45},{maxSeats:3,price:35},
+        {maxSeats:4,price:33},{maxSeats:5,price:30},{maxSeats:6,price:28},
+        {maxSeats:7,price:27},{maxSeats:99,price:27}
+      ]}
+    };
+  }
+}
+
+await loadPricing();
 
 /* ====== Header/Footer includes ====== */
 (async function mountHF(){
@@ -191,18 +214,7 @@ function authHeaders() {
   if (token) h['Authorization'] = 'Bearer ' + token;
   return h;
 }
-function perSeatPrice(n){
-  n = Number(n);
-  if (n <= 1) return 45;
-  if (n === 2) return 45;
-  if (n === 3) return 35;
-  if (n === 4) return 33;
-  if (n === 5) return 30;
-  if (n === 6) return 28;
-  if (n === 7) return 27;
-  return 27;
-}
-function fmtEUR(x){ return new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(x); }
+function fmtEUR(x){ return formatEUR(x); }
 function show(el){ el.style.display='grid'; el.removeAttribute('aria-hidden'); }
 function hide(el){ el.style.display='none'; el.setAttribute('aria-hidden','true'); }
 
@@ -371,15 +383,14 @@ function refreshPriceSummary(){
   const plan = $('mPlan').value;
   let text = '';
   if (plan === 'Solo') {
-    text = 'Plan Solo: tarifa única de 49 €/mes (*IVA no incluido).';
+    text = `Plan Solo: tarifa única de ${fmtEUR(PRICING.solo.monthly)} /mes (*IVA no incluido).`;
   } else {
     const n = Number($('mTeamSize').value);
-    const seat = perSeatPrice(n);
-    const total = seat * n;
+    const { seat, total } = computeTeamMonthly(n, PRICING.team.tiers);
     text = `Plan Team para ${n} persona${n>1?'s':''}: ${fmtEUR(seat)} por persona · Total estimado: ${fmtEUR(total)} al mes (*IVA no incluido).`;
     if (org.plan==='Team' && org.teamMembers){
-      const old = perSeatPrice(org.teamMembers) * org.teamMembers;
-      const delta = total - old;
+      const { total: oldTotal } = computeTeamMonthly(org.teamMembers, PRICING.team.tiers);
+      const delta = total - oldTotal;
       text += ` ${delta===0?'(sin cambios)':'Cambio mensual: ' + (delta>0?'+':'') + fmtEUR(delta)}`;
     }
   }
@@ -415,7 +426,7 @@ $('btnAdd').addEventListener('click', ()=> openMember(null));
 $('btnRefresh').addEventListener('click', loadTeam);
 
 /* ====== Init ====== */
-(async function init(){
+ (async function init(){
   await loadOrg();
   await loadTeam();
 })();
