@@ -17,90 +17,216 @@
       <h3>IA y presets</h3>
       <p class="muted">Sube mínimo 3 presupuestos previos para entrenar la IA.</p>
       <div class="wire" style="padding:12px;">
-        <input type="file" multiple>
-        <div class="hint">0/3 subidos</div>
-        <button class="btn secondary" disabled>Entrenar IA</button>
-<! -- Add a icon to the entrenar ia, add a loading spinner when clicked, and the option to download the trained model once it's done-->
-      </div>
-    </article>
-
-    <article id="tarifas" class="card">
-      <h3>Tarifas y márgenes</h3>
-      <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
-        <label>€/hora <input class="input" type="number" placeholder="45"></label>
-        <label>minimo numero horas <input class="input" type="number" placeholder="30'"></label></label>
-        <label> escalado horas  <input class="input" type="number" placeholder="30'"></label></label>
-        <label>Markup materiales (%) <input class="input" type="number" placeholder="20"></label>
-        <label>IVA (%) <input class="input" type="number" placeholder="21"></label>
-<! -- make the escalado minimo a dropdown to select from 5' steps, and the minimo horas too. save button and api update -->
-
-      </div>
-    </article>
-
-    <article id="proveedor" class="card">
-      <h3>Proveedor de materiales por defecto</h3>
-      <select class="input" style="max-width:320px;">
-        <option>Bricomart</option>
-        <option>Leroy Merlin</option>
-        <option>Amazon Business</option>
-        <option>Otro (manual)</option>
-      </select>
-    </article>
-    <! -- allow for a user input with other . save button and api update-->
-
-
-    <article id="prefijos" class="card">
-      <h3>Prefijos de documentos</h3>
-      <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
-        <label>Presupuestos <input class="input" placeholder="PRES-2025-"/></label>
-        <label>Facturas <input class="input" placeholder="FACT-"/></label>
-        <label>Partes <input class="input" placeholder="PAR-"/></label>
-      </div>
-      <p class="hint">Siguiente número se calculará automáticamente.</p>
-    </article>
-      <! -- save button and api update-->
-
-
-    <article id="fiscal" class="card">
-      <h3>Datos fiscales</h3>
-      <div class="grid" style="grid-template-columns: repeat(2, 1fr);">
-        <label>Nombre fiscal <input class="input" /></label>
-        <label>NIF/CIF <input class="input" /></label>
-        <label>Dirección <input class="input" /></label>
-        <label>Ciudad / CP <input class="input" /></label>
-      </div>
-    </article>
-      <! -- save button and api update-->
-
-    <article id="branding" class="card">
-      <h3>Branding de documentos</h3>
-      <div class="grid" style="grid-template-columns: 1fr 1fr;">
-        <div class="wire" style="padding:12px;">
-          <label>Logo <input type="file" /></label>
+        <input id="iaFiles" type="file" multiple>
+        <div id="iaHint" class="hint">0/3 subidos</div>
+        <button class="btn secondary" id="trainBtn" disabled><span class="icon" aria-hidden="true">🤖</span>&nbsp;<span id="trainLabel">Entrenar IA</span></button>
+        <a id="downloadModel" class="btn secondary sm hidden" download="model.bin">Descargar modelo</a>
         </div>
-        <div>
-          <label>Modelo de factura</label>
-          <select class="input">
-            <option>Modelo A</option><option>Modelo B</option>
-          </select>
-          <label>Modelo de presupuesto</label>
-          <select class="input">
-            <option>Modelo A</option><option>Modelo B</option>
-          </select>
-        </div>
-      </div>
-    </article>
-          <! -- preview en la parte derecha, cargar una imagen-->
+      </article>
 
-    <article id="email" class="card">
-      <h3>Modelo de email</h3>
-      <div class="wire" style="padding:12px; min-height:120px;">
-        <p class="muted">Editor de plantilla (asunto, cuerpo, variables: {cliente}, {importe}, {enlace}).</p>
-      </div>
-    </article>
+      <article id="tarifas" class="card">
+        <h3>Tarifas y márgenes</h3>
+        <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+          <label>€/hora <input id="hourRate" class="input" type="number" placeholder="45"></label>
+          <label>Minimo numero horas
+            <select id="minHours" class="input"></select>
+          </label>
+          <label>Escalado horas
+            <select id="scaleHours" class="input"></select>
+          </label>
+          <label>Markup materiales (%) <input id="markup" class="input" type="number" placeholder="20"></label>
+          <label>IVA (%) <input id="iva" class="input" type="number" placeholder="21"></label>
+        </div>
+        <div class="actions">
+          <button class="btn primary sm" id="saveTarifas">Guardar</button>
+        </div>
+      </article>
+
+      <article id="proveedor" class="card">
+        <h3>Proveedor de materiales por defecto</h3>
+        <select id="defaultProvider" class="input" style="max-width:320px;">
+          <option value="Bricomart">Bricomart</option>
+          <option value="Leroy Merlin">Leroy Merlin</option>
+          <option value="Amazon Business">Amazon Business</option>
+          <option value="other">Otro (manual)</option>
+        </select>
+        <input id="providerOther" class="input hidden" style="max-width:320px; margin-top:var(--s3);" placeholder="Nombre proveedor" />
+        <div class="actions">
+          <button class="btn primary sm" id="saveProvider">Guardar</button>
+        </div>
+      </article>
+
+
+      <article id="prefijos" class="card">
+        <h3>Prefijos de documentos</h3>
+        <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+          <label>Presupuestos <input id="prefPres" class="input" placeholder="PRES-2025-"/></label>
+          <label>Facturas <input id="prefFact" class="input" placeholder="FACT-"/></label>
+          <label>Partes <input id="prefPar" class="input" placeholder="PAR-"/></label>
+        </div>
+        <p class="hint">Siguiente número se calculará automáticamente.</p>
+        <div class="actions">
+          <button class="btn primary sm" id="savePrefijos">Guardar</button>
+        </div>
+      </article>
+
+
+      <article id="fiscal" class="card">
+        <h3>Datos fiscales</h3>
+        <div class="grid" style="grid-template-columns: repeat(2, 1fr);">
+          <label>Nombre fiscal <input id="fiscalNombre" class="input" /></label>
+          <label>NIF/CIF <input id="fiscalNif" class="input" /></label>
+          <label>Dirección <input id="fiscalDir" class="input" /></label>
+          <label>Ciudad / CP <input id="fiscalCiudad" class="input" /></label>
+        </div>
+        <div class="actions">
+          <button class="btn primary sm" id="saveFiscal">Guardar</button>
+        </div>
+      </article>
+
+      <article id="branding" class="card">
+        <h3>Branding de documentos</h3>
+        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="wire" style="padding:12px;">
+            <label>Logo <input id="logoInput" type="file" /></label>
+            <img id="logoPreview" class="hidden" style="max-width:100%; margin-top:var(--s3);" alt="Preview logo"/>
+          </div>
+          <div>
+            <label>Modelo de factura</label>
+            <select id="invoiceTemplate" class="input">
+              <option>Modelo A</option><option>Modelo B</option>
+            </select>
+            <label>Modelo de presupuesto</label>
+            <select id="quoteTemplate" class="input">
+              <option>Modelo A</option><option>Modelo B</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn primary sm" id="saveBranding">Guardar</button>
+        </div>
+      </article>
+
+      <article id="email" class="card">
+        <h3>Modelo de email</h3>
+        <div class="wire" style="padding:12px; min-height:120px;">
+          <p class="muted">Editor de plantilla (asunto, cuerpo, variables: {cliente}, {importe}, {enlace}).</p>
+        </div>
+        <div class="actions">
+          <button class="btn primary sm" id="saveEmail">Guardar</button>
+        </div>
+      </article>
   </section>
 </main>
-      <! -- save button and api update-->
 <!--#include "partials/footer.html" -->
+<script src="/js/apiClient.js"></script>
+<script>
+  // IA training
+  const iaFiles = document.getElementById('iaFiles');
+  const iaHint = document.getElementById('iaHint');
+  const trainBtn = document.getElementById('trainBtn');
+  const downloadModel = document.getElementById('downloadModel');
+  iaFiles?.addEventListener('change', () => {
+    const count = iaFiles.files.length;
+    iaHint.textContent = `${count}/3 subidos`;
+    trainBtn.disabled = count < 3;
+  });
+  trainBtn?.addEventListener('click', async () => {
+    const icon = trainBtn.querySelector('.icon');
+    icon.classList.add('hidden');
+    const spinner = document.createElement('span');
+    spinner.className = 'spinner';
+    trainBtn.prepend(spinner);
+    await new Promise(r => setTimeout(r, 2000));
+    spinner.remove();
+    icon.classList.remove('hidden');
+    downloadModel.classList.remove('hidden');
+    const blob = new Blob(['model'], {type:'application/octet-stream'});
+    downloadModel.href = URL.createObjectURL(blob);
+  });
+
+  // Fill time dropdowns
+  const minHours = document.getElementById('minHours');
+  const scaleHours = document.getElementById('scaleHours');
+  if (minHours && scaleHours) {
+    for (let i = 5; i <= 120; i += 5) {
+      const opt1 = document.createElement('option');
+      opt1.value = i;
+      opt1.textContent = `${i}'`;
+      const opt2 = opt1.cloneNode(true);
+      minHours.appendChild(opt1);
+      scaleHours.appendChild(opt2);
+    }
+  }
+
+  // Provider manual input toggle
+  const providerSelect = document.getElementById('defaultProvider');
+  const providerOther = document.getElementById('providerOther');
+  providerSelect?.addEventListener('change', () => {
+    providerOther.classList.toggle('hidden', providerSelect.value !== 'other');
+  });
+
+  // Branding logo preview
+  const logoInput = document.getElementById('logoInput');
+  const logoPreview = document.getElementById('logoPreview');
+  logoInput?.addEventListener('change', () => {
+    const file = logoInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      logoPreview.src = reader.result;
+      logoPreview.classList.remove('hidden');
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Save buttons (stub API calls)
+  document.getElementById('saveTarifas')?.addEventListener('click', async () => {
+    const payload = {
+      rate: document.getElementById('hourRate').value,
+      min: minHours.value,
+      scale: scaleHours.value,
+      markup: document.getElementById('markup').value,
+      iva: document.getElementById('iva').value
+    };
+    try { await apiClient.post('settings/tarifas', payload); } catch(e) { console.error(e); }
+  });
+
+  document.getElementById('saveProvider')?.addEventListener('click', async () => {
+    const payload = { provider: providerSelect.value === 'other' ? providerOther.value : providerSelect.value };
+    try { await apiClient.post('settings/proveedor', payload); } catch(e) { console.error(e); }
+  });
+
+  document.getElementById('savePrefijos')?.addEventListener('click', async () => {
+    const payload = {
+      presupuestos: document.getElementById('prefPres').value,
+      facturas: document.getElementById('prefFact').value,
+      partes: document.getElementById('prefPar').value
+    };
+    try { await apiClient.post('settings/prefijos', payload); } catch(e) { console.error(e); }
+  });
+
+  document.getElementById('saveFiscal')?.addEventListener('click', async () => {
+    const payload = {
+      nombre: document.getElementById('fiscalNombre').value,
+      nif: document.getElementById('fiscalNif').value,
+      direccion: document.getElementById('fiscalDir').value,
+      ciudad: document.getElementById('fiscalCiudad').value
+    };
+    try { await apiClient.post('settings/fiscal', payload); } catch(e) { console.error(e); }
+  });
+
+  document.getElementById('saveBranding')?.addEventListener('click', async () => {
+    const payload = {
+      invoiceTemplate: document.getElementById('invoiceTemplate').value,
+      quoteTemplate: document.getElementById('quoteTemplate').value
+    };
+    try { await apiClient.post('settings/branding', payload); } catch(e) { console.error(e); }
+  });
+
+  document.getElementById('saveEmail')?.addEventListener('click', async () => {
+    try { await apiClient.post('settings/email', {}); } catch(e) { console.error(e); }
+  });
+</script>
 </body>
 </html>
