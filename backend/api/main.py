@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 
 # Import your routers
-from backend.api.routers import health, tasks, auth, contact
+from backend.api.routers import health, tasks, auth, contact, pricing
 
 app = FastAPI(title="Tradex Backend")
 
@@ -11,6 +11,7 @@ app.include_router(health.router)   # e.g., GET /health
 app.include_router(tasks.router)    # e.g., /tasks
 app.include_router(auth.router)     # e.g., /auth
 app.include_router(contact.router)  # e.g., /contact
+app.include_router(pricing.router)  # e.g., /api-v1/pricing
 
 @app.get("/")
 def root():

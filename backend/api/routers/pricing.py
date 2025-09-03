@@ -6,7 +6,7 @@ PRICING_DATA = {
     "currency": "EUR",
     "vatIncluded": False,
     "annualDiscount": 0.10,
-    "solo": {"monthly": 49},
+    "solo": {"monthly": 45},
     "team": {
         "tiers": [
             {"maxSeats": 1, "price": 45},
