@@ -9,10 +9,7 @@ from jose import JWTError, jwt
 
 from backend.core.database import SessionLocal
 from backend.api.models.user import User
-
-SECRET_KEY = "secret"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+from backend.core.config import settings
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -29,9 +26,11 @@ def get_db():
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+    expire = datetime.utcnow() + (
+        expires_delta or timedelta(minutes=settings.access_token_expire_minutes)
+    )
     to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
 
 
 class UserBase(BaseModel):
@@ -147,7 +146,9 @@ def forgot_password(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
 @router.post("/reset")
 def reset_password(req: ResetPasswordRequest, db: Session = Depends(get_db)):
     try:
-        payload = jwt.decode(req.token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(
+            req.token, settings.secret_key, algorithms=[settings.algorithm]
+        )
         user_id = payload.get("sub")
         token_device_id = payload.get("device_id")
     except JWTError:
