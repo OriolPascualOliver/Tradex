@@ -10,20 +10,7 @@
 <!--#include "partials/header.html" -->
 
 <main class="layout">
-  <aside class="sidebar">
-    <nav class="aside-card">
-      <strong>Configuración</strong>
-      <ul style="list-style:none; padding-left:0; margin-top:10px; display:grid; gap:8px;">
-        <li><a href="#ia">IA y presets</a></li>
-        <li><a href="#tarifas">Tarifas y márgenes</a></li>
-        <li><a href="#proveedor">Proveedor por defecto</a></li>
-        <li><a href="#prefijos">Prefijos de documentos</a></li>
-        <li><a href="#fiscal">Datos fiscales</a></li>
-        <li><a href="#branding">Branding</a></li>
-        <li><a href="#email">Modelo de email</a></li>
-      </ul>
-    </nav>
-  </aside>
+
 
   <section class="grid">
     <article id="ia" class="card">
@@ -33,6 +20,7 @@
         <input type="file" multiple>
         <div class="hint">0/3 subidos</div>
         <button class="btn secondary" disabled>Entrenar IA</button>
+<! -- Add a icon to the entrenar ia, add a loading spinner when clicked, and the option to download the trained model once it's done-->
       </div>
     </article>
 
@@ -40,8 +28,12 @@
       <h3>Tarifas y márgenes</h3>
       <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
         <label>€/hora <input class="input" type="number" placeholder="45"></label>
+        <label>minimo numero horas <input class="input" type="number" placeholder="30'"></label></label>
+        <label> escalado horas  <input class="input" type="number" placeholder="30'"></label></label>
         <label>Markup materiales (%) <input class="input" type="number" placeholder="20"></label>
         <label>IVA (%) <input class="input" type="number" placeholder="21"></label>
+<! -- make the escalado minimo a dropdown to select from 5' steps, and the minimo horas too. save button and api update -->
+
       </div>
     </article>
 
@@ -54,6 +46,8 @@
         <option>Otro (manual)</option>
       </select>
     </article>
+    <! -- allow for a user input with other . save button and api update-->
+
 
     <article id="prefijos" class="card">
       <h3>Prefijos de documentos</h3>
@@ -64,6 +58,8 @@
       </div>
       <p class="hint">Siguiente número se calculará automáticamente.</p>
     </article>
+      <! -- save button and api update-->
+
 
     <article id="fiscal" class="card">
       <h3>Datos fiscales</h3>
@@ -74,6 +70,7 @@
         <label>Ciudad / CP <input class="input" /></label>
       </div>
     </article>
+      <! -- save button and api update-->
 
     <article id="branding" class="card">
       <h3>Branding de documentos</h3>
@@ -93,6 +90,7 @@
         </div>
       </div>
     </article>
+          <! -- preview en la parte derecha, cargar una imagen-->
 
     <article id="email" class="card">
       <h3>Modelo de email</h3>
@@ -102,7 +100,7 @@
     </article>
   </section>
 </main>
-
+      <! -- save button and api update-->
 <!--#include "partials/footer.html" -->
 </body>
 </html>
