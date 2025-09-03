@@ -191,7 +191,30 @@
 
 <!--#include "partials/footer.html" -->
 
-<script>
+<script type="module">
+import { pricePerSeatFromTiers, computeAnnual } from '/js/pricing-lib.js';
+
+  let PRICING = null;
+  async function loadPricing(){
+    try{
+      const res = await fetch('/api-v1/pricing');
+      if(!res.ok) throw 0;
+      PRICING = await res.json();
+    }catch(e){
+      PRICING = {
+        currency:'EUR', vatIncluded:false, annualDiscount:0.10,
+        solo:{ monthly:49 },
+        team:{ tiers:[
+          {maxSeats:1,price:45},{maxSeats:2,price:45},{maxSeats:3,price:35},
+          {maxSeats:4,price:33},{maxSeats:5,price:30},{maxSeats:6,price:28},
+          {maxSeats:7,price:27},{maxSeats:99,price:27}
+        ]}
+      };
+    }
+  }
+
+  await loadPricing();
+
   // ---- Constantes toggle ----
   const MONTHLY = 'monthly';
   const YEARLY  = 'yearly';
@@ -207,7 +230,7 @@
   const freeBtn    = document.getElementById('freeBtn');
 
   // ---- SOLO ----
-  const soloMonthly = 49;
+  let soloMonthly = PRICING.solo.monthly;
   const soloPriceEl  = document.getElementById('soloPrice');
   const soloPeriodEl = document.getElementById('soloPeriod');
 
@@ -219,18 +242,11 @@
 
   // Precio por asiento mensual (según tamaño)
   function perSeatPrice(n){
-    if(n <= 1) return 45;
-    if(n == 2) return 45;
-    if(n == 3) return 35;
-    if(n == 4) return 33;
-    if(n == 5) return 30;
-    if(n == 6) return 28;
-    if(n == 7) return 27;
-    return 27;
+    return pricePerSeatFromTiers(n, PRICING.team.tiers);
   }
 
   // Helpers
-  function yearlyTotal(monthly){ return monthly * 12 * 0.9 } // -10%
+  function yearlyTotal(monthly){ return computeAnnual(monthly, PRICING.annualDiscount).yearly }
   function fmt(n){ const v = Number(n); return (v%1===0)? v.toString() : v.toFixed(2).replace('.', ',') }
 
   // --- Actualiza FREE (disabled en anual) ---
@@ -272,9 +288,10 @@
       teamPeriodEl.textContent = '/ mes*';
       teamNoteEl.innerHTML = 'Precio por persona: <strong>'+fmt(seat)+'€</strong>';
     } else {
-      teamPriceNum.textContent = fmt(yearlyTotal(mTotal));
+      const { yearly } = computeAnnual(mTotal, PRICING.annualDiscount);
+      teamPriceNum.textContent = fmt(yearly);
       teamPeriodEl.textContent = '/ año*';
-      teamNoteEl.innerHTML = 'Equivale a <strong>'+fmt(seat*0.9)+'€</strong> / persona / mes (−10% anual).';
+      teamNoteEl.innerHTML = 'Equivale a <strong>'+fmt(seat*(1-PRICING.annualDiscount))+'€</strong> / persona / mes (−'+(PRICING.annualDiscount*100)+'% anual).';
     }
   }
 
