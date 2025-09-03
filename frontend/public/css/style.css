@@ -60,6 +60,11 @@ body{
 .center{ text-align:center; }
 .maxw{ max-width:1150px; margin:0 auto; }
 .muted{ color:var(--muted); }
+.actions{ display:flex; justify-content:flex-end; gap: var(--s3); margin-top: var(--s4); }
+.btn.sm{ padding:.45rem .7rem; border-radius:var(--radius-sm); font-weight:700; background:linear-gradient(180deg,#f3f4f6,#e5e7eb); color:var(--ink-2); border:1px solid var(--border); box-shadow:var(--shadow-sm); }
+.btn.sm:hover{ background:linear-gradient(180deg,#e5e7eb,#d1d5db); }
+.spinner{ border:2px solid #f3f3f3; border-top:2px solid var(--sky); border-radius:50%; width:14px; height:14px; animation:spin 1s linear infinite; display:inline-block; vertical-align:middle; margin-right:6px; }
+@keyframes spin{ from{ transform:rotate(0deg);} to{ transform:rotate(360deg);} }
 
 /* Header */
 .site-header{
