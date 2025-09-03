@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 from jose import jwt
 from main import app
-from backend.api.routers.auth import SECRET_KEY, ALGORITHM
+from backend.core.config import settings
 from backend.api.models.user import User
 
 client = TestClient(app)
@@ -68,7 +68,7 @@ def test_register_and_login(db_session):
     response = register_user(device_id=register_device)
     assert response.status_code == 200
     token = response.json()["access_token"]
-    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
     assert payload["device_id"] == register_device
     user = db_session.query(User).filter(User.email == "user@example.com").first()
     assert user.device_id == register_device
@@ -79,7 +79,7 @@ def test_register_and_login(db_session):
     response = login_user(device_id=login_device)
     assert response.status_code == 200
     token = response.json()["access_token"]
-    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
     assert payload["device_id"] == login_device
     user = db_session.query(User).filter(User.email == "user@example.com").first()
     assert user.device_id == login_device
@@ -101,7 +101,7 @@ def test_forgot_and_reset(db_session):
     response = forgot_password(device_id=forgot_device)
     assert response.status_code == 200
     token = response.json()["reset_token"]
-    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
     assert payload["device_id"] == forgot_device
     user = db_session.query(User).filter(User.email == "user@example.com").first()
     assert user.device_id == forgot_device
@@ -115,7 +115,9 @@ def test_forgot_and_reset(db_session):
     new_login_device = "device_new_login"
     response = login_user(password="newsecret", device_id=new_login_device)
     assert response.status_code == 200
-    payload = jwt.decode(response.json()["access_token"], SECRET_KEY, algorithms=[ALGORITHM])
+    payload = jwt.decode(
+        response.json()["access_token"], settings.secret_key, algorithms=[settings.algorithm]
+    )
     assert payload["device_id"] == new_login_device
     user = db_session.query(User).filter(User.email == "user@example.com").first()
     assert user.device_id == new_login_device
