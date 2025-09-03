@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
+const API_HOST = process.env.API_HOST || 'http://localhost:8000';
 
 const rootDir   = __dirname;
 const pagesDir  = path.join(rootDir, 'pages');
@@ -99,6 +100,24 @@ function send404(res) {
 const server = http.createServer(async (req, res) => {
   try {
     const { pathname } = new URL(req.url, 'http://localhost');
+
+    if (pathname.startsWith('/api-v1/')) {
+      const targetUrl = API_HOST.replace(/\/$/, '') + req.url;
+      const proxyReq = http.request(targetUrl, {
+        method: req.method,
+        headers: req.headers
+      }, proxyRes => {
+        res.writeHead(proxyRes.statusCode, proxyRes.headers);
+        proxyRes.pipe(res);
+      });
+      req.pipe(proxyReq);
+      proxyReq.on('error', () => {
+        res.writeHead(502, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end('Bad Gateway');
+      });
+      return;
+    }
+
     const filePath = resolveFilePath(pathname);
 
     if (!filePath) {
