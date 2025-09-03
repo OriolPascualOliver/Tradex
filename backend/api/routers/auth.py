@@ -7,21 +7,13 @@ from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 
-from backend.core.database import SessionLocal
 from backend.api.models.user import User
 from backend.core.config import settings
+from backend.core.deps import get_db
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 router = APIRouter(prefix="/api-v1/auth")
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:

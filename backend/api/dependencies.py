@@ -4,19 +4,11 @@ from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 
 from backend.core.config import settings
-from backend.core.database import SessionLocal
+from backend.core.deps import get_db
 from backend.api.models.user import User
 
 
 oauth2_scheme = HTTPBearer()
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 def get_current_user(

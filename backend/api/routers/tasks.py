@@ -6,7 +6,8 @@ from sqlalchemy.orm import Session
 from backend.api.models.task import Task
 from backend.api.models.user import User
 from backend.api.schemas import TaskCreate, TaskUpdate, TaskRead
-from backend.api.dependencies import get_db, get_current_user
+from backend.api.dependencies import get_current_user
+from backend.core.deps import get_db
 
 router = APIRouter(prefix="/api-v1/tasks", tags=["tasks"])
 
