@@ -327,6 +327,22 @@ footer a:hover{ text-decoration:underline; }
 .toolbar { display:flex; gap:var(--s3); flex-wrap:wrap; align-items:center; }
 .toolbar .input, .toolbar select { padding:8px 10px; border:1px solid var(--border); border-radius:8px; background:#fff; }
 
+.breadcrumb{ margin-bottom:var(--s3); font-size:.9rem; }
+.page-title{ font-size:2rem; margin:0; }
+.page-desc{ margin-top:.2rem; margin-bottom:var(--s5); color:var(--muted); }
+.badge{ display:inline-block; padding:2px 8px; border-radius:8px; font-size:.85rem; }
+.badge-idle{ background:#e5e7eb; color:#374151; }
+.badge-processing{ background:#facc15; color:#78350f; }
+.badge-ok{ background:#86efac; color:#064e3b; }
+.badge-error{ background:#fca5a5; color:#7f1d1d; }
+.toast{ position:fixed; bottom:20px; right:20px; background:#111; color:#fff; padding:10px 16px; border-radius:8px; opacity:0; transition:opacity .3s, transform .3s; transform:translateY(20px); z-index:1000; }
+.toast.show{ opacity:1; transform:translateY(0); }
+.help-icon{ display:inline-block; width:18px; height:18px; border-radius:50%; background:var(--sky); color:#fff; text-align:center; line-height:18px; font-size:.75rem; cursor:help; margin-left:.3rem; }
+.file-list{ margin-top:.6rem; font-size:.9rem; }
+.input, select.input, textarea.input{ padding:8px 10px; border:1px solid var(--border); border-radius:8px; font:inherit; }
+#emailBody{ min-height:120px; }
+#emailBody::placeholder, #emailSubject::placeholder{ font-family:monospace; }
+
 .upgrade { background:rgba(37,99,235,.06); border:1px dashed rgba(37,99,235,.4); padding:var(--s4); border-radius: var(--radius); }
 
 body.index .hero .btn.primary {
