@@ -15,7 +15,7 @@
     .hidden{ display:none !important; }
 
     /* Ajusta SELECT al mismo estilo que input/textarea del theme */
-    select{
+    .form-select{
       width:100%; font: inherit; color:var(--ink-2);
       padding: 12px 14px; border-radius: 12px;
       border:1px solid var(--border); background:#fff;
@@ -33,7 +33,7 @@
       background-size: 6px 6px, 6px 6px, 1px 60%;
       background-repeat: no-repeat;
     }
-    select:focus{
+    .form-select:focus{
       outline:none; border-color: rgba(37,99,235,.6);
       box-shadow: 0 0 0 4px rgba(37,99,235,.12);
     }
@@ -71,7 +71,7 @@
       <label class="input-inline"><input type="radio" name="plan" value="Team"> Team</label>
       <div id="teamSeatsWrap" class="input-inline hidden">
         <span>Personas:</span>
-        <select id="teamSeats" name="team_seats">
+        <select id="teamSeats" name="team_seats" class="form-select">
           <option value="2">2</option>
           <option value="3" selected>3</option>
           <option value="4">4</option>
@@ -138,7 +138,7 @@
       </div>
       <div>
         <label for="sector">Sector / Industria *</label>
-        <select id="sector" name="sector" required>
+        <select id="sector" name="sector" required class="form-select">
           <option value="" disabled selected>Selecciona sector</option>
           <option>Electricidad</option>
           <option>Fontanería</option>
@@ -159,7 +159,7 @@
     <div class="form-row-3">
       <div>
         <label for="country">País *</label>
-        <select id="country" name="country" required>
+        <select id="country" name="country" required class="form-select">
           <option value="ES" selected>España</option>
           <option value="PT">Portugal</option>
           <option value="FR">Francia</option>
@@ -168,7 +168,7 @@
       </div>
       <div>
         <label for="region">Provincia *</label>
-        <select id="region" name="region" required>
+        <select id="region" name="region" required class="form-select">
           <option value="" disabled selected></option>
             <option>A Coruña</option><option>Albacete</option><option>Alicante</option><option>Almería</option><option>Álava</option>
             <option>Asturias</option><option>Ávila</option><option>Badajoz</option><option>Barcelona</option><option>Bizkaia</option>
