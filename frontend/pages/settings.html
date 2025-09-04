@@ -16,6 +16,7 @@
     .toolbar-right { display:flex; gap:.5rem; align-items:center; margin-left:auto; }
     .row { display:flex; gap: var(--s4); align-items:center; flex-wrap:wrap; }
     .w240{ width:240px; }
+    .upload-status{ font-size:.85rem; margin-top:4px; }
   </style>
 </head>
 <body>
@@ -36,29 +37,20 @@
         <div class="w240">
           <span>Subir archivo(s)</span>
           <label id="aiDrop" class="drop-zone">Arrastra o haz clic<input id="aiFiles" type="file" multiple></label>
+          <div id="aiFileStatus" class="upload-status"></div>
         </div>
 
         <button id="btnUploadAI" class="btn secondary">Subir archivo</button>
 
         <div class="inline">
           <span>Subidos</span><strong id="aiUploaded">0</strong>
-          <label class="inline">Estado:
-            <select id="aiStatus" class="input">
-              <option value="idle">Sin entrenar</option>
-              <option value="processing">⏳ Procesando…</option>
-              <option value="ok">✅ OK</option>
-              <option value="error">❌ Error</option>
-            </select>
-          </label>
+          <span>Estado:</span><span id="aiStatus" class="badge idle">Sin entrenar</span>
         </div>
-
-        <div class="toolbar-right">
-          <button id="btnTrain" class="btn primary">
-            <span class="chip">⚙️</span> Entrenar IA
-          </button>
-          <button id="btnResetAI" class="btn danger">Resetear</button>
-          <button id="btnDownloadModel" class="btn secondary">Descargar modelo</button>
-        </div>
+      </div>
+      <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s3);">
+        <button id="btnTrain" class="btn primary"><span class="chip">⚙️</span> Entrenar IA</button>
+        <button id="btnResetAI" class="btn secondary danger">Resetear</button>
+        <button id="btnDownloadModel" class="btn tertiary">Descargar modelo</button>
       </div>
       <div id="trainHint" class="hint" style="margin-top:.6rem; display:none;">
         Entrenando… <span class="spinner"></span>
@@ -72,17 +64,11 @@
       <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
         <label>€/hora <input id="rateHour" class="input" type="number" placeholder="45" step="1"></label>
 
-        <label>Mínimo computable
-          <select id="minBlock" class="input">
-            <!-- 5' steps up to 120' -->
-          </select>
-        </label>
+        <label>Mínimo computable</label>
+        <div id="minBlock" class="segmented" style="margin-bottom:var(--s4);"></div>
 
-        <label>Escalado de tiempo
-          <select id="stepBlock" class="input">
-            <!-- 5' steps up to 120' -->
-          </select>
-        </label>
+        <label>Escalado de tiempo</label>
+        <div id="stepBlock" class="segmented" style="margin-bottom:var(--s4);"></div>
 
         <details class="advanced" style="grid-column:1/-1; margin-top:var(--s3);">
           <summary>Opciones avanzadas</summary>
@@ -121,18 +107,18 @@
         <div class="w240">
           <span>Subir catálogo</span>
           <label id="catalogDrop" class="drop-zone">Arrastra o haz clic<input id="providerCatalog" type="file"></label>
+          <div id="catalogFileStatus" class="upload-status"></div>
         </div>
 
         <button id="btnUploadCatalog" class="btn secondary">Subir archivo</button>
 
         <div class="inline">
           <span>Estado:</span>
-          <input id="catalogStatus" class="input" value="⏳ Procesando…" style="width:160px" />
+          <span id="catalogStatus" class="badge idle">Sin subir</span>
         </div>
-
-        <div class="toolbar-right">
-          <button id="btnSaveProvider" class="btn primary">Guardar</button>
-        </div>
+      </div>
+      <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s3);">
+        <button id="btnSaveProvider" class="btn primary">Guardar</button>
       </div>
     </article>
 
@@ -164,8 +150,8 @@
       <div class="grid" style="grid-template-columns: repeat(2, 1fr);">
         <label>Nombre fiscal <input id="taxName" class="input" /></label>
         <label>NIF/CIF <input id="taxId" class="input" /></label>
-        <label>Dirección <input id="taxAddress" class="input" /></label>
-        <label>Ciudad / CP <input id="taxCityZip" class="input" /></label>
+        <label>Dirección <input id="taxAddress" class="input" placeholder="C/ Mayor 123, Madrid"/></label>
+        <label>Ciudad / CP <input id="taxCityZip" class="input" placeholder="Madrid, 28080"/></label>
       </div>
       <div class="toolbar" style="justify-content:flex-end;">
         <button id="btnSaveFiscal" class="btn primary">Guardar</button>
@@ -205,13 +191,14 @@
     <!-- Modelo de email -->
     <article id="email" class="card">
       <h3>✉️ Modelo de email</h3>
-      <label>Asunto <input id="emailSubject" class="input" placeholder="Tu presupuesto {numero}"/></label>
+      <label>Asunto <input id="emailSubject" class="input" style="font-family:monospace;" placeholder="Tu presupuesto {numero}"/></label>
       <label style="margin-top:.6rem;">Cuerpo</label>
-      <textarea id="emailBody" class="input" placeholder="Hola {cliente}, adjuntamos tu presupuesto por importe {importe}. Enlace: {enlace}"></textarea>
+      <textarea id="emailBody" class="input" style="height:140px; font-family:monospace;" placeholder="Hola {cliente}, adjuntamos tu presupuesto por importe {importe}. Enlace: {enlace}"></textarea>
+      <div id="emailPreview" class="preview-box" style="margin-top:var(--s3);"></div>
       <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s3);">
         <button id="btnSaveEmail" class="btn primary">Guardar</button>
       </div>
-      <p class="hint">Variables disponibles: {cliente}, {importe}, {enlace}, {numero}.</p>
+      <span class="muted" title="{cliente}, {importe}, {enlace}, {numero}" style="font-size:.85rem;">ℹ️ Variables disponibles</span>
     </article>
 
   </section>
@@ -219,8 +206,18 @@
 
 <!--#include "partials/footer.html" -->
 
+<div id="toast" class="toast"></div>
+
 <script>
 const API = location.origin.replace(/\/$/, ''); // adjust if FE+BE on different hosts
+
+// toast helper
+const toastBox = document.getElementById('toast');
+function toast(msg){
+  toastBox.textContent = msg;
+  toastBox.classList.add('show');
+  setTimeout(()=>toastBox.classList.remove('show'), 2000);
+}
 
 // Format minutes as m' or h h'
 function fmtMinutes(m){
@@ -230,24 +227,23 @@ function fmtMinutes(m){
   return min ? `${h}h ${min}'` : `${h}h`;
 }
 
-// Fill 5' steps (5..120)
-function fillSteps(sel){
-  sel.innerHTML='';
-  for(let m=5;m<=120;m+=5){
-    const o=document.createElement('option');
-    o.value=m; o.textContent=fmtMinutes(m);
-    sel.appendChild(o);
-  }
+// Build segmented controls
+function buildSegmented(id, values, def){
+  const cont=document.getElementById(id);
+  cont.innerHTML = values.map(v=>`<label><input type="radio" name="${id}" value="${v}"><span>${fmtMinutes(v)}</span></label>`).join('');
+  const defInput = cont.querySelector(`input[value="${def}"]`) || cont.querySelector('input');
+  if(defInput) defInput.checked = true;
 }
 
-const minBlock = document.getElementById('minBlock');
-const stepBlock = document.getElementById('stepBlock');
-fillSteps(minBlock); fillSteps(stepBlock);
+buildSegmented('minBlock',[5,10,15,30,60],30);
+buildSegmented('stepBlock',[5,10,15,30,60],30);
 
 // drop zones
 const aiFiles = document.getElementById('aiFiles');
 const catalogInput = document.getElementById('providerCatalog');
 const logoFile = document.getElementById('logoFile');
+const aiFileStatus = document.getElementById('aiFileStatus');
+const catalogFileStatus = document.getElementById('catalogFileStatus');
 
 function bindDropZone(zone, input){
   zone.addEventListener('click', () => input.click());
@@ -260,12 +256,15 @@ const aiDrop = document.getElementById('aiDrop');
 bindDropZone(aiDrop, aiFiles);
 aiFiles.addEventListener('change', () => {
   aiDrop.textContent = aiFiles.files.length ? `${aiFiles.files.length} archivo(s)` : 'Arrastra o haz clic';
+  aiFileStatus.textContent = aiFiles.files.length ? [...aiFiles.files].map(f=>`⏳ ${f.name}`).join(', ') : '';
 });
 
 const catalogDrop = document.getElementById('catalogDrop');
 bindDropZone(catalogDrop, catalogInput);
 catalogInput.addEventListener('change', () => {
-  catalogDrop.textContent = catalogInput.files[0]?.name || 'Arrastra o haz clic';
+  const f = catalogInput.files[0];
+  catalogDrop.textContent = f?.name || 'Arrastra o haz clic';
+  catalogFileStatus.textContent = f ? `⏳ ${f.name}` : '';
 });
 
 const logoDrop = document.getElementById('logoDrop');
@@ -298,6 +297,7 @@ const btnResetAI = document.getElementById('btnResetAI');
 const btnDownloadModel = document.getElementById('btnDownloadModel');
 const aiStatus = document.getElementById('aiStatus');
 const trainHint = document.getElementById('trainHint');
+const catalogStatus = document.getElementById('catalogStatus');
 
 btnUploadAI.onclick = async () => {
   const fd = new FormData();
@@ -305,7 +305,8 @@ btnUploadAI.onclick = async () => {
   const r = await fetch(`${API}/settings/ai/uploads`, { method:'POST', body: fd });
   const j = await r.json();
   aiUploaded.textContent = j.count ?? 0;
-  alert('✅ Archivos subidos');
+  aiFileStatus.textContent = [...aiFiles.files].map(f=>`✅ ${f.name}`).join(', ');
+  toast('Archivos subidos');
 };
 
 btnTrain.onclick = async () => {
@@ -313,11 +314,18 @@ btnTrain.onclick = async () => {
   btnTrain.disabled = true;
   const r = await fetch(`${API}/settings/ai/train`, { method:'POST' });
   const j = await r.json().catch(()=>({}));
-  aiStatus.value = j.status || 'processing';
+  aiStatus.className='badge pending';
+  aiStatus.textContent='Procesando…';
   setTimeout(async () => { // poll once for MVP
     const rr = await fetch(`${API}/settings/ai/status`);
     const jj = await rr.json();
-    aiStatus.value = jj.status || 'ok';
+    if(jj.status === 'error'){
+      aiStatus.className='badge error';
+      aiStatus.textContent='Error';
+    } else {
+      aiStatus.className='badge ok';
+      aiStatus.textContent='Completado';
+    }
     trainHint.style.display = 'none';
     btnTrain.disabled = false;
   }, 2500);
@@ -326,45 +334,56 @@ btnTrain.onclick = async () => {
 btnResetAI.onclick = async () => {
   await fetch(`${API}/settings/ai/reset`, { method:'POST' });
   aiUploaded.textContent = '0';
-  aiStatus.value = 'idle';
+  aiStatus.className='badge idle';
+  aiStatus.textContent='Sin entrenar';
 };
 
 btnDownloadModel.onclick = () => { window.location = `${API}/settings/ai/model`; };
 
 // ---- SAVE handlers
-async function saveJSON(url, payload){
+async function saveJSON(url, payload, msg){
   const r = await fetch(url, {
     method:'PUT',
     headers:{ 'Content-Type':'application/json' },
     body: JSON.stringify(payload)
   });
-  if(!r.ok){ alert('Error guardando'); return; }
-  alert('✅ Guardado');
+  if(!r.ok){ toast('Error guardando'); return; }
+  toast(msg || 'Guardado');
 }
 
 document.getElementById('btnSaveTariffs').onclick = () => saveJSON(`${API}/settings/tariffs`, {
   rate_hour: +document.getElementById('rateHour').value,
-  min_minutes: +document.getElementById('minBlock').value,
-  step_minutes: +document.getElementById('stepBlock').value,
+  min_minutes: +document.querySelector('#minBlock input:checked').value,
+  step_minutes: +document.querySelector('#stepBlock input:checked').value,
   markup_percent: +document.getElementById('markup').value,
   vat_percent: +document.getElementById('vat').value,
   travel_per_km: +document.getElementById('travelKm').value
-});
+}, 'Tarifas guardadas correctamente');
 
 document.getElementById('btnSaveProvider').onclick = async () => {
   const chosen = provider.value === 'other' ? document.getElementById('otherProvider').value : provider.value;
-  await saveJSON(`${API}/settings/provider`, { default_provider: chosen });
+  await saveJSON(`${API}/settings/provider`, { default_provider: chosen }, 'Proveedor guardado');
 };
 
 document.getElementById('btnUploadCatalog').onclick = async () => {
   const fd = new FormData();
   const file = catalogInput.files[0];
-  if(!file) return alert('Selecciona un archivo');
+  if(!file) return toast('Selecciona un archivo');
   fd.append('file', file);
+  catalogStatus.className='badge pending';
+  catalogStatus.textContent='Procesando…';
   const r = await fetch(`${API}/settings/provider/catalog`, { method:'POST', body: fd });
   const j = await r.json();
-  document.getElementById('catalogStatus').value = j.status === 'error' ? '❌ Error' : '✅ Procesado';
-  if(j.status !== 'error') alert('✅ Catálogo subido');
+  if(j.status === 'error'){
+    catalogStatus.className='badge error';
+    catalogStatus.textContent='Error';
+    catalogFileStatus.textContent = `❌ ${file.name}`;
+  } else {
+    catalogStatus.className='badge ok';
+    catalogStatus.textContent='Procesado';
+    catalogFileStatus.textContent = `✅ ${file.name}`;
+    toast('Catálogo subido');
+  }
 };
 
 document.getElementById('btnSavePrefixes').onclick = () => saveJSON(`${API}/settings/prefixes`, {
@@ -376,14 +395,14 @@ document.getElementById('btnSavePrefixes').onclick = () => saveJSON(`${API}/sett
     invoice_next: +document.getElementById('resetInvoice').value || null,
     work_next: +document.getElementById('resetWork').value || null
   }
-});
+}, 'Prefijos guardados');
 
 document.getElementById('btnSaveFiscal').onclick = () => saveJSON(`${API}/settings/fiscal`, {
   legal_name: document.getElementById('taxName').value,
   tax_id: document.getElementById('taxId').value,
   address: document.getElementById('taxAddress').value,
   city_zip: document.getElementById('taxCityZip').value
-});
+}, 'Datos fiscales guardados');
 
 document.getElementById('btnSaveBranding').onclick = async () => {
   // upload logo if selected
@@ -395,7 +414,7 @@ document.getElementById('btnSaveBranding').onclick = async () => {
   await saveJSON(`${API}/settings/branding`, {
     invoice_template: document.getElementById('tplInvoice').value,
     quote_template: document.getElementById('tplQuote').value
-  });
+  }, 'Branding guardado');
 };
 
 document.getElementById('btnPreviewBrand').onclick = () => window.open(`${API}/settings/branding/preview`, '_blank');
@@ -403,7 +422,23 @@ document.getElementById('btnPreviewBrand').onclick = () => window.open(`${API}/s
 document.getElementById('btnSaveEmail').onclick = () => saveJSON(`${API}/settings/email-template`, {
   subject: document.getElementById('emailSubject').value,
   body: document.getElementById('emailBody').value
-});
+}, 'Modelo de email guardado');
+
+const emailSubject = document.getElementById('emailSubject');
+const emailBody = document.getElementById('emailBody');
+const emailPreview = document.getElementById('emailPreview');
+function renderEmail(){
+  const subj = emailSubject.value.replace('{numero}','PRES-2025');
+  const body = emailBody.value
+    .replace('{cliente}','Juan')
+    .replace('{importe}','450€')
+    .replace('{enlace}','fixhub.com/presupuesto/2025')
+    .replace('{numero}','PRES-2025');
+  emailPreview.innerHTML = `<strong>${subj}</strong><p>${body}</p>`;
+}
+emailSubject.addEventListener('input', renderEmail);
+emailBody.addEventListener('input', renderEmail);
+renderEmail();
 
 // ---- Load initial values
 (async function boot(){
@@ -414,8 +449,10 @@ document.getElementById('btnSaveEmail').onclick = () => saveJSON(`${API}/setting
 
     // Map settings to fields (all optional)
     document.getElementById('rateHour').value = s.tariffs?.rate_hour ?? '';
-    document.getElementById('minBlock').value = s.tariffs?.min_minutes ?? '30';
-    document.getElementById('stepBlock').value = s.tariffs?.step_minutes ?? '30';
+    const mb = document.querySelector(`#minBlock input[value="${s.tariffs?.min_minutes ?? 30}"]`);
+    if(mb) mb.checked = true;
+    const sb = document.querySelector(`#stepBlock input[value="${s.tariffs?.step_minutes ?? 30}"]`);
+    if(sb) sb.checked = true;
     document.getElementById('markup').value = s.tariffs?.markup_percent ?? '';
     document.getElementById('vat').value = s.tariffs?.vat_percent ?? '';
     document.getElementById('travelKm').value = s.tariffs?.travel_per_km ?? '';
@@ -445,6 +482,7 @@ document.getElementById('btnSaveEmail').onclick = () => saveJSON(`${API}/setting
 
     document.getElementById('emailSubject').value = s.email_template?.subject ?? '';
     document.getElementById('emailBody').value = s.email_template?.body ?? '';
+    renderEmail();
   }catch(e){ /* noop */ }
 })();
 </script>

@@ -340,6 +340,32 @@ footer a:hover{ text-decoration:underline; }
 .toolbar { display:flex; gap:var(--s3); flex-wrap:wrap; align-items:center; }
 .toolbar .input, .toolbar select { padding:8px 10px; border:1px solid var(--border); border-radius:8px; background:#fff; }
 
+/* unified form controls */
+.input{ padding:8px 10px; border:1px solid var(--border); border-radius:8px; background:#fff; }
+select.input{ appearance:none; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E") no-repeat right 10px center/16px; padding-right:32px; }
+
+/* segmented controls */
+.segmented{ display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.segmented label{ flex:1; text-align:center; cursor:pointer; }
+.segmented input{ display:none; }
+.segmented span{ display:block; padding:8px 10px; }
+.segmented input:checked + span{ background:var(--sky); color:#fff; }
+
+/* badges for statuses */
+.badge{ display:inline-flex; align-items:center; gap:4px; padding:4px 8px; border-radius:8px; font-size:.85rem; }
+.badge.idle{ background:var(--border); color:var(--steel); }
+.badge.ok{ background:var(--mint); color:#fff; }
+.badge.error{ background:var(--rose); color:#fff; }
+.badge.pending{ background:var(--amber); color:#fff; }
+
+/* tertiary button */
+.btn.tertiary{ background:#e5e7eb; color:var(--ink-2); border:1px solid var(--border); box-shadow:none; }
+.btn.secondary.danger{ color:var(--rose); border-color:var(--rose); }
+
+/* toast notifications */
+.toast{ position:fixed; bottom:20px; right:20px; background:var(--ink-2); color:#fff; padding:10px 14px; border-radius:8px; box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:opacity .3s ease; }
+.toast.show{ opacity:1; }
+
 .upgrade { background:rgba(37,99,235,.06); border:1px dashed rgba(37,99,235,.4); padding:var(--s4); border-radius: var(--radius); }
 
 body.index .hero .btn.primary {
