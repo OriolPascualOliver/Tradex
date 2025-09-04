@@ -162,17 +162,30 @@ nav a:focus-visible{ outline: 2px solid #fff; outline-offset: 4px; border-radius
 .btn:focus-visible{ outline: 3px solid #fff; outline-offset: 2px; }
 
 .btn.primary{
-  background-image: linear-gradient(180deg, var(--sky) 0%, var(--sky-600) 100%);
-}
-.btn.secondary{
   background-image: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
 }
-.btn.tertiary{
-  background-image: linear-gradient(180deg, #ff000d 0%, #ff6a00 100%);
+.btn.secondary{
+  background: var(--paper-2);
+  color: var(--ink-2);
+  border:1px solid var(--border);
+  box-shadow:none;
 }
 .btn.danger{
   background-image: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
 }
+
+/* drag & drop zones */
+.drop-zone{
+  border:2px dashed var(--border);
+  border-radius:var(--radius-sm);
+  padding:var(--s5);
+  text-align:center;
+  color:var(--muted);
+  cursor:pointer;
+  background:var(--paper-2);
+}
+.drop-zone.hover{ border-color:var(--sky); background:var(--paper); }
+.drop-zone input{ display:none; }
 
 .cta-buttons{
   display:flex; flex-wrap:wrap; justify-content:center; gap: var(--s3);

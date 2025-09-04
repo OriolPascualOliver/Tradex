@@ -14,28 +14,29 @@
     @keyframes spin { to { transform: rotate(360deg) } }
     .preview-box { border:1px dashed var(--border); border-radius:12px; min-height:140px; display:grid; place-items:center; color:var(--muted);}
     .toolbar-right { display:flex; gap:.5rem; align-items:center; margin-left:auto; }
-    .row { display:flex; gap: var(--s4); align-items:flex-end; flex-wrap:wrap; }
+    .row { display:flex; gap: var(--s4); align-items:center; flex-wrap:wrap; }
     .w240{ width:240px; }
   </style>
 </head>
 <body>
 <!--#include "partials/header.html" -->
 
-<main class="layout">
+<main>
+  <h2>Configuración</h2>
   <section class="grid">
 
     <!-- IA y presets -->
     <article id="ia" class="card">
       <div class="section-head">
-        <h3 style="margin:0;">IA y presets</h3>
+        <h3 style="margin:0;">🤖 IA y presets</h3>
         <span class="hint-right">Sube mínimo 3 presupuestos previos</span>
       </div>
 
       <div class="row">
-        <label class="w240">
+        <div class="w240">
           <span>Subir archivo(s)</span>
-          <input id="aiFiles" type="file" multiple />
-        </label>
+          <label id="aiDrop" class="drop-zone">Arrastra o haz clic<input id="aiFiles" type="file" multiple></label>
+        </div>
 
         <button id="btnUploadAI" class="btn secondary">Subir archivo</button>
 
@@ -43,20 +44,20 @@
           <span>Subidos</span><strong id="aiUploaded">0</strong>
           <label class="inline">Estado:
             <select id="aiStatus" class="input">
-              <option value="idle">Idle</option>
-              <option value="processing">Procesando</option>
-              <option value="ok">OK</option>
-              <option value="error">Error</option>
+              <option value="idle">Sin entrenar</option>
+              <option value="processing">⏳ Procesando…</option>
+              <option value="ok">✅ OK</option>
+              <option value="error">❌ Error</option>
             </select>
           </label>
         </div>
 
         <div class="toolbar-right">
-          <button id="btnTrain" class="btn secondary">
+          <button id="btnTrain" class="btn primary">
             <span class="chip">⚙️</span> Entrenar IA
           </button>
-          <button id="btnResetAI" class="btn">Resetear</button>
-          <button id="btnDownloadModel" class="btn">Descargar modelo</button>
+          <button id="btnResetAI" class="btn danger">Resetear</button>
+          <button id="btnDownloadModel" class="btn secondary">Descargar modelo</button>
         </div>
       </div>
       <div id="trainHint" class="hint" style="margin-top:.6rem; display:none;">
@@ -66,7 +67,7 @@
 
     <!-- Tarifas y márgenes -->
     <article id="tarifas" class="card">
-      <h3 style="margin-top:0;">Tarifas y márgenes</h3>
+      <h3 style="margin-top:0;">⚙️ Tarifas y márgenes</h3>
 
       <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
         <label>€/hora <input id="rateHour" class="input" type="number" placeholder="45" step="1"></label>
@@ -83,19 +84,24 @@
           </select>
         </label>
 
-        <label>Markup materiales (%) <input id="markup" class="input" type="number" placeholder="20" step="1"></label>
-        <label>IVA (%) <input id="vat" class="input" type="number" placeholder="21" step="1"></label>
-        <label>Coste desplazamiento (€/km) <input id="travelKm" class="input" type="number" placeholder="0.5" step="0.1"></label>
+        <details class="advanced" style="grid-column:1/-1; margin-top:var(--s3);">
+          <summary>Opciones avanzadas</summary>
+          <div class="grid" style="grid-template-columns: repeat(3, 1fr); margin-top:var(--s3);">
+            <label title="% extra aplicado al coste">Markup materiales (%) <input id="markup" class="input" type="number" placeholder="20" step="1"></label>
+            <label title="Impuesto sobre el valor añadido">IVA (%) <input id="vat" class="input" type="number" placeholder="21" step="1"></label>
+            <label title="Coste por kilómetro recorrido">Coste desplazamiento (€/km) <input id="travelKm" class="input" type="number" placeholder="0.5" step="0.1"></label>
+          </div>
+        </details>
       </div>
 
       <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s3);">
-        <button id="btnSaveTariffs" class="btn">Guardar</button>
+        <button id="btnSaveTariffs" class="btn primary">Guardar</button>
       </div>
     </article>
 
     <!-- Proveedores -->
     <article id="proveedor" class="card">
-      <h3>Proveedores</h3>
+      <h3>🛒 Proveedores</h3>
       <div class="row">
         <label class="w240">
           <span>Proveedor por defecto</span>
@@ -112,48 +118,49 @@
           <input id="otherProvider" class="input" placeholder="Nombre"/>
         </label>
 
-        <label class="w240">
+        <div class="w240">
           <span>Subir catálogo</span>
-          <input id="providerCatalog" type="file" />
-        </label>
+          <label id="catalogDrop" class="drop-zone">Arrastra o haz clic<input id="providerCatalog" type="file"></label>
+        </div>
 
-        <button id="btnUploadCatalog" class="btn">Subir archivo</button>
+        <button id="btnUploadCatalog" class="btn secondary">Subir archivo</button>
 
         <div class="inline">
           <span>Estado:</span>
-          <input id="catalogStatus" class="input" value="procesando..." style="width:160px" />
+          <input id="catalogStatus" class="input" value="⏳ Procesando…" style="width:160px" />
         </div>
 
         <div class="toolbar-right">
-          <button id="btnSaveProvider" class="btn">Guardar</button>
+          <button id="btnSaveProvider" class="btn primary">Guardar</button>
         </div>
       </div>
     </article>
 
     <!-- Documentación y prefijos -->
     <article id="prefijos" class="card">
-      <h3>Documentación y prefijos</h3>
-      <div class="grid" style="grid-template-columns: repeat(2, 1fr);">
-        <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
-          <label>Presupuestos <input id="prefQuote" class="input" placeholder="PRES-2025-"/></label>
-          <label>Facturas <input id="prefInvoice" class="input" placeholder="FACT-"/></label>
-          <label>Partes <input id="prefWork" class="input" placeholder="PAR-"/></label>
-        </div>
-        <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+      <h3>📑 Documentación y prefijos</h3>
+      <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+        <label>Presupuestos <input id="prefQuote" class="input" placeholder="PRES-2025-"/></label>
+        <label>Facturas <input id="prefInvoice" class="input" placeholder="FACT-"/></label>
+        <label>Partes <input id="prefWork" class="input" placeholder="PAR-"/></label>
+      </div>
+      <details class="advanced" style="margin-top:var(--s3);">
+        <summary>Opciones avanzadas</summary>
+        <div class="grid" style="grid-template-columns: repeat(3, 1fr); margin-top:var(--s3);">
           <label>Reset contador Presupuestos <input id="resetQuote" class="input" type="number" placeholder="1"/></label>
           <label>Reset contador Facturas <input id="resetInvoice" class="input" type="number" placeholder="1"/></label>
           <label>Reset contador Partes <input id="resetWork" class="input" type="number" placeholder="1"/></label>
         </div>
-      </div>
+      </details>
       <p class="hint">El siguiente número se recalculará automáticamente al guardar.</p>
       <div class="toolbar" style="justify-content:flex-end;">
-        <button id="btnSavePrefixes" class="btn">Guardar</button>
+        <button id="btnSavePrefixes" class="btn primary">Guardar</button>
       </div>
     </article>
 
     <!-- Datos fiscales -->
     <article id="fiscal" class="card">
-      <h3>Datos fiscales</h3>
+      <h3>🧾 Datos fiscales</h3>
       <div class="grid" style="grid-template-columns: repeat(2, 1fr);">
         <label>Nombre fiscal <input id="taxName" class="input" /></label>
         <label>NIF/CIF <input id="taxId" class="input" /></label>
@@ -161,16 +168,17 @@
         <label>Ciudad / CP <input id="taxCityZip" class="input" /></label>
       </div>
       <div class="toolbar" style="justify-content:flex-end;">
-        <button id="btnSaveFiscal" class="btn">Guardar</button>
+        <button id="btnSaveFiscal" class="btn primary">Guardar</button>
       </div>
     </article>
 
     <!-- Branding -->
     <article id="branding" class="card">
-      <h3>Branding de documentos</h3>
+      <h3>🎨 Branding de documentos</h3>
       <div class="grid" style="grid-template-columns: 1fr 1fr;">
         <div class="wire" style="padding:12px;">
-          <label>Logo <input id="logoFile" type="file" accept="image/*"/></label>
+          <span>Logo</span>
+          <label id="logoDrop" class="drop-zone" style="margin-top:.6rem;">Arrastra o haz clic<input id="logoFile" type="file" accept="image/*"></label>
           <div id="logoPreview" class="preview-box" style="margin-top:.6rem;">
             <span>Vista previa</span>
           </div>
@@ -187,8 +195,8 @@
             <option value="B">Modelo B</option>
           </select>
           <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s3);">
-            <button id="btnSaveBranding" class="btn">Guardar</button>
-            <button id="btnPreviewBrand" class="btn secondary">preview</button>
+            <button id="btnSaveBranding" class="btn primary">Guardar</button>
+            <button id="btnPreviewBrand" class="btn secondary">Preview</button>
           </div>
         </div>
       </div>
@@ -196,12 +204,12 @@
 
     <!-- Modelo de email -->
     <article id="email" class="card">
-      <h3>Modelo de email</h3>
+      <h3>✉️ Modelo de email</h3>
       <label>Asunto <input id="emailSubject" class="input" placeholder="Tu presupuesto {numero}"/></label>
       <label style="margin-top:.6rem;">Cuerpo</label>
       <textarea id="emailBody" class="input" placeholder="Hola {cliente}, adjuntamos tu presupuesto por importe {importe}. Enlace: {enlace}"></textarea>
       <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s3);">
-        <button id="btnSaveEmail" class="btn">Guardar</button>
+        <button id="btnSaveEmail" class="btn primary">Guardar</button>
       </div>
       <p class="hint">Variables disponibles: {cliente}, {importe}, {enlace}, {numero}.</p>
     </article>
@@ -214,12 +222,20 @@
 <script>
 const API = location.origin.replace(/\/$/, ''); // adjust if FE+BE on different hosts
 
+// Format minutes as m' or h h'
+function fmtMinutes(m){
+  if(m < 60) return `${m}'`;
+  const h = Math.floor(m/60);
+  const min = m % 60;
+  return min ? `${h}h ${min}'` : `${h}h`;
+}
+
 // Fill 5' steps (5..120)
 function fillSteps(sel){
   sel.innerHTML='';
   for(let m=5;m<=120;m+=5){
     const o=document.createElement('option');
-    o.value=m; o.textContent=`${m}'`;
+    o.value=m; o.textContent=fmtMinutes(m);
     sel.appendChild(o);
   }
 }
@@ -227,6 +243,33 @@ function fillSteps(sel){
 const minBlock = document.getElementById('minBlock');
 const stepBlock = document.getElementById('stepBlock');
 fillSteps(minBlock); fillSteps(stepBlock);
+
+// drop zones
+const aiFiles = document.getElementById('aiFiles');
+const catalogInput = document.getElementById('providerCatalog');
+const logoFile = document.getElementById('logoFile');
+
+function bindDropZone(zone, input){
+  zone.addEventListener('click', () => input.click());
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('hover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('hover'));
+  zone.addEventListener('drop', e => { e.preventDefault(); input.files = e.dataTransfer.files; zone.classList.remove('hover'); input.dispatchEvent(new Event('change')); });
+}
+
+const aiDrop = document.getElementById('aiDrop');
+bindDropZone(aiDrop, aiFiles);
+aiFiles.addEventListener('change', () => {
+  aiDrop.textContent = aiFiles.files.length ? `${aiFiles.files.length} archivo(s)` : 'Arrastra o haz clic';
+});
+
+const catalogDrop = document.getElementById('catalogDrop');
+bindDropZone(catalogDrop, catalogInput);
+catalogInput.addEventListener('change', () => {
+  catalogDrop.textContent = catalogInput.files[0]?.name || 'Arrastra o haz clic';
+});
+
+const logoDrop = document.getElementById('logoDrop');
+bindDropZone(logoDrop, logoFile);
 
 // Provider "other"
 const provider = document.getElementById('provider');
@@ -236,9 +279,9 @@ provider.addEventListener('change', () => {
 });
 
 // Branding preview
-const logoFile = document.getElementById('logoFile');
 const logoPreview = document.getElementById('logoPreview');
 logoFile.addEventListener('change', () => {
+  logoDrop.textContent = logoFile.files[0]?.name || 'Arrastra o haz clic';
   const f = logoFile.files[0]; if(!f) return;
   const reader = new FileReader();
   reader.onload = e => {
@@ -248,7 +291,6 @@ logoFile.addEventListener('change', () => {
 });
 
 // ---- IA actions
-const aiFiles = document.getElementById('aiFiles');
 const aiUploaded = document.getElementById('aiUploaded');
 const btnUploadAI = document.getElementById('btnUploadAI');
 const btnTrain = document.getElementById('btnTrain');
@@ -263,6 +305,7 @@ btnUploadAI.onclick = async () => {
   const r = await fetch(`${API}/settings/ai/uploads`, { method:'POST', body: fd });
   const j = await r.json();
   aiUploaded.textContent = j.count ?? 0;
+  alert('✅ Archivos subidos');
 };
 
 btnTrain.onclick = async () => {
@@ -296,6 +339,7 @@ async function saveJSON(url, payload){
     body: JSON.stringify(payload)
   });
   if(!r.ok){ alert('Error guardando'); return; }
+  alert('✅ Guardado');
 }
 
 document.getElementById('btnSaveTariffs').onclick = () => saveJSON(`${API}/settings/tariffs`, {
@@ -314,12 +358,13 @@ document.getElementById('btnSaveProvider').onclick = async () => {
 
 document.getElementById('btnUploadCatalog').onclick = async () => {
   const fd = new FormData();
-  const file = document.getElementById('providerCatalog').files[0];
+  const file = catalogInput.files[0];
   if(!file) return alert('Selecciona un archivo');
   fd.append('file', file);
   const r = await fetch(`${API}/settings/provider/catalog`, { method:'POST', body: fd });
   const j = await r.json();
-  document.getElementById('catalogStatus').value = j.status || 'procesado';
+  document.getElementById('catalogStatus').value = j.status === 'error' ? '❌ Error' : '✅ Procesado';
+  if(j.status !== 'error') alert('✅ Catálogo subido');
 };
 
 document.getElementById('btnSavePrefixes').onclick = () => saveJSON(`${API}/settings/prefixes`, {
