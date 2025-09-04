@@ -8,7 +8,8 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
-const API_HOST = process.env.API_HOST || 'http://172.0.0.1:8000';
+//const API_HOST = process.env.API_HOST || 'http://172.0.0.1:8000';
+const API_HOST = 'http://172.0.0.1:8000';
 
 const rootDir   = __dirname;
 const pagesDir  = path.join(rootDir, 'pages');
