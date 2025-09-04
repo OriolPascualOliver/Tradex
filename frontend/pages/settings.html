@@ -30,31 +30,30 @@
     <!-- IA y presets -->
     <article id="ia" class="card">
       <div class="section-head">
+        <span class="chip">🤖</span>
         <h3 style="margin:0;">IA y presets</h3>
         <span class="hint-right">Sube mínimo 3 presupuestos previos</span>
       </div>
 
       <div class="row">
-        <label class="w240">
-          <span>Subir archivo(s)</span>
+        <label class="drop-zone w240">
           <input id="aiFiles" type="file" multiple />
+          <span>Arrastra o haz clic para subir</span>
         </label>
 
         <button id="btnUploadAI" class="btn secondary">Subir archivo</button>
 
         <div class="inline">
           <span>Subidos</span><strong id="aiUploaded">0</strong>
-          <span>Estado</span><span id="aiStatus" class="badge badge-idle">ℹ️ Sin datos</span>
+          <span>Estado</span><span id="aiStatus" class="badge badge-idle" aria-live="polite">ℹ️ Sin datos</span>
         </div>
         <div id="aiFileStatus" class="file-list" style="width:100%;"></div>
+      </div>
 
-        <div class="toolbar-right">
-          <button id="btnTrain" class="btn primary">
-            <span class="chip">⚙️</span> Entrenar IA
-          </button>
-          <button id="btnResetAI" class="btn secondary">Resetear</button>
-          <button id="btnDownloadModel" class="btn secondary">Descargar modelo</button>
-        </div>
+      <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s3);">
+        <button id="btnTrain" class="btn primary"><span class="chip">⚙️</span> Entrenar IA</button>
+        <button id="btnResetAI" class="btn secondary">Resetear</button>
+        <button id="btnDownloadModel" class="btn secondary">Descargar modelo</button>
       </div>
       <div id="trainHint" class="hint" style="margin-top:.6rem; display:none;">
         Entrenando… <span class="spinner"></span>
@@ -63,25 +62,21 @@
 
     <!-- Tarifas y márgenes -->
     <article id="tarifas" class="card">
-      <h3 style="margin-top:0;">Tarifas y márgenes</h3>
+      <div class="section-head">
+        <span class="chip">⚙️</span>
+        <h3 style="margin:0;">Tarifas y márgenes</h3>
+      </div>
 
-      <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
-        <label>€/hora <input id="rateHour" class="input" type="number" placeholder="45" step="1"></label>
-
+      <div class="grid" style="grid-template-columns: repeat(2, 1fr);">
+        <label>Tarifa por hora (€) <input id="rateHour" class="input" type="number" placeholder="45" step="1"></label>
         <label>Mínimo computable
-          <select id="minBlock" class="input">
-            <!-- 5' steps up to 120' -->
-          </select>
+          <select id="minBlock" class="input"></select>
         </label>
-
-        <label>Escalado de tiempo
-          <select id="stepBlock" class="input">
-            <!-- 5' steps up to 120' -->
-          </select>
+        <label>Escalado de tiempo <span class="help-icon" title="Intervalo mínimo de facturación">?</span>
+          <select id="stepBlock" class="input"></select>
         </label>
-
-        <label>Markup materiales (%) <input id="markup" class="input" type="number" placeholder="20" step="1"></label>
         <label>IVA (%) <input id="vat" class="input" type="number" placeholder="21" step="1"></label>
+        <label>Markup materiales (%) <span class="help-icon" title="Recargo sobre materiales">?</span><input id="markup" class="input" type="number" placeholder="20" step="1"></label>
         <label>Coste desplazamiento (€/km) <input id="travelKm" class="input" type="number" placeholder="0.5" step="0.1"></label>
       </div>
 
@@ -92,7 +87,10 @@
 
     <!-- Proveedores -->
     <article id="proveedor" class="card">
-      <h3>Proveedores</h3>
+      <div class="section-head">
+        <span class="chip">📦</span>
+        <h3 style="margin:0;">Proveedores</h3>
+      </div>
       <div class="row">
         <label class="w240">
           <span>Proveedor por defecto</span>
@@ -109,38 +107,37 @@
           <input id="otherProvider" class="input" placeholder="Nombre"/>
         </label>
 
-        <label class="w240">
-          <span>Subir catálogo</span>
+        <label class="drop-zone w240">
           <input id="providerCatalog" type="file" />
+          <span>Arrastra o haz clic para subir</span>
         </label>
 
         <button id="btnUploadCatalog" class="btn secondary">Subir archivo</button>
 
         <div class="inline">
           <span>Estado:</span>
-          <span id="catalogStatus" class="badge badge-idle">ℹ️ Sin datos</span>
+          <span id="catalogStatus" class="badge badge-idle" aria-live="polite">ℹ️ Sin datos</span>
         </div>
-
-        <div class="toolbar-right">
-          <button id="btnSaveProvider" class="btn primary">Guardar</button>
-        </div>
+      </div>
+      <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s3);">
+        <button id="btnSaveProvider" class="btn primary">Guardar</button>
       </div>
     </article>
 
     <!-- Documentación y prefijos -->
     <article id="prefijos" class="card">
-      <h3>Documentación y prefijos</h3>
-      <div class="grid" style="grid-template-columns: repeat(2, 1fr);">
-        <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
-          <label>Presupuestos <input id="prefQuote" class="input" placeholder="PRES-2025-"/></label>
-          <label>Facturas <input id="prefInvoice" class="input" placeholder="FACT-"/></label>
-          <label>Partes <input id="prefWork" class="input" placeholder="PAR-"/></label>
-        </div>
-        <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
-          <label>Reset contador Presupuestos <input id="resetQuote" class="input" type="number" placeholder="1"/></label>
-          <label>Reset contador Facturas <input id="resetInvoice" class="input" type="number" placeholder="1"/></label>
-          <label>Reset contador Partes <input id="resetWork" class="input" type="number" placeholder="1"/></label>
-        </div>
+      <div class="section-head">
+        <span class="chip">📑</span>
+        <h3 style="margin:0;">Documentación y prefijos</h3>
+      </div>
+      <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+        <label>Presupuestos <input id="prefQuote" class="input" placeholder="PRES-2025-"/></label>
+        <label>Facturas <input id="prefInvoice" class="input" placeholder="FACT-"/></label>
+        <label>Partes <input id="prefWork" class="input" placeholder="PAR-"/></label>
+      </div>
+      <div class="inline" style="margin-top:var(--s3); align-items:flex-end;">
+        <label class="w240">Próximo número de presupuesto <input id="nextQuote" class="input" disabled/></label>
+        <button id="btnResetPrefixes" class="btn secondary">Reiniciar numeración</button>
       </div>
       <p class="hint">El siguiente número se recalculará automáticamente al guardar.</p>
       <div class="toolbar" style="justify-content:flex-end;">
@@ -150,7 +147,10 @@
 
     <!-- Datos fiscales -->
     <article id="fiscal" class="card">
-      <h3>Datos fiscales</h3>
+      <div class="section-head">
+        <span class="chip">🏢</span>
+        <h3 style="margin:0;">Datos fiscales</h3>
+      </div>
       <div class="grid" style="grid-template-columns: repeat(2, 1fr);">
         <label>Nombre fiscal <input id="taxName" class="input" /></label>
         <label>NIF/CIF <input id="taxId" class="input" /></label>
@@ -164,27 +164,37 @@
 
     <!-- Branding -->
     <article id="branding" class="card">
-      <h3>Branding de documentos</h3>
+      <div class="section-head">
+        <span class="chip">🎨</span>
+        <h3 style="margin:0;">Branding de documentos</h3>
+      </div>
       <div class="grid" style="grid-template-columns: 1fr 1fr;">
         <div class="wire" style="padding:12px;">
-          <label>Logo <input id="logoFile" type="file" accept="image/*"/></label>
+          <label>Logo</label>
+          <label class="drop-zone" style="margin-top:.4rem;">
+            <input id="logoFile" type="file" accept="image/*"/>
+            <span>Arrastra o haz clic para subir</span>
+          </label>
           <div id="logoPreview" class="preview-box" style="margin-top:.6rem;">
             <span>Vista previa</span>
           </div>
         </div>
         <div>
           <label>Modelo de factura</label>
-          <select id="tplInvoice" class="input">
-            <option value="A">Modelo A</option>
-            <option value="B">Modelo B</option>
-          </select>
+          <div class="inline">
+            <select id="tplInvoice" class="input">
+              <option value="A">Modelo A</option>
+              <option value="B">Modelo B</option>
+            </select>
+            <button id="btnPreviewInvoice" class="btn secondary">Preview</button>
+          </div>
           <label style="margin-top:.6rem;">Modelo de presupuesto</label>
           <div class="inline">
             <select id="tplQuote" class="input">
               <option value="A">Modelo A</option>
               <option value="B">Modelo B</option>
             </select>
-            <button id="btnPreviewBrand" class="btn secondary">Preview</button>
+            <button id="btnPreviewQuote" class="btn secondary">Preview</button>
           </div>
           <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s3);">
             <button id="btnSaveBranding" class="btn primary">Guardar</button>
@@ -195,7 +205,10 @@
 
     <!-- Modelo de email -->
     <article id="email" class="card">
-      <h3>Modelo de email</h3>
+      <div class="section-head">
+        <span class="chip">✉️</span>
+        <h3 style="margin:0;">Modelo de email</h3>
+      </div>
       <label>Asunto <input id="emailSubject" class="input" placeholder="Tu presupuesto {numero}"/></label>
       <label style="margin-top:.6rem;">Cuerpo <span class="help-icon" title="Variables disponibles: {cliente}, {importe}, {enlace}, {numero}">?</span></label>
       <textarea id="emailBody" class="input" placeholder="Hola {cliente}, adjuntamos tu presupuesto por importe {importe}. Enlace: {enlace}"></textarea>
@@ -219,7 +232,7 @@ function setBadge(el, status){
     case 'processing':
       el.classList.add('badge-processing'); el.textContent = '⏳ Procesando'; break;
     case 'ok':
-      el.classList.add('badge-ok'); el.textContent = '✅ Completado'; break;
+      el.classList.add('badge-ok'); el.textContent = '✅ Listo'; break;
     case 'error':
       el.classList.add('badge-error'); el.textContent = '❌ Error'; break;
     default:
@@ -262,6 +275,7 @@ provider.addEventListener('change', () => {
   otherWrap.style.display = provider.value === 'other' ? '' : 'none';
 });
 const catalogStatus = document.getElementById('catalogStatus');
+const btnUploadCatalog = document.getElementById('btnUploadCatalog');
 
 // Branding preview
 const logoFile = document.getElementById('logoFile');
@@ -314,6 +328,7 @@ btnUploadAI.onclick = async () => {
     setBadge(aiStatus,'idle');
     return;
   }
+  btnUploadAI.classList.add('loading'); const old=btnUploadAI.innerHTML; btnUploadAI.innerHTML='<span class="spinner"></span>';
   aiFileStatus.innerHTML = Array.from(aiFiles.files).map(f=>`${f.name} ⏳`).join('<br>');
   setBadge(aiStatus,'processing');
   const fd = new FormData();
@@ -323,6 +338,7 @@ btnUploadAI.onclick = async () => {
   aiUploaded.textContent = j.count ?? 0;
   aiFileStatus.innerHTML = Array.from(aiFiles.files).map(f=>`${f.name} ✅`).join('<br>');
   setBadge(aiStatus, j.status || 'ok');
+  btnUploadAI.classList.remove('loading'); btnUploadAI.innerHTML=old;
 };
 
 btnTrain.onclick = async () => {
@@ -351,37 +367,41 @@ btnResetAI.onclick = async () => {
 btnDownloadModel.onclick = () => { window.location = `${API}/settings/ai/model`; };
 
 // ---- SAVE handlers
-async function saveJSON(url, payload, okMsg){
+async function saveJSON(url, payload, okMsg, btn){
+  let old;
+  if(btn){ btn.classList.add('loading'); old=btn.innerHTML; btn.innerHTML='<span class="spinner"></span>'; }
   const r = await fetch(url, {
     method:'PUT',
     headers:{ 'Content-Type':'application/json' },
     body: JSON.stringify(payload)
   });
+  if(btn){ btn.classList.remove('loading'); btn.innerHTML=old; }
   if(!r.ok){ alert('Error guardando'); return; }
   showToast(okMsg || 'Guardado correctamente');
 }
 
-document.getElementById('btnSaveTariffs').onclick = () => saveJSON(`${API}/settings/tariffs`, {
+document.getElementById('btnSaveTariffs').onclick = function(){ saveJSON(`${API}/settings/tariffs`, {
   rate_hour: +document.getElementById('rateHour').value,
   min_minutes: +document.getElementById('minBlock').value,
   step_minutes: +document.getElementById('stepBlock').value,
   markup_percent: +document.getElementById('markup').value,
   vat_percent: +document.getElementById('vat').value,
   travel_per_km: +document.getElementById('travelKm').value
-}, 'Tarifas guardadas correctamente');
+}, 'Tarifas guardadas correctamente', this); };
 
-document.getElementById('btnSaveProvider').onclick = async () => {
+document.getElementById('btnSaveProvider').onclick = async function(){
   const chosen = provider.value === 'other' ? document.getElementById('otherProvider').value : provider.value;
-  await saveJSON(`${API}/settings/provider`, { default_provider: chosen }, 'Proveedor guardado');
+  await saveJSON(`${API}/settings/provider`, { default_provider: chosen }, 'Proveedor guardado', this);
 };
 
-document.getElementById('btnUploadCatalog').onclick = async () => {
+btnUploadCatalog.onclick = async () => {
   const file = document.getElementById('providerCatalog').files[0];
   if(!file){
     catalogStatus.className='badge badge-error';
     catalogStatus.textContent='❌ No se han proporcionado archivos';
     return;
   }
+  btnUploadCatalog.classList.add('loading'); const old=btnUploadCatalog.innerHTML; btnUploadCatalog.innerHTML='<span class="spinner"></span>';
   catalogStatus.className='badge badge-processing';
   catalogStatus.textContent=`⏳ ${file.name}`;
   const fd = new FormData();
@@ -390,27 +410,23 @@ document.getElementById('btnUploadCatalog').onclick = async () => {
   const j = await r.json();
   catalogStatus.className = j.status === 'error' ? 'badge badge-error' : 'badge badge-ok';
   catalogStatus.textContent = `${j.status === 'error' ? '❌' : '✅'} ${file.name}`;
+  btnUploadCatalog.classList.remove('loading'); btnUploadCatalog.innerHTML=old;
 };
 
-document.getElementById('btnSavePrefixes').onclick = () => saveJSON(`${API}/settings/prefixes`, {
+document.getElementById('btnSavePrefixes').onclick = function(){ saveJSON(`${API}/settings/prefixes`, {
   quote_prefix: document.getElementById('prefQuote').value,
   invoice_prefix: document.getElementById('prefInvoice').value,
-  work_prefix: document.getElementById('prefWork').value,
-  reset: {
-    quote_next: +document.getElementById('resetQuote').value || null,
-    invoice_next: +document.getElementById('resetInvoice').value || null,
-    work_next: +document.getElementById('resetWork').value || null
-  }
-}, 'Prefijos guardados');
+  work_prefix: document.getElementById('prefWork').value
+}, 'Prefijos guardados', this); };
 
-document.getElementById('btnSaveFiscal').onclick = () => saveJSON(`${API}/settings/fiscal`, {
+document.getElementById('btnSaveFiscal').onclick = function(){ saveJSON(`${API}/settings/fiscal`, {
   legal_name: document.getElementById('taxName').value,
   tax_id: document.getElementById('taxId').value,
   address: document.getElementById('taxAddress').value,
   city_zip: document.getElementById('taxCityZip').value
-}, 'Datos fiscales guardados');
+}, 'Datos fiscales guardados', this); };
 
-document.getElementById('btnSaveBranding').onclick = async () => {
+document.getElementById('btnSaveBranding').onclick = async function(){
   // upload logo if selected
   const lf = document.getElementById('logoFile').files[0];
   if(lf){
@@ -420,15 +436,21 @@ document.getElementById('btnSaveBranding').onclick = async () => {
   await saveJSON(`${API}/settings/branding`, {
     invoice_template: document.getElementById('tplInvoice').value,
     quote_template: document.getElementById('tplQuote').value
-  }, 'Branding guardado');
+  }, 'Branding guardado', this);
 };
 
-document.getElementById('btnPreviewBrand').onclick = () => window.open(`${API}/settings/branding/preview`, '_blank');
+document.getElementById('btnPreviewInvoice').onclick = () => window.open(`${API}/settings/branding/preview?type=invoice`, '_blank');
+document.getElementById('btnPreviewQuote').onclick = () => window.open(`${API}/settings/branding/preview?type=quote`, '_blank');
 
-document.getElementById('btnSaveEmail').onclick = () => saveJSON(`${API}/settings/email-template`, {
+document.getElementById('btnSaveEmail').onclick = function(){ saveJSON(`${API}/settings/email-template`, {
   subject: document.getElementById('emailSubject').value,
   body: document.getElementById('emailBody').value
-}, 'Email guardado');
+}, 'Email guardado', this); };
+
+document.getElementById('btnResetPrefixes').onclick = async function(){
+  await fetch(`${API}/settings/prefixes/reset`, { method:'POST' });
+  showToast('Numeración reiniciada');
+};
 
 // ---- Load initial values
 (async function boot(){
