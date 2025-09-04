@@ -173,6 +173,13 @@ nav a:focus-visible{ outline: 2px solid #fff; outline-offset: 4px; border-radius
 .btn.danger{
   background-image: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
 }
+.btn-tertiary{
+  background:#f3f4f6;
+  color:#374151;
+}
+.btn-tertiary:hover{
+  background:#e5e7eb;
+}
 
 .cta-buttons{
   display:flex; flex-wrap:wrap; justify-content:center; gap: var(--s3);
@@ -248,7 +255,34 @@ input:focus, textarea:focus{
   outline: none; border-color: rgba(37,99,235,.6);
   box-shadow: 0 0 0 4px rgba(37,99,235,.12);
 }
+.form-select{
+  width:100%; font: inherit; color:var(--ink-2);
+  padding: 12px 14px; border-radius: 12px;
+  border:1px solid var(--border);
+  background:#fff;
+  box-shadow: inset 0 1px 0 rgba(2,6,23,.04);
+  transition: border-color .15s ease, box-shadow .15s ease;
+  appearance:none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%),
+    linear-gradient(to right, transparent, transparent);
+  background-position:
+    calc(100% - 20px) calc(50% - 3px),
+    calc(100% - 14px) calc(50% - 3px),
+    calc(100% - 2.2rem) 0.6rem;
+  background-size: 6px 6px, 6px 6px, 1px 60%;
+  background-repeat: no-repeat;
+}
+.form-select:focus{
+  outline:none; border-color: rgba(37,99,235,.6);
+  box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+}
 textarea{ min-height: 140px; resize: vertical; }
+.badge{ padding:0.25rem 0.5rem; border-radius:0.5rem; font-weight:500; }
+.badge-success{ background:#d1fae5; color:#065f46; }
+.badge-warning{ background:#fef3c7; color:#92400e; }
+.badge-error{ background:#fee2e2; color:#991b1b; }
 button[type="submit"]{
   margin-top: var(--s4);
   background-image: linear-gradient(180deg, var(--sky) 0%, var(--sky-600) 100%);

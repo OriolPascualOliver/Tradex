@@ -41,14 +41,8 @@
 
         <div class="inline">
           <span>Subidos</span><strong id="aiUploaded">0</strong>
-          <label class="inline">Estado:
-            <select id="aiStatus" class="input">
-              <option value="idle">Idle</option>
-              <option value="processing">Procesando</option>
-              <option value="ok">OK</option>
-              <option value="error">Error</option>
-            </select>
-          </label>
+          <span>Estado:</span>
+          <span id="aiStatus" class="badge badge-success">{{ ia_status }}</span>
         </div>
 
         <div class="toolbar-right">
@@ -56,7 +50,7 @@
             <span class="chip">⚙️</span> Entrenar IA
           </button>
           <button id="btnResetAI" class="btn">Resetear</button>
-          <button id="btnDownloadModel" class="btn">Descargar modelo</button>
+          <button id="btnDownloadModel" class="btn btn-tertiary">Descargar modelo</button>
         </div>
       </div>
       <div id="trainHint" class="hint" style="margin-top:.6rem; display:none;">
@@ -72,13 +66,13 @@
         <label>€/hora <input id="rateHour" class="input" type="number" placeholder="45" step="1"></label>
 
         <label>Mínimo computable
-          <select id="minBlock" class="input">
+          <select id="minBlock" class="input form-select">
             <!-- 5' steps up to 120' -->
           </select>
         </label>
 
         <label>Escalado de tiempo
-          <select id="stepBlock" class="input">
+          <select id="stepBlock" class="input form-select">
             <!-- 5' steps up to 120' -->
           </select>
         </label>
@@ -99,7 +93,7 @@
       <div class="row">
         <label class="w240">
           <span>Proveedor por defecto</span>
-          <select id="provider" class="input">
+          <select id="provider" class="input form-select">
             <option value="Bricomart">Bricomart</option>
             <option value="Leroy Merlin">Leroy Merlin</option>
             <option value="Amazon Business">Amazon Business</option>
@@ -121,7 +115,7 @@
 
         <div class="inline">
           <span>Estado:</span>
-          <input id="catalogStatus" class="input" value="procesando..." style="width:160px" />
+          <span id="catalogStatus" class="badge badge-warning">{{ proveedor_status }}</span>
         </div>
 
         <div class="toolbar-right">
@@ -177,12 +171,12 @@
         </div>
         <div>
           <label>Modelo de factura</label>
-          <select id="tplInvoice" class="input">
+          <select id="tplInvoice" class="input form-select">
             <option value="A">Modelo A</option>
             <option value="B">Modelo B</option>
           </select>
           <label style="margin-top:.6rem;">Modelo de presupuesto</label>
-          <select id="tplQuote" class="input">
+          <select id="tplQuote" class="input form-select">
             <option value="A">Modelo A</option>
             <option value="B">Modelo B</option>
           </select>
@@ -270,11 +264,11 @@ btnTrain.onclick = async () => {
   btnTrain.disabled = true;
   const r = await fetch(`${API}/settings/ai/train`, { method:'POST' });
   const j = await r.json().catch(()=>({}));
-  aiStatus.value = j.status || 'processing';
+  aiStatus.textContent = j.status || 'processing';
   setTimeout(async () => { // poll once for MVP
     const rr = await fetch(`${API}/settings/ai/status`);
     const jj = await rr.json();
-    aiStatus.value = jj.status || 'ok';
+    aiStatus.textContent = jj.status || 'ok';
     trainHint.style.display = 'none';
     btnTrain.disabled = false;
   }, 2500);
@@ -283,7 +277,7 @@ btnTrain.onclick = async () => {
 btnResetAI.onclick = async () => {
   await fetch(`${API}/settings/ai/reset`, { method:'POST' });
   aiUploaded.textContent = '0';
-  aiStatus.value = 'idle';
+  aiStatus.textContent = 'idle';
 };
 
 btnDownloadModel.onclick = () => { window.location = `${API}/settings/ai/model`; };
@@ -319,7 +313,7 @@ document.getElementById('btnUploadCatalog').onclick = async () => {
   fd.append('file', file);
   const r = await fetch(`${API}/settings/provider/catalog`, { method:'POST', body: fd });
   const j = await r.json();
-  document.getElementById('catalogStatus').value = j.status || 'procesado';
+  document.getElementById('catalogStatus').textContent = j.status || 'procesado';
 };
 
 document.getElementById('btnSavePrefixes').onclick = () => saveJSON(`${API}/settings/prefixes`, {
