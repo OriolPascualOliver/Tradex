@@ -369,3 +369,58 @@ body.index .hero .btn.tertiary {
   font-weight:600;
   color: var(--ink);
 }
+
+/* --- Dashboard state helpers --- */
+.skeleton{
+  background: var(--border);
+  border-radius:4px;
+  animation: skeleton 1.2s ease-in-out infinite;
+}
+@keyframes skeleton{
+  0%,100%{opacity:.5;}
+  50%{opacity:1;}
+}
+.kpi .title .icon{ margin-right:4px; }
+
+.kpi[data-state="loading"] .data,
+.kpi[data-state="empty"] .data,
+.kpi[data-state="error"] .data{ display:none; }
+.kpi[data-state="loading"] .skeleton{ display:inline-block; height:1.6rem; width:60%; }
+.kpi[data-state="success"] .skeleton,
+.kpi[data-state="empty"] .skeleton,
+.kpi[data-state="error"] .skeleton{ display:none; }
+.kpi[data-state="empty"] [data-role="empty"]{ display:inline; color:var(--muted); }
+.kpi[data-state="error"] [data-role="error"]{ display:inline; color:var(--rose); }
+.kpi [data-role="empty"],
+.kpi [data-role="error"]{ display:none; }
+
+.card.chart{ position:relative; }
+.card.chart .chart-area{ position:relative; }
+.card.chart .chart-placeholder,
+.card.chart .chart-empty,
+.card.chart .chart-error{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--muted); background:var(--paper);
+}
+.card.chart .chart-placeholder,
+.card.chart .chart-empty,
+.card.chart .chart-error{ display:none; text-align:center; }
+.card.chart[data-state="loading"] .chart-placeholder{ display:flex; }
+.card.chart[data-state="empty"] .chart-empty{ display:flex; }
+.card.chart[data-state="error"] .chart-error{ display:flex; }
+.card.chart[data-state="success"] .chart-content{ display:block; }
+.card.chart .chart-content{ display:none; height:100%; }
+
+[data-widget][data-state="loading"] .tbody-skeleton{ display:table-row-group; }
+[data-widget][data-state="loading"] .tbody-data,
+[data-widget][data-state="empty"] .tbody-data,
+[data-widget][data-state="error"] .tbody-data{ display:none; }
+[data-widget][data-state="empty"] .tbody-empty{ display:table-row-group; }
+[data-widget][data-state="error"] .tbody-error{ display:table-row-group; }
+[data-widget][data-state="success"] .tbody-data{ display:table-row-group; }
+.table-wrapper .tbody-skeleton,
+.table-wrapper .tbody-empty,
+.table-wrapper .tbody-error{ display:none; }
+[data-role="error"]{ color:var(--rose); }
+[data-role="empty"]{ color:var(--muted); }

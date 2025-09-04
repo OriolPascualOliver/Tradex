@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard · FixHub</title>
   <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
+  <script src="/js/dashboard.js" defer></script>
 </head>
 <body>
 <!--#include "partials/header.html" -->
@@ -13,41 +14,82 @@
   <h2>Dashboard</h2>
 
   <section class="kpis">
-    <div class="kpi">
-      <div class="title">Facturación (mes)</div>
-      <div class="value">— €</div>
+    <div class="kpi" data-widget="kpi-billing" data-state="loading">
+      <div class="title"><span class="icon" aria-hidden="true">💶</span>Facturación (mes)</div>
+      <div class="value" aria-live="polite">
+        <span class="data">0&nbsp;€</span>
+        <span class="skeleton"></span>
+        <span data-role="empty">Sin datos</span>
+        <span data-role="error">⚠️ Error <button class="retry">Reintentar</button></span>
+      </div>
     </div>
-    <div class="kpi">
-      <div class="title">Trabajos hoy</div>
-      <div class="value">—</div>
+    <div class="kpi" data-widget="kpi-jobs" data-state="loading">
+      <div class="title"><span class="icon" aria-hidden="true">📋</span>Trabajos hoy</div>
+      <div class="value" aria-live="polite">
+        <span class="data">0</span>
+        <span class="skeleton"></span>
+        <span data-role="empty">Sin datos</span>
+        <span data-role="error">⚠️ Error <button class="retry">Reintentar</button></span>
+      </div>
     </div>
-    <div class="kpi">
-      <div class="title">Tiempo real vs. presup.</div>
-      <div class="value">—%</div>
+    <div class="kpi" data-widget="kpi-time" data-state="loading">
+      <div class="title"><span class="icon" aria-hidden="true">⏱️</span>Tiempo real vs. presup.</div>
+      <div class="value" aria-live="polite">
+        <span class="data">0%</span>
+        <span class="skeleton"></span>
+        <span data-role="empty">Sin datos</span>
+        <span data-role="error">⚠️ Error <button class="retry">Reintentar</button></span>
+      </div>
     </div>
-    <div class="kpi">
-      <div class="title">Valoración media</div>
-      <div class="value">— ★</div>
+    <div class="kpi" data-widget="kpi-rating" data-state="loading">
+      <div class="title"><span class="icon" aria-hidden="true">⭐</span>Valoración media</div>
+      <div class="value" aria-live="polite">
+        <span class="data">0 ★</span>
+        <span class="skeleton"></span>
+        <span data-role="empty">Sin datos</span>
+        <span data-role="error">⚠️ Error <button class="retry">Reintentar</button></span>
+      </div>
     </div>
   </section>
 
   <section class="grid" style="grid-template-columns: 2fr 1fr;">
-    <div class="card wire">
+    <div class="card wire chart" data-widget="chart-billing" data-state="loading">
       <h3>Evolución de facturación</h3>
-      <div style="height:260px;"></div>
+      <div class="chart-area" style="height:260px;">
+        <div class="chart-placeholder" data-role="slow"></div>
+        <div class="chart-empty">Sin registros suficientes</div>
+        <div class="chart-error">No se pudo cargar el gráfico <button class="retry">Reintentar</button></div>
+        <div class="chart-content"></div>
+      </div>
     </div>
-    <div class="card wire">
+    <div class="card wire chart" data-widget="chart-jobs" data-state="loading">
       <h3>Trabajos por empleado</h3>
-      <div style="height:260px;"></div>
+      <div class="chart-area" style="height:260px;">
+        <div class="chart-placeholder" data-role="slow"></div>
+        <div class="chart-empty">Sin registros suficientes</div>
+        <div class="chart-error">No se pudo cargar el gráfico <button class="retry">Reintentar</button></div>
+        <div class="chart-content"></div>
+      </div>
     </div>
   </section>
 
-  <section class="card wire" style="margin-top: var(--s5);">
+  <section class="card wire" style="margin-top: var(--s5);" data-widget="table-jobs" data-state="loading">
     <h3>Tiempo estimado vs. real (últimos trabajos)</h3>
-    <table class="table">
-      <thead><tr><th>Trabajo</th><th>Empleado</th><th>Estimado</th><th>Real</th><th>Δ</th></tr></thead>
-      <tbody><tr><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody>
-    </table>
+    <div class="table-wrapper">
+      <table class="table">
+        <thead><tr><th>Trabajo</th><th>Empleado</th><th>Estimado</th><th>Real</th><th>Δ</th></tr></thead>
+        <tbody class="tbody-skeleton">
+          <tr><td><span class="skeleton" style="width:80%"></span></td><td><span class="skeleton" style="width:60%"></span></td><td><span class="skeleton" style="width:50%"></span></td><td><span class="skeleton" style="width:50%"></span></td><td><span class="skeleton" style="width:30%"></span></td></tr>
+          <tr><td><span class="skeleton" style="width:80%"></span></td><td><span class="skeleton" style="width:60%"></span></td><td><span class="skeleton" style="width:50%"></span></td><td><span class="skeleton" style="width:50%"></span></td><td><span class="skeleton" style="width:30%"></span></td></tr>
+          <tr><td><span class="skeleton" style="width:80%"></span></td><td><span class="skeleton" style="width:60%"></span></td><td><span class="skeleton" style="width:50%"></span></td><td><span class="skeleton" style="width:50%"></span></td><td><span class="skeleton" style="width:30%"></span></td></tr>
+        </tbody>
+        <tbody class="tbody-data">
+          <tr><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+        <tbody class="tbody-empty"><tr><td colspan="5" class="center" data-role="empty">Sin datos para mostrar</td></tr></tbody>
+        <tbody class="tbody-error"><tr><td colspan="5" class="center" data-role="error">No se pudo cargar la información <button class="retry">Reintentar</button></td></tr></tbody>
+      </table>
+    </div>
   </section>
 </main>
 
