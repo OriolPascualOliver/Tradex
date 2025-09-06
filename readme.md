@@ -2,8 +2,9 @@
 
 ## Backend Architecture
 
-The backend is built with [FastAPI](https://fastapi.tiangolo.com/) and
-[SQLAlchemy](https://www.sqlalchemy.org/) for database interactions.
+The backend is built with [FastAPI](https://fastapi.tiangolo.com/),
+[SQLAlchemy](https://www.sqlalchemy.org/) for database interactions, and
+PostgreSQL for persistent storage.
 Configuration is handled via `pydantic-settings`, and Alembic manages
 database migrations. The application is structured into modular routers
 (`backend/api/routers`) for features such as authentication, tasks,
@@ -15,12 +16,13 @@ configuration and database setup are in `backend/core`.
 
 The API reads configuration from environment variables or a `.env` file:
 
-- `DATABASE_URL` – SQLAlchemy database URL. Defaults to
-  `sqlite:///./sql_app.db` for local development.
+- `DATABASE_URL` – SQLAlchemy database URL. When running with the provided
+  `docker-compose.yml` it defaults to
+  `postgresql://postgres:postgres@db:5432/postgres`.
 - `SECRET_KEY` – secret used to sign JWT access tokens.
 
 Additional variables such as `POSTGRES_USER`, `POSTGRES_PASSWORD`, and
-`POSTGRES_DB` are used when running via Docker.
+`POSTGRES_DB` configure the bundled PostgreSQL service.
 
 ## Running the API locally (without Docker)
 
@@ -34,8 +36,10 @@ Additional variables such as `POSTGRES_USER`, `POSTGRES_PASSWORD`, and
 
 2. **Configure environment variables**
 
-   Create a `.env` file or export variables in your shell. At minimum
-   set `DATABASE_URL` (e.g. `sqlite:///./sql_app.db`) and `SECRET_KEY`.
+   Create a `.env` file or export variables in your shell. At minimum set
+   `DATABASE_URL` (for example,
+   `postgresql://postgres:postgres@localhost:5432/postgres`) and
+   `SECRET_KEY`.
 
 3. **Run database migrations**
 
@@ -58,7 +62,9 @@ FastAPI automatically provides interactive API docs at
 
 ## Running with Docker
 
-The project uses `docker-compose` to start the API and database services. Ensure the `.env` file is present, then start everything with:
+The project uses `docker-compose` to start the API and database services on
+Ubuntu or other hosts. Ensure the `.env` file is present if you need to
+override defaults, then start everything with:
 
 ```bash
 docker-compose up --build

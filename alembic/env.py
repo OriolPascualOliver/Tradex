@@ -15,8 +15,10 @@ for p in (BACKEND_DIR, PROJECT_ROOT, HERE):
 from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
+from backend.core.config import settings
 
 config = context.config
+config.set_main_option("sqlalchemy.url", settings.database_url)
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
@@ -36,7 +38,6 @@ def run_migrations_offline() -> None:
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
         compare_type=True,
-        render_as_batch=True,   # SQLite-friendly ALTERs
     )
     with context.begin_transaction():
         context.run_migrations()
@@ -52,7 +53,6 @@ def run_migrations_online() -> None:
             connection=connection,
             target_metadata=target_metadata,
             compare_type=True,
-            render_as_batch=True,
         )
         with context.begin_transaction():
             context.run_migrations()

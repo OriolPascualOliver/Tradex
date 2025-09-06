@@ -6,8 +6,10 @@ import sys
 BASE_DIR = os.path.dirname(__file__)
 sys.path.append(os.path.join(BASE_DIR, "backend"))
 
-# Default to SQLite if no DB configured
-os.environ.setdefault("DATABASE_URL", "sqlite:///./sql_app.db")
+# Default to PostgreSQL if no DB configured
+os.environ.setdefault(
+    "DATABASE_URL", "postgresql://postgres:postgres@db:5432/postgres"
+)
 
 from backend.core.database import SessionLocal, Base, engine
 from backend.api.models.user import User
