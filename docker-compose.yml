@@ -1,25 +1,37 @@
 version: "3.9"
 services:
-  api:
-    build:
-      context: .
-      dockerfile: backend/Dockerfile
-    env_file: .env
-    environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
   db:
     image: postgres:15-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    # Comment this in ONLY if you want host access with psql
+    # ports:
+    #   - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      # SQLAlchemy + psycopg3 driver prefix
+      DB_URL: postgresql+psycopg://postgres:postgres@db:5432/postgres
+      # If your app code reads DATABASE_URL instead, keep this too:
+      # DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/postgres
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
 volumes:
   postgres_data:
