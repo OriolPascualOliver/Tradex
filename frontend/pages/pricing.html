@@ -127,7 +127,7 @@
         <li class="unavailable">Facturación electrónica</li>
       </ul>
       <div class="card-cta">
-        <a id="freeBtn" class="btn primary" href="./register.html">Empieza gratis</a>
+        <a id="freeBtn" class="btn primary" href="./register.html?planVal=demoM">Empieza gratis</a>
       </div>
       <a class="hint">* Pago integrado con comisiones del 10% en plan gratuito</a>
     </article>
@@ -146,7 +146,7 @@
         <li>Soporte estándar</li>
       </ul>
       <div class="card-cta">
-        <a class="btn secondary" href="./register.html">Elegir plan Solo</a>
+        <a id="soloBtn" class="btn secondary" href="./register.html?planVal=soloM">Elegir plan Solo</a>
       </div>
       <a class="hint">* Pago integrado con comisiones del 5% en plan Solo</a>
     </article>
@@ -178,7 +178,7 @@
         <li>Próximamente: métricas y SLA</li>
       </ul>
       <div class="card-cta">
-        <a class="btn primary" href="./register.html">Crear equipo</a>
+        <a id="teamBtn" class="btn primary" href="./register.html?planVal=teamM&seats=3">Crear equipo</a>
       </div>
       <a class="hint">* Pago integrado con comisiones del 5% en plan Team</a>
     </article>
@@ -239,12 +239,14 @@ import { pricePerSeatFromTiers, computeAnnual } from '/js/pricing-lib.js';
   let soloMonthly = PRICING.solo.monthly;
   const soloPriceEl  = document.getElementById('soloPrice');
   const soloPeriodEl = document.getElementById('soloPeriod');
+  const soloBtn      = document.getElementById('soloBtn');
 
   // ---- TEAM ----
   const teamSizeEl   = document.getElementById('teamSize');
   const teamPriceNum = document.getElementById('teamPriceNum');
   const teamPeriodEl = document.getElementById('teamPeriod');
   const teamNoteEl   = document.getElementById('teamNote');
+  const teamBtn      = document.getElementById('teamBtn');
 
   // Precio por asiento mensual (según tamaño)
   function perSeatPrice(n){
@@ -262,7 +264,7 @@ import { pricePerSeatFromTiers, computeAnnual } from '/js/pricing-lib.js';
       freePrice.textContent = '0';
       freePeriod.textContent = '/ 2 meses';
       freeBtn.textContent = 'Empieza gratis';
-      freeBtn.setAttribute('href','./login.html');
+      freeBtn.setAttribute('href','./register.html?planVal=demoM');
     } else {
       freeCard.classList.add('disabled');
       freePrice.textContent = '—';
@@ -274,6 +276,7 @@ import { pricePerSeatFromTiers, computeAnnual } from '/js/pricing-lib.js';
 
   // --- Actualiza SOLO ---
   function updateSolo(){
+    const suf = billing === YEARLY ? 'A' : 'M';
     if (billing === MONTHLY){
       soloPriceEl.textContent = fmt(soloMonthly);
       soloPeriodEl.textContent = '/ mes*';
@@ -281,6 +284,7 @@ import { pricePerSeatFromTiers, computeAnnual } from '/js/pricing-lib.js';
       soloPriceEl.textContent = fmt(yearlyTotal(soloMonthly));
       soloPeriodEl.textContent = '/ año*';
     }
+    soloBtn.setAttribute('href', `./register.html?planVal=solo${suf}`);
   }
 
   // --- Actualiza TEAM ---
@@ -289,6 +293,7 @@ import { pricePerSeatFromTiers, computeAnnual } from '/js/pricing-lib.js';
     const seat = perSeatPrice(n);
     const mTotal = n * seat;
 
+    const suf = billing === YEARLY ? 'A' : 'M';
     if (billing === MONTHLY){
       teamPriceNum.textContent = fmt(mTotal);
       teamPeriodEl.textContent = '/ mes*';
@@ -299,6 +304,7 @@ import { pricePerSeatFromTiers, computeAnnual } from '/js/pricing-lib.js';
       teamPeriodEl.textContent = '/ año*';
       teamNoteEl.innerHTML = 'Equivale a <strong>'+fmt(seat*(1-PRICING.annualDiscount))+'€</strong> / persona / mes (−'+(PRICING.annualDiscount*100)+'% anual).';
     }
+    teamBtn.setAttribute('href', `./register.html?planVal=team${suf}&seats=${n}`);
   }
 
   // --- Toggle ---
