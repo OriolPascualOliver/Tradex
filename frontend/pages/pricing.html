@@ -146,7 +146,7 @@
         <li>Soporte estándar</li>
       </ul>
       <div class="card-cta">
-        <a class="btn secondary" href="./register.html">Elegir plan Solo</a>
+        <a class="btn secondary" href="./register.html?plan=Solo">Elegir plan Solo</a>
       </div>
       <a class="hint">* Pago integrado con comisiones del 5% en plan Solo</a>
     </article>
@@ -178,7 +178,7 @@
         <li>Próximamente: métricas y SLA</li>
       </ul>
       <div class="card-cta">
-        <a class="btn primary" href="./register.html">Crear equipo</a>
+        <a id="teamBtn" class="btn primary" href="./register.html?plan=Team&seats=3">Crear equipo</a>
       </div>
       <a class="hint">* Pago integrado con comisiones del 5% en plan Team</a>
     </article>
@@ -245,6 +245,7 @@ import { pricePerSeatFromTiers, computeAnnual } from '/js/pricing-lib.js';
   const teamPriceNum = document.getElementById('teamPriceNum');
   const teamPeriodEl = document.getElementById('teamPeriod');
   const teamNoteEl   = document.getElementById('teamNote');
+  const teamBtn      = document.getElementById('teamBtn');
 
   // Precio por asiento mensual (según tamaño)
   function perSeatPrice(n){
@@ -299,6 +300,7 @@ import { pricePerSeatFromTiers, computeAnnual } from '/js/pricing-lib.js';
       teamPeriodEl.textContent = '/ año*';
       teamNoteEl.innerHTML = 'Equivale a <strong>'+fmt(seat*(1-PRICING.annualDiscount))+'€</strong> / persona / mes (−'+(PRICING.annualDiscount*100)+'% anual).';
     }
+    teamBtn.setAttribute('href', './register.html?plan=Team&seats=' + n);
   }
 
   // --- Toggle ---
