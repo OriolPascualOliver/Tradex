@@ -7,9 +7,9 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = process.env.PORT || 3000;
-//const API_HOST = process.env.API_HOST || 'http://172.0.0.1:8000';
-const API_HOST = 'http://172.0.0.1:8000';
+const PORT = process.env.PORT || 8000;
+//const API_HOST = process.env.API_HOST || 'http://200.234.232.253:8000';
+const API_HOST = 'http://200.234.232.253:8000';
 
 const rootDir   = __dirname;
 const pagesDir  = path.join(rootDir, 'pages');
@@ -108,13 +108,16 @@ const server = http.createServer(async (req, res) => {
         method: req.method,
         headers: req.headers
       }, proxyRes => {
-        res.writeHead(proxyRes.statusCode, proxyRes.headers);
+        // ensure fresh JSON
+        const headers = { ...proxyRes.headers, 'Cache-Control': 'no-store' };
+        res.writeHead(proxyRes.statusCode, headers);
         proxyRes.pipe(res);
       });
+
       req.pipe(proxyReq);
-      proxyReq.on('error', () => {
-        res.writeHead(502, { 'Content-Type': 'text/plain; charset=utf-8' });
-        res.end('Bad Gateway');
+      proxyReq.on('error', (e) => {
+        res.writeHead(502, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Bad gateway', detail: e.message }));
       });
       return;
     }

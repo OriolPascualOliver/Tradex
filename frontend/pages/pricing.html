@@ -199,7 +199,11 @@ import { pricePerSeatFromTiers, computeAnnual } from '/js/pricing-lib.js';
   let PRICING = null;
   async function loadPricing(){
     try{
-      const res = await fetch('http://127.0.0.1:8000/api-v1/pricing');
+
+      const res = await fetch('/api-v1/pricing?t=' + Date.now(), {
+      headers: { 'Accept': 'application/json' },
+      cache: 'no-store'
+      });
       if(!res.ok) throw 0;
       PRICING = await res.json();
     }catch(e){
