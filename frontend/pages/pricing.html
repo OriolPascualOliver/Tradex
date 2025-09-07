@@ -127,7 +127,7 @@
         <li class="unavailable">Facturación electrónica</li>
       </ul>
       <div class="card-cta">
-        <a id="freeBtn" class="btn primary" href="./register.html">Empieza gratis</a>
+        <a id="freeBtn" class="btn primary" href="./register.html?plan=Trial">Empieza gratis</a>
       </div>
       <a class="hint">* Pago integrado con comisiones del 10% en plan gratuito</a>
     </article>
@@ -263,7 +263,7 @@ import { pricePerSeatFromTiers, computeAnnual } from '/js/pricing-lib.js';
       freePrice.textContent = '0';
       freePeriod.textContent = '/ 2 meses';
       freeBtn.textContent = 'Empieza gratis';
-      freeBtn.setAttribute('href','./login.html');
+      freeBtn.setAttribute('href','./register.html?plan=Trial');
     } else {
       freeCard.classList.add('disabled');
       freePrice.textContent = '—';
