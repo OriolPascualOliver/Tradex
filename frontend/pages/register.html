@@ -243,13 +243,24 @@
   const modalBackdrop = document.getElementById('modalBackdrop');
   const modalCancel = document.getElementById('modalCancel');
 
-  // Preselect plan via query params
+  // Preselect plan & billing via query params
   const urlParams = new URLSearchParams(window.location.search);
-  const prePlan = urlParams.get('plan');
+  const planValParam = urlParams.get('planVal');
   const preSeats = urlParams.get('seats');
-  if (prePlan) {
-    const r = Array.from(planRadios).find(p => p.value === prePlan);
-    if (r) r.checked = true;
+  let billingCode = 'M';
+  if (planValParam) {
+    const code = planValParam.toLowerCase();
+    const letter = code.slice(-1);
+    billingCode = letter === 'a' ? 'A' : 'M';
+    const base = code.slice(0, -1);
+    let plan;
+    if (base === 'team') plan = 'Team';
+    else if (base === 'solo') plan = 'Solo';
+    else if (base === 'demo') plan = 'Trial';
+    if (plan) {
+      const r = Array.from(planRadios).find(p => p.value === plan);
+      if (r) r.checked = true;
+    }
   }
   if (preSeats) {
     teamSeats.value = preSeats;
@@ -259,11 +270,6 @@
   function isProSelected(){
     const v = document.querySelector('input[name="plan"]:checked').value;
     return v === 'Solo' || v === 'Team';
-  }
-  function planValue(){
-    const v = document.querySelector('input[name="plan"]:checked').value;
-    if (v === 'Team') return `Team_${teamSeats.value}`;
-    return v; // Trial o Solo
   }
   function showError(msg){
     alertBox.textContent = msg;
@@ -404,10 +410,12 @@
     }
 
     // Build payload
-    const planVal = document.querySelector('input[name="plan"]:checked').value;
+    const planSel = document.querySelector('input[name="plan"]:checked').value;
+    const base = planSel === 'Trial' ? 'demo' : planSel.toLowerCase();
+    const planVal = `${base}${billingCode}`;
     const payload = {
       license: planVal,
-      team_members: planVal === 'Team' ? parseInt(teamSeats.value, 10) : 1,
+      team_members: planSel === 'Team' ? parseInt(teamSeats.value, 10) : 1,
       email: document.getElementById('email').value.trim(),
       telephone: document.getElementById('phone').value.trim(),
       first_name: document.getElementById('name').value.trim(),
