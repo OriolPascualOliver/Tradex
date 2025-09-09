@@ -2,6 +2,8 @@
 # dummy2
 from fastapi.testclient import TestClient
 from main import app
+from uuid import uuid4
+
 from backend.api.models.user import User
 from backend.api.routers.auth import create_access_token
 
@@ -12,7 +14,8 @@ API_PREFIX = "/api-v1"
 
 
 def create_user(db, device_id: str = "testdevice"):
-    user = User(email="user@example.com", hashed_password="pwd", device_id=device_id)
+    email = f"user_{uuid4().hex}@example.com"
+    user = User(email=email, hashed_password="pwd", device_id=device_id)
     db.add(user)
     db.commit()
     db.refresh(user)

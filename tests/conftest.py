@@ -4,20 +4,22 @@ import sys
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import StaticPool
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
-os.environ.setdefault("DATABASE_URL", "sqlite://")
+TEST_DB = "test.db"
+if os.path.exists(TEST_DB):
+    os.remove(TEST_DB)
+os.environ.setdefault("DATABASE_URL", f"sqlite:///{TEST_DB}")
 
 from backend.core.database import Base
 import backend.core.database as database
+from backend.api.models import user, task  # ensure models imported
 
 # Create an in-memory SQLite engine
 engine = create_engine(
-    "sqlite://",
+    f"sqlite:///{TEST_DB}",
     connect_args={"check_same_thread": False},
-    poolclass=StaticPool,
 )
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -27,6 +29,8 @@ def override_session_local():
     Base.metadata.create_all(bind=engine)
     yield
     Base.metadata.drop_all(bind=engine)
+    if os.path.exists(TEST_DB):
+        os.remove(TEST_DB)
 
 @pytest.fixture()
 def db_session():

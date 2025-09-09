@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, constr
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from jose import JWTError, jwt
@@ -26,7 +26,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
 
 
 class UserBase(BaseModel):
-    email: EmailStr
+    email: constr(pattern=r"[^@]+@[^@]+\.[^@]+")
     password: str
     device_id: str = Field(..., alias="deviceId")
 
@@ -34,7 +34,7 @@ class UserBase(BaseModel):
 
 
 class ForgotPasswordRequest(BaseModel):
-    email: EmailStr
+    email: constr(pattern=r"[^@]+@[^@]+\.[^@]+")
     device_id: str = Field(..., alias="deviceId")
 
     model_config = ConfigDict(populate_by_name=True)
@@ -51,7 +51,7 @@ class ResetPasswordRequest(BaseModel):
 class RegisterRequest(BaseModel):
     license: str
     team_members: int | None = None
-    email: EmailStr
+    email: constr(pattern=r"[^@]+@[^@]+\.[^@]+")
     telephone: str
     first_name: str
     surname1: str
@@ -70,7 +70,7 @@ class RegisterRequest(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 
-@router.post("/api-v1/auth/register")
+@router.post("/register")
 def register(user: RegisterRequest, db: Session = Depends(get_db)):
     if user.password != user.confirm_password:
         raise HTTPException(status_code=400, detail="Passwords do not match")
@@ -107,7 +107,7 @@ def register(user: RegisterRequest, db: Session = Depends(get_db)):
     return {"access_token": token}
 
 
-@router.post("/api-v1/auth/login")
+@router.post("/login")
 def login(user: UserBase, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.email == user.email).first()
     if not db_user or not pwd_context.verify(user.password, db_user.hashed_password):
@@ -121,7 +121,7 @@ def login(user: UserBase, db: Session = Depends(get_db)):
     return {"access_token": token}
 
 
-@router.post("/api-v1/auth/forgotpassword")
+@router.post("/forgotpassword")
 def forgot_password(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.email == req.email).first()
     if not db_user:
@@ -135,7 +135,7 @@ def forgot_password(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
     return {"reset_token": token}
 
 
-@router.post("/api-v1/auth/reset")
+@router.post("/reset")
 def reset_password(req: ResetPasswordRequest, db: Session = Depends(get_db)):
     try:
         payload = jwt.decode(
@@ -154,3 +154,14 @@ def reset_password(req: ResetPasswordRequest, db: Session = Depends(get_db)):
     db_user.device_id = req.device_id
     db.commit()
     return {"status": "password reset"}
+
+
+class ClockRequest(BaseModel):
+    taskID: int
+    in_out: str
+    deviceid: str
+
+
+@router.post("/clock")
+def clock(req: ClockRequest):
+    return {"status": "ok"}
