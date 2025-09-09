@@ -11,8 +11,8 @@ client = TestClient(app)
 API_PREFIX = "/api-v1"
 
 
-def create_user(db, device_id: str = "testdevice"):
-    user = User(email="user@example.com", hashed_password="pwd", device_id=device_id)
+def create_user(db, device_id: str = "testdevice", email: str = "user@example.com"):
+    user = User(email=email, hashed_password="pwd", device_id=device_id)
     db.add(user)
     db.commit()
     db.refresh(user)
@@ -25,7 +25,7 @@ def auth_headers(token: str):
 
 
 def test_create_and_list_tasks(db_session):
-    user, token = create_user(db_session)
+    user, token = create_user(db_session, email="task1@example.com")
     response = client.post(
         f"{API_PREFIX}/tasks",
         json={"title": "Test", "description": "desc"},
@@ -44,7 +44,7 @@ def test_create_and_list_tasks(db_session):
 
 
 def test_update_and_delete_task(db_session):
-    user, token = create_user(db_session)
+    user, token = create_user(db_session, email="task2@example.com")
     create_resp = client.post(
         f"{API_PREFIX}/tasks",
         json={"title": "Task", "description": None},

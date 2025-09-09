@@ -8,7 +8,7 @@ from backend.core.exceptions import (
     UnprocessableEntityException,
 )
 
-client = TestClient(app)
+client = TestClient(app, raise_server_exceptions=False)
 
 
 def test_unauthorized_handler():

@@ -81,6 +81,7 @@ def test_register_and_login(db_session):
     token = response.json()["access_token"]
     payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
     assert payload["device_id"] == login_device
+    db_session.expire_all()
     user = db_session.query(User).filter(User.email == "user@example.com").first()
     assert user.device_id == login_device
     assert user.last_login > first_login
@@ -90,6 +91,7 @@ def test_register_and_login(db_session):
     # second login should not change sign_in_date
     response = login_user(device_id="device_login2")
     assert response.status_code == 200
+    db_session.expire_all()
     user = db_session.query(User).filter(User.email == "user@example.com").first()
     assert user.sign_in_date == first_sign_in
 
@@ -103,11 +105,13 @@ def test_forgot_and_reset(db_session):
     token = response.json()["reset_token"]
     payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
     assert payload["device_id"] == forgot_device
+    db_session.expire_all()
     user = db_session.query(User).filter(User.email == "user@example.com").first()
     assert user.device_id == forgot_device
 
     response = reset_password(token, "newsecret", device_id=forgot_device)
     assert response.status_code == 200
+    db_session.expire_all()
     user = db_session.query(User).filter(User.email == "user@example.com").first()
     assert user.device_id == forgot_device
 
@@ -119,6 +123,7 @@ def test_forgot_and_reset(db_session):
         response.json()["access_token"], settings.secret_key, algorithms=[settings.algorithm]
     )
     assert payload["device_id"] == new_login_device
+    db_session.expire_all()
     user = db_session.query(User).filter(User.email == "user@example.com").first()
     assert user.device_id == new_login_device
     assert user.last_login is not None
