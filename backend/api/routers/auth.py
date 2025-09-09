@@ -70,7 +70,7 @@ class RegisterRequest(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 
-@router.post("/api-v1/register")
+@router.post("/api-v1/auth/register")
 def register(user: RegisterRequest, db: Session = Depends(get_db)):
     if user.password != user.confirm_password:
         raise HTTPException(status_code=400, detail="Passwords do not match")
@@ -107,7 +107,7 @@ def register(user: RegisterRequest, db: Session = Depends(get_db)):
     return {"access_token": token}
 
 
-@router.post("/api-v1/login")
+@router.post("/api-v1/auth/login")
 def login(user: UserBase, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.email == user.email).first()
     if not db_user or not pwd_context.verify(user.password, db_user.hashed_password):
@@ -121,7 +121,7 @@ def login(user: UserBase, db: Session = Depends(get_db)):
     return {"access_token": token}
 
 
-@router.post("/api-v1/forgotpassword")
+@router.post("/api-v1/auth/forgotpassword")
 def forgot_password(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.email == req.email).first()
     if not db_user:
@@ -135,7 +135,7 @@ def forgot_password(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
     return {"reset_token": token}
 
 
-@router.post("/api-v1/reset")
+@router.post("/api-v1/auth/reset")
 def reset_password(req: ResetPasswordRequest, db: Session = Depends(get_db)):
     try:
         payload = jwt.decode(
