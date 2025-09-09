@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>InstaQuote · Demo de flujo interactivo</title>
   <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     /* --- InstaQuote demo styles (lean, uses site tokens) --- */
     .iq-grid{ display:grid; grid-template-columns: 300px 1fr 360px; gap: var(--s5); align-items:start; }
@@ -68,7 +68,7 @@
   </style>
 </head>
 <body>
-<!--#include "partials/header.html" -->
+<!--# include virtual="/partials/header.html" -->
 
 <main class="iq-grid" style="padding: var(--s5);">
   <!-- Left: catálogo & presets -->
@@ -177,7 +177,7 @@
 
 <div id="toast" class="toast">Copiado al portapapeles</div>
 
-<!--#include "partials/footer.html" -->
+<!--# include virtual="/partials/footer.html" -->
 
 <script>
 /** -----------------------------
