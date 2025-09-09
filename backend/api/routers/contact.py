@@ -5,7 +5,7 @@ from pathlib import Path
 import smtplib
 
 from fastapi import APIRouter
-from pydantic import BaseModel, EmailStr, ConfigDict, Field, constr
+from pydantic import BaseModel, ConfigDict, Field, constr
 
 router = APIRouter(prefix="/api-v1/contact", tags=["contact"])
 
@@ -26,7 +26,7 @@ class ContactRequest(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
     name: constr(min_length=1)
-    email: EmailStr
+    email: constr(pattern=r".+@.+")
     message: constr(min_length=1)
     device_id: constr(min_length=1) = Field(..., alias="deviceId")
 

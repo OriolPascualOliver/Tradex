@@ -12,6 +12,7 @@ os.environ.setdefault("DATABASE_URL", "sqlite://")
 
 from backend.core.database import Base
 import backend.core.database as database
+from backend.api.models import user, task  # noqa: F401
 
 # Create an in-memory SQLite engine
 engine = create_engine(
@@ -20,13 +21,15 @@ engine = create_engine(
     poolclass=StaticPool,
 )
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+database.SessionLocal = TestingSessionLocal
+Base.metadata.create_all(bind=engine)
+
 
 @pytest.fixture(scope="session", autouse=True)
-def override_session_local():
-    database.SessionLocal = TestingSessionLocal
-    Base.metadata.create_all(bind=engine)
+def teardown_database():
     yield
     Base.metadata.drop_all(bind=engine)
+
 
 @pytest.fixture()
 def db_session():
