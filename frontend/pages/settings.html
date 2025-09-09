@@ -212,7 +212,6 @@
 <!--# include virtual="/partials/footer.html" -->
 
 <script>
-const API = location.origin.replace(/\/$/, ''); // adjust if FE+BE on different hosts
 
 // Fill 5' steps (5..120)
 function fillSteps(sel){
@@ -309,7 +308,7 @@ document.getElementById('btnSaveTariffs').onclick = () => saveJSON(`/api-v1/sett
 
 document.getElementById('btnSaveProvider').onclick = async () => {
   const chosen = provider.value === 'other' ? document.getElementById('otherProvider').value : provider.value;
-  await saveJSON(`${API}/settings/provider`, { default_provider: chosen });
+  await saveJSON(`/api-v1/settings/provider`, { default_provider: chosen });
 };
 
 document.getElementById('btnUploadCatalog').onclick = async () => {
@@ -317,12 +316,12 @@ document.getElementById('btnUploadCatalog').onclick = async () => {
   const file = document.getElementById('providerCatalog').files[0];
   if(!file) return alert('Selecciona un archivo');
   fd.append('file', file);
-  const r = await fetch(`/settings/provider/catalog`, { method:'POST', body: fd });
+  const r = await fetch(`/api-v1/settings/provider/catalog`, { method:'POST', body: fd });
   const j = await r.json();
   document.getElementById('catalogStatus').value = j.status || 'procesado';
 };
 
-document.getElementById('btnSavePrefixes').onclick = () => saveJSON(`${API}/settings/prefixes`, {
+document.getElementById('btnSavePrefixes').onclick = () => saveJSON(`/api-v1/settings/prefixes`, {
   quote_prefix: document.getElementById('prefQuote').value,
   invoice_prefix: document.getElementById('prefInvoice').value,
   work_prefix: document.getElementById('prefWork').value,
@@ -333,7 +332,7 @@ document.getElementById('btnSavePrefixes').onclick = () => saveJSON(`${API}/sett
   }
 });
 
-document.getElementById('btnSaveFiscal').onclick = () => saveJSON(`${API}/settings/fiscal`, {
+document.getElementById('btnSaveFiscal').onclick = () => saveJSON(`/api-v1/settings/fiscal`, {
   legal_name: document.getElementById('taxName').value,
   tax_id: document.getElementById('taxId').value,
   address: document.getElementById('taxAddress').value,
@@ -345,17 +344,17 @@ document.getElementById('btnSaveBranding').onclick = async () => {
   const lf = document.getElementById('logoFile').files[0];
   if(lf){
     const fd = new FormData(); fd.append('file', lf);
-    await fetch(`${API}/settings/branding/logo`, { method:'POST', body: fd });
+    await fetch(`/api-v1/settings/branding/logo`, { method:'POST', body: fd });
   }
-  await saveJSON(`${API}/settings/branding`, {
+  await saveJSON(`/api-v1/settings/branding`, {
     invoice_template: document.getElementById('tplInvoice').value,
     quote_template: document.getElementById('tplQuote').value
   });
 };
 
-document.getElementById('btnPreviewBrand').onclick = () => window.open(`${API}/settings/branding/preview`, '_blank');
+document.getElementById('btnPreviewBrand').onclick = () => window.open(`/api-v1/settings/branding/preview`, '_blank');
 
-document.getElementById('btnSaveEmail').onclick = () => saveJSON(`${API}/settings/email-template`, {
+document.getElementById('btnSaveEmail').onclick = () => saveJSON(`/api-v1/settings/email-template`, {
   subject: document.getElementById('emailSubject').value,
   body: document.getElementById('emailBody').value
 });
@@ -363,7 +362,7 @@ document.getElementById('btnSaveEmail').onclick = () => saveJSON(`${API}/setting
 // ---- Load initial values
 (async function boot(){
   try{
-    const r = await fetch(`${API}/settings`);
+    const r = await fetch(`/api-v1/settings`);
     if(!r.ok) return;
     const s = await r.json();
 
