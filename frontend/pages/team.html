@@ -169,7 +169,6 @@
 import { formatEUR, computeTeamMonthly } from '/js/pricing-lib.js';
 
 /* ====== Config ====== */
-const API_PREFIX = '/api-v1'; // <-- requerido
 const token = localStorage.getItem('token') || '';
 
 let PRICING = null;
@@ -224,7 +223,7 @@ function hide(el){ el.style.display='none'; el.setAttribute('aria-hidden','true'
 /* ====== Load Org & Team ====== */
 async function loadOrg(){
   try{
-    const res = await fetch(`${API_PREFIX}/org/me`, { headers: authHeaders() });
+    const res = await fetch(`/api-v1/org/me`, { headers: authHeaders() });
     if(!res.ok) throw new Error('org');
     const data = await res.json();
     org = {
@@ -243,7 +242,7 @@ async function loadOrg(){
 async function loadTeam(){
   if (!org.id || org.plan.toLowerCase()!=='team') return renderTeam(true);
   try{
-    const res = await fetch(`${API_PREFIX}/team?orgId=${encodeURIComponent(org.id)}`, { headers: authHeaders() });
+    const res = await fetch(`/api-v1/team?orgId=${encodeURIComponent(org.id)}`, { headers: authHeaders() });
     if(!res.ok) throw new Error('team');
     const data = await res.json();
     team = Array.isArray(data?.items) ? data.items : [];
@@ -344,13 +343,13 @@ $('modalMember').addEventListener('click', e=>{ if (e.target.id==='modalMember')
 async function saveMember(payload){
   try{
     if (payload.id){
-      const res = await fetch(`${API_PREFIX}/team/${encodeURIComponent(payload.id)}`, {
+      const res = await fetch(`/api-v1/team/${encodeURIComponent(payload.id)}`, {
         method:'PATCH', headers: authHeaders(),
         body: JSON.stringify({ name: payload.name, email: payload.email, role: payload.role, active: payload.active })
       });
       if(!res.ok) throw 0;
     } else {
-      const res = await fetch(`${API_PREFIX}/team`, {
+      const res = await fetch(`/api-v1/team`, {
         method:'POST', headers: authHeaders(),
         body: JSON.stringify({ orgId: org.id, name: payload.name, email: payload.email, role: payload.role })
       });
@@ -361,7 +360,7 @@ async function saveMember(payload){
 }
 async function deleteMember(id){
   try{
-    const res = await fetch(`${API_PREFIX}/team/${encodeURIComponent(id)}`, { method:'DELETE', headers: authHeaders() });
+    const res = await fetch(`/api-v1/team/${encodeURIComponent(id)}`, { method:'DELETE', headers: authHeaders() });
     if(!res.ok) throw 0;
   }catch(e){ alert('No se pudo eliminar.'); }
   await loadTeam();
@@ -411,7 +410,7 @@ $('btnSavePlan').addEventListener('click', async ()=>{
   if (plan === 'Team') body.teamMembers = Number($('mTeamSize').value);
 
   try{
-    const res = await fetch(`${API_PREFIX}/org`, {
+    const res = await fetch(`/api-v1/org`, {
       method:'PATCH', headers: authHeaders(), body: JSON.stringify(body)
     });
     if(!res.ok) throw 0;
