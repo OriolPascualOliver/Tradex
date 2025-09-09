@@ -60,12 +60,11 @@
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     status.textContent = '';
-    const deviceId = ensureDeviceId();
+    ensureDeviceId();
     const data = {
       name: document.getElementById('name').value.trim(),
       email: document.getElementById('email').value.trim(),
       message: document.getElementById('msg').value.trim(),
-      deviceId
     };
     try {
       await apiClient.post('contact', data);
