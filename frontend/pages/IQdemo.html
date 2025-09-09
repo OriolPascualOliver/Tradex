@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InstaQuote · Demo de flujo interactivo</title>
+  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* --- InstaQuote demo styles (lean, uses site tokens) --- */
+    .iq-grid{ display:grid; grid-template-columns: 300px 1fr 360px; gap: var(--s5); align-items:start; }
+    @media (max-width: 1100px){ .iq-grid{ grid-template-columns: 1fr; } }
+
+    .iq-sidebar{ position: sticky; top: var(--s4); height: fit-content; }
+    .iq-flow{ display:grid; gap: var(--s4); position:relative; }
+    .iq-node{
+      position:relative; background:#fff; border:1px solid var(--border); border-radius: var(--radius);
+      padding: var(--s4); box-shadow: var(--shadow-sm);
+    }
+    .iq-node.done{ border-color: rgba(37,99,235,.45); }
+    .iq-node:not(:first-child)::before{
+      content:""; position:absolute; left:32px; top:-16px; width:2px; height:16px;
+      background: linear-gradient(180deg, #cbd5e1, #94a3b8);
+    }
+    .iq-node .q-title{ font-weight:700; color:var(--steel); margin-bottom:.4rem; }
+    .iq-options{ display:grid; gap:.35rem; margin-top:.35rem; }
+    .iq-options .opt{
+      display:flex; align-items:center; gap:.55rem; padding:.5rem .65rem; border:1px solid var(--border); border-radius:10px; cursor:pointer;
+    }
+    .iq-options .opt:hover{ background: rgba(2,6,23,.04); }
+    .iq-inline{
+      display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;
+    }
+    .iq-summary .split{ display:grid; grid-template-columns: 1fr auto; gap:.35rem; }
+    .pill{ display:inline-block; padding:.3rem .55rem; border-radius:999px; background:rgba(2,6,23,.06); font-weight:700; font-size:.85rem; }
+    .muted-sm{ color:var(--muted); font-size:.9rem; }
+    .money{ font-weight:800; font-size:1.4rem; }
+    .kpi-ghost{ background:var(--paper); border:1px dashed var(--border); border-radius: var(--radius); padding: var(--s4); text-align:center; color:var(--muted); }
+    .connector-tip{ font-size:.9rem; color:var(--muted); }
+    .small{ font-size:.92rem; }
+    .input{ padding:10px 12px; border:1px solid var(--border); border-radius:10px; }
+    .copy-input{ width:100%; font:inherit; padding:10px 12px; border:1px dashed var(--border); border-radius:10px; background:#fff; }
+
+    .iq-badge{ display:inline-flex; gap:.4rem; align-items:center; padding:.3rem .5rem; border-radius:999px;
+      background: rgba(37,99,235,.1); color: var(--sky); font-weight:700; font-size:.85rem; }
+    .iq-badge i{ font-size:.9rem; }
+
+    .req-list{ margin: .5rem 0 0; padding-left: 1.1rem; display:grid; gap:.25rem; }
+    .req-list li{ margin-left: .2rem; }
+    .est-breakdown{ display:grid; gap:.4rem; margin-top:.6rem; }
+    .est-breakdown .row{ display:flex; align-items:center; justify-content:space-between; }
+    .est-breakdown .row .label{ color:var(--muted); }
+    .est-breakdown .row .value{ font-weight:700; }
+    .range{ font-weight:800; font-size:1.1rem; }
+
+    .hint{ color:var(--muted); font-size:.9rem; }
+    .iq-footer{ margin-top: var(--s4); display:flex; justify-content:space-between; gap: var(--s3); flex-wrap:wrap; }
+    .iq-footer .btn{ padding:10px 14px; }
+
+    .ghost-uploader{ padding:10px; border:1px dashed var(--border); border-radius:10px; color:var(--muted); display:flex; gap:.5rem; align-items:center; }
+    .ghost-uploader input{ display:none; }
+    .ghost-uploader label{ cursor:pointer; font-weight:700; }
+
+    .tag{ display:inline-block; background:#eef2ff; color:#3730a3; padding:.2rem .5rem; border-radius:8px; font-size:.8rem; font-weight:700; }
+
+    .toast{ position: fixed; right: 16px; bottom: 16px; background:#111827; color:#fff; padding:10px 12px; border-radius:10px; opacity:0; transform: translateY(10px); transition: all .18s ease; }
+    .toast.show{ opacity:1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+<!--#include "partials/header.html" -->
+
+<main class="iq-grid" style="padding: var(--s5);">
+  <!-- Left: catálogo & presets -->
+  <aside class="iq-sidebar">
+    <div class="aside-card">
+      <div class="iq-badge"><i class="fa-solid fa-bolt"></i> InstaQuote demo</div>
+      <h3 style="margin:.6rem 0 0;">Catálogo</h3>
+      <label style="display:block; margin-top:.6rem;">Oficio
+        <select class="input" id="tradeSelect"></select>
+      </label>
+      <label style="display:block; margin-top:.6rem;">Trabajo
+        <select class="input" id="taskSelect"></select>
+      </label>
+
+      <div class="toolbar" style="margin-top:.8rem;">
+        <button class="btn secondary" id="startBtn"><i class="fa-solid fa-play"></i> Iniciar</button>
+        <button class="btn" id="resetBtn"><i class="fa-solid fa-rotate-left"></i> Reiniciar</button>
+      </div>
+
+      <div style="margin-top: var(--s4);">
+        <strong>Pre-cargar por URL</strong>
+        <p class="hint small">Ejemplo: <code>?trade=lampista&task=cambiar_caldera&potencia=24&ubicacion=interior</code></p>
+        <input id="shareInput" class="copy-input" readonly value=""/>
+        <div class="toolbar" style="margin-top:.5rem;">
+          <button class="btn secondary" id="copyBtn"><i class="fa-regular fa-copy"></i> Copiar enlace</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="aside-card" style="margin-top: var(--s4);">
+      <h4>Tarifas demo</h4>
+      <div class="grid" style="grid-template-columns:1fr 1fr;">
+        <label>€/hora <input class="input" id="rateHour" type="number" value="45"/></label>
+        <label>Desplaz. € <input class="input" id="rateCallout" type="number" value="25"/></label>
+        <label>Markup mat. (%) <input class="input" id="rateMarkup" type="number" value="20"/></label>
+        <label>IVA (%) <input class="input" id="rateVAT" type="number" value="21"/></label>
+      </div>
+      <p class="hint small">Sólo a efectos de cálculo del rango estimado.</p>
+    </div>
+
+    <div class="aside-card" style="margin-top: var(--s4);">
+      <h4>Atajos</h4>
+      <div class="grid">
+        <a class="link" href="?trade=lampista&task=cambiar_caldera&tipo=gas&potencia=24&ubicacion=interior&adaptar=no">Lampista → Cambio de caldera</a>
+        <a class="link" href="?trade=lampista&task=reparacion_grifo&tipo=monomando&urgente=no">Lampista → Reparación de grifo</a>
+        <a class="link" href="?trade=lampista&task=desatasco&lugar=fregadero&severidad=parcial&longitud=4">Lampista → Desatasco</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Middle: flow -->
+  <section>
+    <h3 style="margin:0 0 .5rem;">Flujo de preguntas</h3>
+    <p class="connector-tip">Responde en orden; el flujo se adapta a tus respuestas.</p>
+    <div id="flow" class="iq-flow">
+      <div class="kpi-ghost">Selecciona un trabajo y pulsa <strong>Iniciar</strong></div>
+    </div>
+    <div class="iq-footer">
+      <div class="hint">* Precio orientativo (±15%) sujeto a visita.</div>
+      <div>
+        <button class="btn tertiary" id="generateShareNow"><i class="fa-solid fa-link"></i> Crear enlace con respuestas</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Right: summary -->
+  <aside class="aside-card iq-summary">
+    <h3>Resumen</h3>
+    <div>
+      <div class="split">
+        <div class="muted-sm">Importe estimado</div>
+        <div class="tag" id="taxTag">IVA incluido</div>
+      </div>
+      <div id="estimateMain" class="money" style="margin-top:.2rem;">— €</div>
+      <div class="muted-sm">Rango: <span id="estimateRange" class="range">— € – — €</span></div>
+
+      <div class="est-breakdown">
+        <div class="row"><span class="label">Mano de obra</span><span class="value" id="valLabor">— €</span></div>
+        <div class="row"><span class="label">Desplazamiento</span><span class="value" id="valCallout">— €</span></div>
+        <div class="row"><span class="label">Materiales</span><span class="value" id="valMaterials">— €</span></div>
+      </div>
+    </div>
+
+    <hr style="margin: var(--s4) 0; border-color: var(--border);"/>
+
+    <div>
+      <h4 style="margin:.2rem 0;">Datos solicitados</h4>
+      <ul id="reqList" class="req-list"></ul>
+    </div>
+
+    <hr style="margin: var(--s4) 0; border-color: var(--border);"/>
+
+    <div>
+      <h4 style="margin:.2rem 0;">Siguiente paso</h4>
+      <p class="muted-sm">Deja tus datos y adjunta fotos para agilizar el presupuesto.</p>
+      <div class="grid" style="grid-template-columns:1fr;">
+        <input class="input" placeholder="Nombre y apellidos"/>
+        <input class="input" placeholder="Email o teléfono"/>
+        <input class="input" placeholder="Dirección (opcional)"/>
+        <div class="ghost-uploader"><i class="fa-regular fa-image"></i> <label for="fileUp">Subir fotos (opcional)</label><input id="fileUp" type="file" multiple/></div>
+        <button class="btn secondary"><i class="fa-solid fa-paper-plane"></i> Enviar solicitud</button>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<div id="toast" class="toast">Copiado al portapapeles</div>
+
+<!--#include "partials/footer.html" -->
+
+<script>
+/** -----------------------------
+ * Catálogo + flujos por trabajo (demo)
+ * ------------------------------ */
+const CATALOG = {
+  lampista: {
+    label: "Lampista / Fontanero",
+    tasks: {
+      cambiar_caldera: {
+        label: "Cambio de caldera",
+        base: { hours: 5.5, materials: 900, extras: 0 },
+        questions: [
+          { id:"tipo", label:"Tipo de caldera", type:"choice",
+            options:[
+              { value:"gas", label:"Gas natural/propano", effect:{ materials: 0 } },
+              { value:"gasoil", label:"Gasoil", effect:{ materials: 400 } }
+            ],
+            required:true, dataLabel:"Tipo de caldera"
+          },
+          { id:"potencia", label:"Potencia aproximada", type:"choice",
+            options:[
+              { value:"24", label:"24 kW", effect:{ materials: 0 } },
+              { value:"28", label:"28 kW", effect:{ materials: 120 } },
+              { value:"35", label:"35 kW", effect:{ materials: 360 } }
+            ],
+            required:true, dataLabel:"Potencia"
+          },
+          { id:"ubicacion", label:"¿Ubicación de la caldera?", type:"choice",
+            options:[
+              { value:"interior", label:"Interior" },
+              { value:"exterior", label:"Exterior", effect:{ hours: 1 } }
+            ],
+            required:true, dataLabel:"Ubicación"
+          },
+          { id:"adaptar", label:"¿Hay que adaptar tuberías/evacuación?", type:"choice",
+            options:[
+              { value:"no", label:"No" },
+              { value:"si", label:"Sí", effect:{ hours: 2, materials: 140 } }
+            ],
+            required:true, dataLabel:"Adaptaciones"
+          },
+          { id:"marca_actual", label:"Marca/modelo actual (si sabes)", type:"text",
+            required:false, dataLabel:"Marca/modelo actual"
+          },
+        ],
+        requirements: [
+          "Fotos de la instalación actual y del punto de evacuación de humos",
+          "Espacio disponible (ancho/alto aprox.)",
+          "¿Llave de gas accesible?",
+          "Preferencia de marca (si la hay)"
+        ]
+      },
+      reparacion_grifo: {
+        label: "Reparación de grifo",
+        base: { hours: 0.8, materials: 15, extras: 0 },
+        questions: [
+          { id:"tipo", label:"Tipo de grifo", type:"choice",
+            options:[
+              { value:"monomando", label:"Monomando (cartucho)", effect:{ materials: 20 } },
+              { value:"bimando", label:"Bimando (gomas)", effect:{ materials: 10 } },
+              { value:"termostatico", label:"Termostático", effect:{ materials: 45, hours: .2 } }
+            ],
+            required:true, dataLabel:"Tipo de grifo"
+          },
+          { id:"problema", label:"¿Cuál es el problema principal?", type:"choice",
+            options:[
+              { value:"goteo", label:"Goteo", effect:{ } },
+              { value:"fuga", label:"Fuga", effect:{ hours: .4, materials: 10 } },
+              { value:"atasco", label:"Baja presión/atasco", effect:{ hours: .3 } }
+            ],
+            required:true, dataLabel:"Problema"
+          },
+          { id:"urgente", label:"¿Servicio urgente (hoy)?", type:"choice",
+            options:[
+              { value:"no", label:"No" },
+              { value:"si", label:"Sí (recargo)", effect:{ extras: 25 } }
+            ],
+            required:true, dataLabel:"Urgente"
+          }
+        ],
+        requirements: [
+          "Foto del grifo (frontal y lateral)",
+          "Marca/modelo si es visible",
+          "Acceso a llave de corte",
+          "Horario de acceso"
+        ]
+      },
+      desatasco: {
+        label: "Desatasco",
+        base: { hours: 1.0, materials: 0, extras: 20 }, // equipo básico
+        questions: [
+          { id:"lugar", label:"¿Dónde es el atasco?", type:"choice",
+            options:[
+              { value:"fregadero", label:"Fregadero" },
+              { value:"ducha", label:"Ducha/Bañera" },
+              { value:"wc", label:"WC", effect:{ hours:.25 } }
+            ],
+            required:true, dataLabel:"Ubicación"
+          },
+          { id:"severidad", label:"Severidad", type:"choice",
+            options:[
+              { value:"parcial", label:"Parcial (sale algo de agua)" },
+              { value:"total", label:"Total (atasco total)", effect:{ hours:.5 } }
+            ],
+            required:true, dataLabel:"Severidad"
+          },
+          { id:"longitud", label:"Longitud aprox. de tubería afectada (m)", type:"number",
+            min:1, max:25, required:false, dataLabel:"Longitud aprox."
+          }
+        ],
+        requirements: [
+          "Video corto del punto afectado (opcional)",
+          "Acceso a sifones/tapas de registro",
+          "Disponibilidad de aparcamiento cercano",
+          "Horario preferente"
+        ]
+      }
+    }
+  }
+};
+
+/** ---------- Estado + refs ---------- */
+const state = {
+  trade: null, task: null, answers: {},
+  totals: { labor: 0, callout: 0, materials: 0, subtotal: 0, total: 0, min: 0, max: 0 }
+};
+
+const els = {
+  tradeSelect: document.getElementById('tradeSelect'),
+  taskSelect: document.getElementById('taskSelect'),
+  flow: document.getElementById('flow'),
+  estimateMain: document.getElementById('estimateMain'),
+  estimateRange: document.getElementById('estimateRange'),
+  valLabor: document.getElementById('valLabor'),
+  valCallout: document.getElementById('valCallout'),
+  valMaterials: document.getElementById('valMaterials'),
+  reqList: document.getElementById('reqList'),
+  shareInput: document.getElementById('shareInput'),
+  startBtn: document.getElementById('startBtn'),
+  resetBtn: document.getElementById('resetBtn'),
+  copyBtn: document.getElementById('copyBtn'),
+  generateShareNow: document.getElementById('generateShareNow'),
+  toast: document.getElementById('toast'),
+  rateHour: document.getElementById('rateHour'),
+  rateCallout: document.getElementById('rateCallout'),
+  rateMarkup: document.getElementById('rateMarkup'),
+  rateVAT: document.getElementById('rateVAT'),
+};
+
+const money = (n) => new Intl.NumberFormat('es-ES', { style:'currency', currency:'EUR' }).format(n);
+const showToast = (txt) => { els.toast.textContent = txt || 'Hecho'; els.toast.classList.add('show'); setTimeout(() => els.toast.classList.remove('show'), 1600); };
+
+/** ---------- Catálogo (selects) ---------- */
+function initCatalog(){
+  els.tradeSelect.innerHTML = '';
+  for(const [key, val] of Object.entries(CATALOG)){
+    const opt = document.createElement('option');
+    opt.value = key; opt.textContent = val.label;
+    els.tradeSelect.appendChild(opt);
+  }
+  const url = new URL(window.location.href);
+  const tradeParam = url.searchParams.get('trade');
+  const taskParam = url.searchParams.get('task');
+  if(tradeParam && CATALOG[tradeParam]) els.tradeSelect.value = tradeParam;
+
+  loadTasks();
+  if(taskParam && CATALOG[els.tradeSelect.value].tasks[taskParam]) els.taskSelect.value = taskParam;
+
+  updateShareUrl();
+}
+
+function loadTasks(){
+  const tkey = els.tradeSelect.value;
+  const tasks = CATALOG[tkey].tasks;
+  els.taskSelect.innerHTML = '';
+  for(const [key, val] of Object.entries(tasks)){
+    const opt = document.createElement('option');
+    opt.value = key; opt.textContent = val.label;
+    els.taskSelect.appendChild(opt);
+  }
+}
+
+els.tradeSelect.addEventListener('change', () => { loadTasks(); updateShareUrl(); });
+els.taskSelect.addEventListener('change', () => updateShareUrl());
+
+/** ---------- Flow ---------- */
+function startFlow(){
+  state.trade = els.tradeSelect.value;
+  state.task = els.taskSelect.value;
+  state.answers = {};
+  renderFlow();
+  preloadFromUrl(); // precargar respuestas desde la URL (si hay)
+  recalcAndRender();
+}
+
+function resetFlow(){
+  state.trade = null; state.task = null; state.answers = {};
+  els.flow.innerHTML = '<div class="kpi-ghost">Selecciona un trabajo y pulsa <strong>Iniciar</strong></div>';
+  els.estimateMain.textContent = '— €';
+  els.estimateRange.textContent = '— € – — €';
+  els.valLabor.textContent = '— €';
+  els.valCallout.textContent = '— €';
+  els.valMaterials.textContent = '— €';
+  els.reqList.innerHTML = '';
+  updateShareUrl();
+}
+
+function renderFlow(){
+  const taskObj = CATALOG[state.trade].tasks[state.task];
+  els.flow.innerHTML = '';
+  taskObj.questions.forEach((q) => {
+    const node = document.createElement('div');
+    node.className = 'iq-node' + (state.answers[q.id] !== undefined ? ' done' : '');
+    node.dataset.qid = q.id;
+
+    const title = document.createElement('div');
+    title.className = 'q-title';
+    title.textContent = q.label;
+    node.appendChild(title);
+
+    if(q.type === 'choice'){
+      const wrap = document.createElement('div'); wrap.className = 'iq-options';
+      q.options.forEach(opt => {
+        const o = document.createElement('div'); o.className = 'opt';
+        const radio = document.createElement('input'); radio.type='radio'; radio.name=q.id; radio.value=opt.value;
+        radio.checked = state.answers[q.id] === opt.value;
+        const lab = document.createElement('label'); lab.textContent = opt.label; lab.style.cursor='pointer';
+        o.appendChild(radio); o.appendChild(lab);
+        o.addEventListener('click', () => { state.answers[q.id] = opt.value; pruneAfter(q.id); recalcAndRender(); });
+        wrap.appendChild(o);
+      });
+      node.appendChild(wrap);
+    }else if(q.type === 'number'){
+      const row = document.createElement('div'); row.className='iq-inline';
+      const input = document.createElement('input'); input.type='number'; input.className='input'; input.min=q.min||0; input.max=q.max||100; input.step='1';
+      if(state.answers[q.id] !== undefined) input.value = state.answers[q.id];
+      input.placeholder = 'Introduce un número';
+      input.addEventListener('input', () => { state.answers[q.id] = Number(input.value || 0); pruneAfter(q.id); recalcAndRender(); });
+      row.appendChild(input);
+      const unit = document.createElement('span'); unit.className='muted-sm'; unit.textContent='m';
+      row.appendChild(unit);
+      node.appendChild(row);
+    }else if(q.type === 'text'){
+      const input = document.createElement('input'); input.className='input'; input.placeholder='Escribe aquí';
+      if(state.answers[q.id] !== undefined) input.value = state.answers[q.id];
+      input.addEventListener('input', () => { state.answers[q.id] = input.value; pruneAfter(q.id); recalcAndRender(); });
+      node.appendChild(input);
+    }
+
+    els.flow.appendChild(node);
+  });
+}
+
+function pruneAfter(qid){
+  // borra respuestas de preguntas siguientes al cambiar una anterior
+  const taskObj = CATALOG[state.trade].tasks[state.task];
+  let found = false;
+  for(const q of taskObj.questions){
+    if(found && state.answers[q.id] !== undefined) delete state.answers[q.id];
+    if(q.id === qid) found = true;
+  }
+}
+
+function recalcAndRender(){
+  const t = CATALOG[state.trade].tasks[state.task];
+  const rateHour = Number(els.rateHour.value || 0);
+  const callout = Number(els.rateCallout.value || 0);
+  const markupP = Number(els.rateMarkup.value || 0);
+  const vatP = Number(els.rateVAT.value || 0);
+
+  let hours = t.base.hours;
+  let materials = t.base.materials;
+  let extras = t.base.extras || 0;
+
+  // aplicar efectos de respuestas
+  t.questions.forEach(q => {
+    const val = state.answers[q.id];
+    if(val === undefined) return;
+    if(q.type === 'choice'){
+      const opt = q.options.find(o => o.value === val);
+      if(opt && opt.effect){
+        hours += opt.effect.hours || 0;
+        materials += opt.effect.materials || 0;
+        extras += opt.effect.extras || 0;
+      }
+    }
+    if(q.type === 'number' && q.id === 'longitud'){
+      const m = Number(val);
+      if(!isNaN(m)) hours += (m/10) * 0.3; // +0.3h por cada 10m
+    }
+  });
+
+  const labor = hours * rateHour;
+  const call = callout;
+  const mats = materials * (1 + markupP/100);
+  const subtotal = labor + call + mats + extras;
+  const min = subtotal * 0.88;
+  const max = subtotal * 1.18;
+  const total = subtotal * (1 + vatP/100);
+
+  state.totals = { labor, callout: call, materials: mats, subtotal, total, min: min*(1+vatP/100), max: max*(1+vatP/100) };
+
+  // pintar
+  els.estimateMain.textContent = money(total);
+  els.estimateRange.textContent = money(state.totals.min) + ' – ' + money(state.totals.max);
+  els.valLabor.textContent = money(labor * (1 + vatP/100));
+  els.valCallout.textContent = money(call * (1 + vatP/100));
+  els.valMaterials.textContent = money(mats * (1 + vatP/100));
+
+  // checklist de datos solicitados
+  els.reqList.innerHTML = '';
+  t.requirements.forEach(r => {
+    const li = document.createElement('li');
+    li.textContent = r;
+    els.reqList.appendChild(li);
+  });
+
+  updateShareUrl();
+  refreshNodeDoneStates();
+}
+
+function refreshNodeDoneStates(){
+  document.querySelectorAll('.iq-node').forEach(n => {
+    const id = n.dataset.qid;
+    n.classList.toggle('done', state.answers[id] !== undefined && state.answers[id] !== '');
+  });
+}
+
+/** ---------- URL preload & compartir ---------- */
+function preloadFromUrl(){
+  const params = new URL(window.location.href).searchParams;
+  const t = CATALOG[state.trade].tasks[state.task];
+  t.questions.forEach(q => {
+    if(params.has(q.id)){
+      const val = params.get(q.id);
+      if(q.type === 'number') state.answers[q.id] = Number(val);
+      else state.answers[q.id] = val;
+    }
+  });
+  renderFlow();
+}
+
+function updateShareUrl(){
+  const url = new URL(window.location.href);
+  url.search = '';
+  const trade = state.trade || els.tradeSelect.value;
+  const task = state.task || els.taskSelect.value;
+  url.searchParams.set('trade', trade);
+  url.searchParams.set('task', task);
+  Object.entries(state.answers).forEach(([k,v]) => url.searchParams.set(k, v));
+  els.shareInput.value = url.toString();
+}
+
+function copyShare(){
+  els.shareInput.select();
+  navigator.clipboard.writeText(els.shareInput.value).then(() => showToast('Enlace copiado'));
+}
+
+function generateShareNow(){
+  updateShareUrl();
+  copyShare();
+}
+
+/** ---------- Eventos ---------- */
+els.startBtn.addEventListener('click', startFlow);
+els.resetBtn.addEventListener('click', resetFlow);
+els.copyBtn.addEventListener('click', copyShare);
+els.generateShareNow.addEventListener('click', generateShareNow);
+['rateHour','rateCallout','rateMarkup','rateVAT'].forEach(id => {
+  els[id].addEventListener('input', () => state.trade && state.task && recalcAndRender());
+});
+
+/** ---------- Boot ---------- */
+function boot(){
+  // poblar selects (oficio + trabajos)
+  initCatalog();
+  // autostart si viene con trade&task en la URL
+  const params = new URL(window.location.href).searchParams;
+  if(params.get('trade') && params.get('task')) startFlow();
+}
+boot();
+</script>
+</body>
+</html>
