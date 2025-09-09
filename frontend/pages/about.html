@@ -164,7 +164,43 @@
         </form>
       </article>
     </section>
-  </main>
-    <!--# include virtual="/partials/footer.html" -->
-  </body>
-</html>
+    </main>
+      <!--# include virtual="/partials/footer.html" -->
+    <script src="/js/apiClient.js"></script>
+    <script>
+      const form = document.getElementById('aboutForm');
+      const msgEl = document.getElementById('formMsg');
+
+      function ensureDeviceId() {
+        if (!localStorage.getItem('deviceId')) {
+          const newId = self.crypto?.randomUUID ? self.crypto.randomUUID() : Math.random().toString(36).slice(2);
+          localStorage.setItem('deviceId', newId);
+        }
+        return localStorage.getItem('deviceId');
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        msgEl.textContent = '';
+        if (document.getElementById('website').value) {
+          return; // honeypot field
+        }
+        ensureDeviceId();
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const reason = document.getElementById('reason').value;
+        const message = document.getElementById('message').value.trim();
+        const fullMessage = reason ? `[${reason}] ${message}` : message;
+        try {
+          await apiClient.post('contact', { name, email, message: fullMessage });
+          form.reset();
+          msgEl.style.color = 'green';
+          msgEl.textContent = 'Mensaje enviado correctamente.';
+        } catch (err) {
+          msgEl.style.color = 'red';
+          msgEl.textContent = err.message || 'No se pudo enviar el mensaje.';
+        }
+      });
+    </script>
+    </body>
+  </html>
