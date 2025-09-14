@@ -43,7 +43,10 @@ def test_contact_validation_error():
     }
     response = client.post(f"{API_PREFIX}/contact", json=payload)
     assert response.status_code == 422
-    assert response.json() == {"status": 422, "message": "Validation Error"}
+    data = response.json()
+    assert data["status"] == 422
+    assert data["message"] == "Validation Error"
+    assert data["errors"][0]["loc"] == ["body", "email"]
 
 
 def test_contact_missing_device_id():
@@ -54,4 +57,7 @@ def test_contact_missing_device_id():
     }
     response = client.post(f"{API_PREFIX}/contact", json=payload)
     assert response.status_code == 422
-    assert response.json() == {"status": 422, "message": "Validation Error"}
+    data = response.json()
+    assert data["status"] == 422
+    assert data["message"] == "Validation Error"
+    assert data["errors"][0]["loc"] == ["body", "deviceId"]
