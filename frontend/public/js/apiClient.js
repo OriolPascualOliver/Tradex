@@ -1,10 +1,12 @@
 (function(global){
   async function post(endpoint, data = {}) {
-    const deviceId = localStorage.getItem('deviceId');
+    const localId = localStorage.getItem('deviceId');
+    const payload = { ...data };
+    if (!payload.deviceId && localId) payload.deviceId = localId;
     const res = await fetch(`/api-v1/${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...data, deviceId })
+      body: JSON.stringify(payload)
     });
 
     let body = null;
