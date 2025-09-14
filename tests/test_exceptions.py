@@ -51,7 +51,10 @@ def test_validation_error_handler():
 
     response = client.post("/validation-test", json={"wrong": "value"})
     assert response.status_code == 422
-    assert response.json() == {"status": 422, "message": "Validation Error"}
+    data = response.json()
+    assert data["status"] == 422
+    assert data["message"] == "Validation Error"
+    assert data["errors"][0]["loc"] == ["body", "name"]
 
 
 def test_generic_exception_handler():
