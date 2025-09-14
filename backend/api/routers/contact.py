@@ -3,9 +3,14 @@ from email.message import EmailMessage
 import os
 from pathlib import Path
 import smtplib
+from typing import Annotated
+import base64
+import hashlib
 
 from fastapi import APIRouter
-from pydantic import BaseModel, ConfigDict, Field, constr
+from pydantic import BaseModel, ConfigDict, Field, constr, StringConstraints
+
+Str1 = Annotated[str, StringConstraints(min_length=1)]
 
 router = APIRouter(prefix="/api-v1/contact", tags=["contact"])
 
@@ -24,11 +29,12 @@ SUBJECT = os.getenv(
 
 class ContactRequest(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
-
-    name: constr(min_length=1)
-    email: constr(pattern=r".+@.+")
-    message: constr(min_length=1)
-    device_id: constr(min_length=1) = Field(..., alias="deviceId")
+    name: Str1
+    email: Annotated[str, StringConstraints(pattern=r".+@.+")]
+    message: Str1
+    device_id: Str1 = Field(..., alias="deviceId")
+    other: dict | None = None  # To capture any additional fields
+     
 
 
 def append_to_file(contact: ContactRequest) -> None:
@@ -66,6 +72,7 @@ def send_email(name: str, email: str, message: str, device_id: str) -> None:
 
 @router.post("")
 def send_contact_form(contact: ContactRequest):
+    print("Received contact form:", contact)
     append_to_file(contact)
     send_email(contact.name, contact.email, contact.message, contact.device_id)
     return {"status": "ok"}

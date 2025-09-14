@@ -65,6 +65,11 @@
       name: document.getElementById('name').value.trim(),
       email: document.getElementById('email').value.trim(),
       message: document.getElementById('msg').value.trim(),
+      other: {
+        company: document.getElementById('company').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        interest: document.getElementById('interest').value.trim(),
+      }
     };
     try {
       await apiClient.post('contact', data);
