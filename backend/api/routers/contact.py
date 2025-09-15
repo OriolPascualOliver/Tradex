@@ -7,7 +7,7 @@ import ssl
 from typing import Annotated
 
 from fastapi import APIRouter
-from pydantic import BaseModel, ConfigDict, Field, StringConstraints, EmailStr
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints
 
 Str1 = Annotated[str, StringConstraints(min_length=1)]
 
@@ -28,7 +28,7 @@ SMTP_USE_SSL = os.getenv("SMTP_USE_SSL", "false").lower() in {"1", "true", "yes"
 class ContactRequest(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
     name: Str1
-    email: EmailStr 
+    email: Str1 = Field(..., pattern=r".+@.+") 
     message: Str1
     device_id: Str1 = Field(..., alias="deviceId")
     other: dict | None = None  # capture additional fields
