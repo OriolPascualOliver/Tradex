@@ -39,9 +39,10 @@ class ContactRequest(BaseModel):
 
 def append_to_file(contact: ContactRequest) -> None:
     """Append the contact message to the contact.txt file."""
+    sanitized_message = contact.message.replace("\n", " ").replace("\r", " ")
     log_entry = (
         f"{datetime.utcnow().isoformat()} | {contact.name} <{contact.email}> | "
-        f"{contact.device_id} | {contact.message.replace('\n', ' ').replace('\r', ' ')}\n"
+        f"{contact.device_id} | {sanitized_message}\n"
     )
     try:
         with CONTACT_FILE.open("a", encoding="utf-8") as f:
