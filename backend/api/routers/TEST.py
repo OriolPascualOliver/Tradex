@@ -7,18 +7,19 @@ from pathlib import Path
 import smtplib
 import ssl
 from typing import Annotated
+from dataclasses import dataclass, field
 
-from fastapi import APIRouter
+
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints
 
 Str1 = Annotated[str, StringConstraints(min_length=1)]
 CTRL_RE = re.compile(r"[\r\n\t]+")  # kill control chars
 
-router = APIRouter(prefix="/api-v1/contact", tags=["contact"])
+
 
 
 #CONTACT_FILE = Path(os.getenv("CONTACT_FILE", "/root/Tradex/contact.txt"))
-CONTACT_FILE = Path("/root/Tradex/contact.txt")
+CONTACT_FILE = Path("C:/Users/uripa/Tradex/contact.txt")
 
 #EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS", "")
 #EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD", "")
@@ -27,7 +28,7 @@ CONTACT_FILE = Path("/root/Tradex/contact.txt")
 SMTP_PORT = 587
 SMTP_SERVER = 'smtp.gmail.com'
 EMAIL_ADDRESS = 't39474115@gmail.com'
-EMAIL_PASSWORD = 'pkao szhk layz byay'
+EMAIL_PASSWORD = 'pkao szhk layz byay' #5jxQnDmW-_jJS5!
 SUBJECT = 'TEST'
 RECIPIENT_EMAIL = 'opotek@protonmail.com'
 SENDER = EMAIL_ADDRESS
@@ -36,15 +37,17 @@ SENDER = EMAIL_ADDRESS
 #SMTP_USE_SSL = os.getenv("SMTP_USE_SSL", "false").lower() in {"1", "true", "yes"}  # optional
 SMTP_USE_SSL = False
 
-class ContactRequest(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
-    name: Str1
-    email: Str1 = Field(..., pattern=r".+@.+") 
-    message: Str1
-    device_id: Str1 = Field(..., alias="deviceId")
-    other: dict | None = None  # capture additional fields
+@dataclass
+class Contact:
+    name: str = "hla"
+    email: str = "opascualoliver@gmail.com"
+    message: str = "wdcqvrfds"
+    device_id: str = "yy5ofxj5lmj"
+    other: dict | None = field(default_factory=lambda: {
+        "company": "e", "phone": "646617993", "interest": "ewrgvbsfvdcs"
+    })
 
-def append_to_file(contact: ContactRequest, path: Path = CONTACT_FILE) -> bool:
+def append_to_file(contact: Contact, path: Path = CONTACT_FILE) -> bool:
     """
     Append a single JSONL line. Returns True on success, False on failure.
     - JSONL makes later parsing/ETL trivial.
@@ -110,10 +113,9 @@ def send_email(
     except Exception as exc:
         print(f"Failed to send contact email: {exc}")
 
-@router.post("")
-def send_contact_form(contact: ContactRequest):
+if __name__ == "__main__":
+    contact = Contact()  # <-- real instance with your hardcoded data
     print("Received contact form:", contact)
-    print("file loading", append_to_file(contact))
-    if send_email(contact.name, contact.email, contact.message, contact.device_id, contact.other):
-        return {"status": "ok"}
-    return {"status": "error"}
+    print("file write ->", append_to_file(contact))
+    print("email send ->", send_email(contact.name, contact.email, contact.message, contact.device_id, contact.other))
+
