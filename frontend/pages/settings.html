@@ -16,6 +16,21 @@
     .toolbar-right { display:flex; gap:.5rem; align-items:center; margin-left:auto; }
     .row { display:flex; gap: var(--s4); align-items:flex-end; flex-wrap:wrap; }
     .w240{ width:240px; }
+    .btn.gray{
+      background-image: linear-gradient(180deg, #6b7280 0%, #374151 100%);
+    }
+    .btn.dark{
+      background-image: linear-gradient(180deg, #374151 0%, #1f2937 100%);
+    }
+      .badge{
+    display:inline-flex; align-items:center; gap:.4rem;
+    height:28px; padding:0 .6rem; border-radius:999px;
+    font-weight:700; font-size:.9rem; border:1px solid var(--border); background:#fff;
+  }
+    .badge.idle{ color:#6b7280; }
+    .badge.processing{ color:#2563eb; }
+    .badge.ok{ color:#10b981; }
+    .badge.error{ color:#ef4444; }
   </style>
 </head>
 <body>
@@ -42,12 +57,7 @@
         <div class="inline">
           <span>Subidos</span><strong id="aiUploaded">0</strong>
           <label class="inline">Estado:
-            <select id="aiStatus" class="input">
-              <option value="idle">Idle</option>
-              <option value="processing">Procesando</option>
-              <option value="ok">OK</option>
-              <option value="error">Error</option>
-            </select>
+            <span id="aiStatus" class="badge">—</span>
           </label>
         </div>
 
@@ -55,8 +65,8 @@
           <button id="btnTrain" class="btn secondary">
             <span class="chip">⚙️</span> Entrenar IA
           </button>
-          <button id="btnResetAI" class="btn">Resetear</button>
-          <button id="btnDownloadModel" class="btn">Descargar modelo</button>
+          <button id="btnResetAI" class="btn gray">Resetear</button>
+          <button id="btnDownloadModel" class="btn dark">Descargar modelo</button>
         </div>
       </div>
       <div id="trainHint" class="hint" style="margin-top:.6rem; display:none;">
@@ -83,14 +93,14 @@
           </select>
         </label>
 
-        <label>Markup materiales (%) <input id="markup" class="input" type="number" placeholder="20" step="1"></label>
-        <label>IVA (%) <input id="vat" class="input" type="number" placeholder="21" step="1"></label>
-        <label>Coste desplazamiento (€/km) <input id="travelKm" class="input" type="number" placeholder="0.5" step="0.1"></label>
+        <label>Markup materiales <br> (%) <input id="markup" class="input" type="number" placeholder="20" step="1"></label>
+        <label>IVA <br> (%) <input id="vat" class="input" type="number" placeholder="21" step="1"></label>
+        <label>Coste desplazamiento <br> (€/km) <input id="travelKm" class="input" type="number" placeholder="0.5" step="0.1"></label>
       </div>
 
-      <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s3);">
-        <button id="btnSaveTariffs" class="btn">Guardar</button>
-      </div>
+      <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s3);" >
+        <button id="btnSaveTariffs" class="btn gray">Guardar</button>
+      </div>  
     </article>
 
     <!-- Proveedores -->
@@ -117,7 +127,7 @@
           <input id="providerCatalog" type="file" />
         </label>
 
-        <button id="btnUploadCatalog" class="btn">Subir archivo</button>
+        <button id="btnUploadCatalog" class="btn gray">Subir archivo</button>
 
         <div class="inline">
           <span>Estado:</span>
@@ -125,7 +135,7 @@
         </div>
 
         <div class="toolbar-right">
-          <button id="btnSaveProvider" class="btn">Guardar</button>
+          <button id="btnSaveProvider" class="btn gray">Guardar</button>
         </div>
       </div>
     </article>
@@ -147,7 +157,7 @@
       </div>
       <p class="hint">El siguiente número se recalculará automáticamente al guardar.</p>
       <div class="toolbar" style="justify-content:flex-end;">
-        <button id="btnSavePrefixes" class="btn">Guardar</button>
+        <button id="btnSavePrefixes" class="btn gray">Guardar</button>
       </div>
     </article>
 
@@ -159,9 +169,11 @@
         <label>NIF/CIF <input id="taxId" class="input" /></label>
         <label>Dirección <input id="taxAddress" class="input" /></label>
         <label>Ciudad / CP <input id="taxCityZip" class="input" /></label>
+        <label>Admin Email <input id="admnEmail" class="input" /></label>
+        <label>Admin Tlf <input id="admntlf" class="input" /></label>
       </div>
       <div class="toolbar" style="justify-content:flex-end;">
-        <button id="btnSaveFiscal" class="btn">Guardar</button>
+        <button id="btnSaveFiscal" class="btn gray">Guardar</button>
       </div>
     </article>
 
@@ -187,7 +199,7 @@
             <option value="B">Modelo B</option>
           </select>
           <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s3);">
-            <button id="btnSaveBranding" class="btn">Guardar</button>
+            <button id="btnSaveBranding" class="btn gray">Guardar</button>
             <button id="btnPreviewBrand" class="btn secondary">preview</button>
           </div>
         </div>
@@ -199,11 +211,11 @@
       <h3>Modelo de email</h3>
       <label>Asunto <input id="emailSubject" class="input" placeholder="Tu presupuesto {numero}"/></label>
       <label style="margin-top:.6rem;">Cuerpo</label>
-      <textarea id="emailBody" class="input" placeholder="Hola {cliente}, adjuntamos tu presupuesto por importe {importe}. Enlace: {enlace}"></textarea>
+      <textarea id="emailBody" class="input" placeholder="Hola {cliente}, adjuntamos tu {tipoDocumento} por importe {importe}. Enlace: {enlace}"></textarea>
       <div class="toolbar" style="justify-content:flex-end; margin-top: var(--s3);">
-        <button id="btnSaveEmail" class="btn">Guardar</button>
+        <button id="btnSaveEmail" class="btn gray">Guardar</button>
       </div>
-      <p class="hint">Variables disponibles: {cliente}, {importe}, {enlace}, {numero}.</p>
+      <p class="hint">Variables disponibles: {cliente}, {importe}, {tipoDocumento}, {enlace}, {numero}.</p>
     </article>
 
   </section>
@@ -222,6 +234,7 @@ function fillSteps(sel){
     sel.appendChild(o);
   }
 }
+
 
 const minBlock = document.getElementById('minBlock');
 const stepBlock = document.getElementById('stepBlock');
@@ -247,6 +260,23 @@ logoFile.addEventListener('change', () => {
 });
 
 // ---- IA actions
+function renderAIStatus(status){
+  const el = document.getElementById('aiStatus');
+  const map = {
+    idle: {text:'Idle', cls:'idle'},
+    processing: {text:'Procesando…', cls:'processing'},
+    ok: {text:'OK', cls:'ok'},
+    error: {text:'Error', cls:'error'}
+  };
+  const m = map[status] || map.idle;
+  el.className = `badge ${m.cls}`;
+  if (status === 'processing') {
+    el.innerHTML = `<span class="spinner"></span> ${m.text}`;
+  } else {
+    el.textContent = m.text;
+  }
+}
+
 const aiFiles = document.getElementById('aiFiles');
 const aiUploaded = document.getElementById('aiUploaded');
 const btnUploadAI = document.getElementById('btnUploadAI');
@@ -269,11 +299,11 @@ btnTrain.onclick = async () => {
   btnTrain.disabled = true;
   const r = await fetch(`/api-v1/settings/ai/train`, { method:'POST' });
   const j = await r.json().catch(()=>({}));
-  aiStatus.value = j.status || 'processing';
+  renderAIStatus(j.status || 'processing');
   setTimeout(async () => { // poll once for MVP
     const rr = await fetch(`/api-v1/settings/ai/status`);
     const jj = await rr.json();
-    aiStatus.value = jj.status || 'ok';
+    renderAIStatus(jj.status || 'ok');
     trainHint.style.display = 'none';
     btnTrain.disabled = false;
   }, 2500);
@@ -282,7 +312,7 @@ btnTrain.onclick = async () => {
 btnResetAI.onclick = async () => {
   await fetch(`/api-v1/settings/ai/reset`, { method:'POST' });
   aiUploaded.textContent = '0';
-  aiStatus.value = 'idle';
+  renderAIStatus('idle');
 };
 
 btnDownloadModel.onclick = () => { window.location = `/api-v1/settings/ai/model`; };
@@ -375,7 +405,7 @@ document.getElementById('btnSaveEmail').onclick = () => saveJSON(`/api-v1/settin
     document.getElementById('travelKm').value = s.tariffs?.travel_per_km ?? '';
 
     if(s.provider?.default_provider){
-      if(['Bricomart','Leroy Merlin','Amazon Business'].includes(s.provider.default_provider)){
+      if(['Bricomart','Saltoki','Amazon Business'].includes(s.provider.default_provider)){
         provider.value = s.provider.default_provider;
         otherWrap.style.display='none';
       } else {
@@ -399,8 +429,14 @@ document.getElementById('btnSaveEmail').onclick = () => saveJSON(`/api-v1/settin
 
     document.getElementById('emailSubject').value = s.email_template?.subject ?? '';
     document.getElementById('emailBody').value = s.email_template?.body ?? '';
+
+    await fetchAIStatus();
   }catch(e){ /* noop */ }
 })();
+  const aiStatusPoll = setInterval(fetchAIStatus, 5000);
+  document.addEventListener('visibilitychange', ()=>{
+    if (document.hidden) clearInterval(aiStatusPoll);
+  });
 </script>
 </body>
 </html>
