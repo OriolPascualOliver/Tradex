@@ -18,7 +18,7 @@ router = APIRouter(prefix="/api-v1/contact", tags=["contact"])
 
 
 #CONTACT_FILE = Path(os.getenv("CONTACT_FILE", "/root/Tradex/contact.txt"))
-CONTACT_FILE = Path("/root/Tradex/contact.txt")
+CONTACT_FILE = Path("/root/Tradex/backend/contact.txt")
 
 #EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS", "")
 #EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD", "")
@@ -27,7 +27,7 @@ CONTACT_FILE = Path("/root/Tradex/contact.txt")
 SMTP_PORT = 587
 SMTP_SERVER = 'smtp.gmail.com'
 EMAIL_ADDRESS = 't39474115@gmail.com'
-EMAIL_PASSWORD = 'pkao szhk layz byay'
+EMAIL_PASSWORD = 'pkaoszhklayzbyay'
 SUBJECT = 'TEST'
 RECIPIENT_EMAIL = 'opotek@protonmail.com'
 SENDER = EMAIL_ADDRESS
