@@ -3,141 +3,139 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FixHub </title>
-    <link rel="stylesheet" href="/css/style.css?v={cachebust}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <meta name="description" content="Unifica presupuestos, partes, materiales y facturas. Planifica rutas y coordina a todo tu equipo de oficio con FixHub."/>
+    <title>FixHub · Comparativa de planes</title>
+    <!--#include "partials/tailwind.html" -->
+    <meta name="description" content="Compara las funcionalidades de los planes Free Trial, Solo y Team de FixHub." />
   </head>
   <body>
-    <!--# include virtual="/partials/header.html" -->
+    <!--#include "partials/header.html" -->
 
-  <main>
+    <main class="page-container">
+      <header class="flex flex-col items-center gap-4 text-center">
+        <h1 class="section-heading">Comparativa de planes</h1>
+        <p class="section-subheading">Consulta qué incluye cada plan de FixHub y encuentra el equilibrio perfecto entre automatización y coordinación de equipo.</p>
+      </header>
 
+      <div class="overflow-x-auto">
+        <table class="table-compare">
+          <caption class="sr-only">Comparativa de funcionalidades de los planes FixHub</caption>
+          <thead>
+            <tr>
+              <th scope="col">Características</th>
+              <th scope="col">Free Trial</th>
+              <th scope="col">Solo</th>
+              <th scope="col">Team</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Gestión clientes</th>
+              <td>Básica</td>
+              <td>Completa</td>
+              <td>Completa</td>
+            </tr>
+            <tr>
+              <th scope="row">Presupuestos</th>
+              <td>Generación con IA</td>
+              <td>IA + edición manual</td>
+              <td>IA + edición manual</td>
+            </tr>
+            <tr>
+              <th scope="row">Envío de presupuestos</th>
+              <td>Email</td>
+              <td>Email + WhatsApp</td>
+              <td>Email + WhatsApp</td>
+            </tr>
+            <tr>
+              <th scope="row">Calendario</th>
+              <td>Interno básico</td>
+              <td>Interno + Google Calendar</td>
+              <td>Interno + Google Calendar</td>
+            </tr>
+            <tr>
+              <th scope="row">Notas y fotos</th>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Facturación</th>
+              <td>Manual / exportar PDF</td>
+              <td>Integrada con Verifactu</td>
+              <td>Integrada con Verifactu</td>
+            </tr>
+            <tr>
+              <th scope="row">Pagos online</th>
+              <td>SafePay (+10%)</td>
+              <td>SafePay (+3%)</td>
+              <td>SafePay (+3%)</td>
+            </tr>
+            <tr>
+              <th scope="row">Informes / documentación</th>
+              <td><span aria-hidden="true">—</span><span class="sr-only">No disponible</span></td>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Gestión de compras</th>
+              <td><span aria-hidden="true">—</span><span class="sr-only">No disponible</span></td>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Dashboard</th>
+              <td>Básico</td>
+              <td>Con analíticas</td>
+              <td>Avanzado por trabajador</td>
+            </tr>
+            <tr>
+              <th scope="row">Gestión de equipo</th>
+              <td><span aria-hidden="true">—</span><span class="sr-only">No disponible</span></td>
+              <td><span aria-hidden="true">—</span><span class="sr-only">No disponible</span></td>
+              <td>Roles y permisos</td>
+            </tr>
+            <tr>
+              <th scope="row">Auto asignación trabajos</th>
+              <td><span aria-hidden="true">—</span><span class="sr-only">No disponible</span></td>
+              <td><span aria-hidden="true">—</span><span class="sr-only">No disponible</span></td>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Revisión facturas por admin</th>
+              <td><span aria-hidden="true">—</span><span class="sr-only">No disponible</span></td>
+              <td><span aria-hidden="true">—</span><span class="sr-only">No disponible</span></td>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Compra material integrada</th>
+              <td><span aria-hidden="true">—</span><span class="sr-only">No disponible</span></td>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Control horario</th>
+              <td><span aria-hidden="true">—</span><span class="sr-only">No disponible</span></td>
+              <td><span aria-hidden="true">—</span><span class="sr-only">No disponible</span></td>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+            </tr>
+            <tr>
+              <th scope="row">InstaQuote</th>
+              <td><span aria-hidden="true">—</span><span class="sr-only">No disponible</span></td>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+              <td><span aria-hidden="true">⏳</span><span class="sr-only">Próximamente</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Soporte</th>
+              <td>Email</td>
+              <td>Email + Chat + Teléfono</td>
+              <td>Email + Chat + Teléfono</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="hint mt-2 text-right">⏳: Próximamente</p>
+      </div>
+    </main>
 
-  <section class="features-table" style="padding: var(--s7) var(--s5);">
-  <h3 style="text-align:center; margin-bottom: var(--s5); font-size: var(--h2);">Comparativa de Planes</h3>
-  
-  <div style="overflow-x:auto;">
-    <table class="table-compare">
-      <thead>
-        <tr>
-          <th>Características</th>
-          <th>Free Trial</th>
-          <th>Solo</th>
-          <th>Team</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Gestión clientes</td>
-          <td>Básica</td>
-          <td>Completa</td>
-          <td>Completa</td>
-        </tr>
-        <tr>
-          <td>Presupuestos</td>
-          <td>Generación con IA</td>
-          <td>IA + edición manual / manual</td>
-          <td>IA + edición manual / manual</td>
-        </tr>
-        <tr>
-          <td>Envío de presupuestos</td>
-          <td>Email</td>
-          <td>Email + WhatsApp</td>
-          <td>Email + WhatsApp</td>
-        </tr>
-        <tr>
-          <td>Calendario</td>
-          <td>Interno básico</td>
-          <td>Interno + Google Calendar</td>
-          <td>Interno + Google Calendar</td>
-        </tr>
-        <tr>
-          <td>Notas y fotos</td>
-          <td>⏳</td>
-          <td>⏳</td>
-          <td>⏳</td>
-        </tr>
-        <tr>
-          <td>Facturación</td>
-          <td>Manual / exportar PDF</td>
-          <td>Integrada con Verifactu</td>
-          <td>Integrada con Verifactu</td>
-        </tr>
-        <tr>
-          <td>Pagos online</td>
-          <td>SafePay (+10%)</td>
-          <td>SafePay (+3%)</td>
-          <td>SafePay (+3%)</td>
-        </tr>
-        <tr>
-          <td>Informes / documentación</td>
-          <td>—</td>
-          <td>⏳</td>
-          <td>⏳</td>
-        </tr>
-        <tr>
-          <td>Gestión de compras</td>
-          <td>—</td>
-          <td>⏳</td>
-          <td>⏳</td>
-        </tr>
-        <tr>
-          <td>Dashboard</td>
-          <td>Básico</td>
-          <td>Con analíticas</td>
-          <td>Avanzado (info por trabajador)</td>
-        </tr>
-        <tr>
-          <td>Gestión de equipo</td>
-          <td>—</td>
-          <td>—</td>
-          <td>Añadir trabajadores, roles y permisos</td>
-        </tr>
-        <tr>
-          <td>Auto asignación trabajos</td>
-          <td>—</td>
-          <td>—</td>
-          <td>⏳</td>
-        </tr>
-        <tr>
-          <td>Revisión facturas por admin</td>
-          <td>—</td>
-          <td>—</td>
-          <td>⏳</td>
-        </tr>
-        <tr>
-          <td>Compra material integrada</td>
-          <td>—</td>
-          <td>⏳</td>
-          <td>⏳</td>
-        </tr>
-        <tr>
-          <td>Control de fichaje horario</td>
-          <td>—</td>
-          <td>—</td>
-          <td>⏳</td>
-        </tr>
-        <tr>
-          <td>InstaQuote</td>
-          <td>—</td>
-          <td>⏳</td>
-          <td>⏳</td>
-        <tr>
-          <td>Soporte</td>
-          <td>Email</td>
-          <td>Email + Chat + Telefono</td>
-          <td>Email + Chat + Teléfono</td>
-        </tr>
-      </tbody>
-    </table>
-    <hint style="display:block; text-align:right; margin-top: var(--s2); color: var(--muted);">⏳: Próximamente</hint>
-  </div>
-</section>
-
-
-  </main>
-
-    <!--# include virtual="/partials/footer.html" -->
+    <!--#include "partials/footer.html" -->
   </body>
 </html>

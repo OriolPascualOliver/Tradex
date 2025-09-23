@@ -1,174 +1,130 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Equipo · FixHub</title>
-  <link rel="stylesheet" href="/css/style.css?v=2025-09-02-team2"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <style>
-    .wrap { max-width:1100px; margin: var(--s7) auto; padding: 0 var(--s5); display:grid; gap: var(--s5); }
-    .row { display:flex; gap: var(--s3); align-items:center; flex-wrap:wrap; }
-    .card { background: var(--paper); border:1px solid var(--border); border-radius: var(--radius); padding: var(--s5); }
-    .kicker { font-weight:800; color: var(--muted); letter-spacing:.2px; }
-    .btn.sm { padding: .45rem .7rem; border-radius: 10px; font-weight: 700; background: linear-gradient(180deg, #f3f4f6, #e5e7eb); color: #111827; border: 1px solid var(--border); box-shadow: var(--shadow-sm);}
-
-    .btn.sm:hover {background: linear-gradient(180deg, #e5e7eb, #d1d5db);}
-
-    .btn.gray { background-image: linear-gradient(180deg, var(--muted), var(--steel)); }
-    .toolbar { display:flex; gap: var(--s3); align-items:center; justify-content:space-between; margin-bottom: var(--s3); flex-wrap:wrap;}
-    .table { width:100%; border-collapse: collapse; }
-    .table th, .table td { border-bottom:1px solid var(--border); padding:.75rem; text-align:left; }
-    .table th { background: var(--paper-2); color: var(--steel); font-weight:700; }
-    .chip { display:inline-flex; gap:.35rem; align-items:center; padding:.2rem .5rem; border-radius:999px; border:1px solid var(--border); font-weight:700; font-size:.85rem; }
-    .muted-sm { color:var(--muted); font-size:.9rem; }
-    .right { text-align:right; }
-    .hide { display:none !important; }
-
-    /* Modal (Add/Edit member) */
-    .modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.35); display:none; place-items:center; z-index:60; }
-    .modal{ width:100%; max-width:520px; background:#fff; border:1px solid var(--border); border-radius:16px; box-shadow: var(--shadow-lg); padding: var(--s5); }
-    .modal h3 { margin-top:0; }
-    .modal .grid { display:grid; gap: var(--s3); }
-    .modal .actions { display:flex; gap: var(--s3); justify-content:flex-end; margin-top: var(--s4); }
-    .danger-text { color: var(--rose); }
-
-    /* Modal (Upgrade plan / team size) */
-    .modal-wide .modal{ max-width:640px; }
-    .inline { display:flex; gap: var(--s3); align-items:center; flex-wrap:wrap; }
-    .summary { background: rgba(37,99,235,.06); border:1px dashed rgba(37,99,235,.35); border-radius:12px; padding: var(--s3); }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FixHub · Equipo</title>
+  <!--#include "partials/tailwind.html" -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pIVp9sPu0YdHDi3uL1l5X8GZFODdgNpTi27C1l2qCkCmZJLdnOjFkWDXLI4YAlnXrhIR3IuAeGHGZk+y3OC/qw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-  <!-- Header include -->
-  <div id="headerMount"></div>
+<!--#include "partials/header.html" -->
 
-  <main class="wrap">
-    <!-- Tarjeta Plan -->
-    <section class="card" id="planCard">
-      <div class="row" style="justify-content:space-between;">
-        <div>
-          <div class="kicker">Plan actual</div>
-          <h2 id="planName" style="margin:.25rem 0 0;">—</h2>
-          <p id="planNote" class="muted-sm" style="margin:.5rem 0 0;">—</p>
-        </div>
-        <div class="row">
-          <button class="btn sm" id="btnChangePlan"><i class="fa-solid fa-arrows-rotate"></i>&nbsp; Cambiar plan / equipo</button>
-          <a class="btn sm" href="./pricing.html"><i class="fa-regular fa-circle-question"></i>&nbsp; Ver planes</a>
-        </div>
+<main class="wrap">
+  <section class="card" id="planCard">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <div class="kicker uppercase tracking-wide text-slate-500">Plan actual</div>
+        <h2 id="planName" class="text-3xl font-semibold text-ink">—</h2>
+        <p id="planNote" class="muted-sm mt-2">—</p>
       </div>
-    </section>
-
-    <!-- Tarjeta Equipo (sólo Team) -->
-    <section class="card hide" id="teamCard">
-      <div class="toolbar">
-        <div>
-          <div class="kicker">Tu equipo</div>
-          <h3 style="margin:.25rem 0 0;"><span id="orgName">—</span> · <span id="teamSizeBadge" class="chip">0 personas</span></h3>
-        </div>
-        <div class="row">
-          <button class="btn secondary sm" id="btnAdd"><i class="fa-solid fa-user-plus"></i>&nbsp; Añadir</button>
-          <button class="btn sm" id="btnRefresh"><i class="fa-solid fa-rotate"></i>&nbsp; Actualizar</button>
-        </div>
+      <div class="flex flex-wrap items-center gap-3">
+        <button class="btn sm" id="btnChangePlan"><i class="fa-solid fa-arrows-rotate"></i> Cambiar plan / equipo</button>
+        <a class="btn sm" href="./pricing.html"><i class="fa-regular fa-circle-question"></i> Ver planes</a>
       </div>
-
-      <div style="overflow:auto;">
-        <table class="table" id="teamTable" aria-describedby="orgName">
-          <thead>
-            <tr>
-              <th>Usuario</th>
-              <th>Rol</th>
-              <th>Estado</th>
-              <th class="right">Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="teamBody">
-            <tr><td colspan="4" class="muted-sm">Cargando equipo…</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer include -->
-  <div id="footerMount"></div>
-
-  <!-- Modal Add/Edit Member -->
-  <div class="modal-backdrop" id="modalMember" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal" role="document">
-      <h3 id="memberTitle">Añadir miembro</h3>
-      <div class="grid">
-        <label>Nombre
-          <input id="fName" class="input" placeholder="Nombre y apellidos" />
-        </label>
-        <label>Email
-          <input id="fEmail" class="input" type="email" placeholder="persona@empresa.com" />
-        </label>
-        <label>Rol
-          <select id="fRole" class="input">
-            <option value="worker">Técnico</option>
-            <option value="manager">Manager</option>
-            <option value="admin">Admin</option>
-          </select>
-        </label>
-        <label class="input-inline">
-          <input type="checkbox" id="fActive" checked />
-          <span>Activo</span>
-        </label>
-      </div>
-      <div class="actions">
-        <button class="btn sm" id="btnCancelMember">Cancelar</button>
-        <button class="btn primary sm" id="btnSaveMember">Guardar</button>
-      </div>
-      <p id="memberMsg" class="muted-sm" style="margin-top:.5rem;"></p>
     </div>
-  </div>
+  </section>
 
-  <!-- Modal Change Plan / Team Size -->
-  <div class="modal-backdrop modal-wide" id="modalPlan" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal" role="document">
-      <h3>Cambiar plan / tamaño de equipo</h3>
-
-      <div class="grid">
-        <label>Plan
-          <select id="mPlan" class="input">
-            <option value="Solo">Solo</option>
-            <option value="Team">Team</option>
-          </select>
-        </label>
-
-        <div id="teamSelector" class="inline">
-          <label for="mTeamSize" style="font-weight:700;">Personas</label>
-          <select id="mTeamSize" class="input" style="min-width:120px;">
-            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
-            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
-            <option value="7">7</option><option value="8">8+</option>
-          </select>
-        </div>
-
-        <div class="summary" id="priceSummary">
-          <div><strong>Resumen de precio</strong></div>
-          <div class="muted-sm" id="priceText">—</div>
-        </div>
-
-        <label class="input-inline">
-          <input type="checkbox" id="ackPrice"/>
-          <span>Entiendo y acepto el cambio de precio.</span>
-        </label>
+  <section class="card hide" id="teamCard">
+    <div class="toolbar justify-between">
+      <div>
+        <div class="kicker uppercase tracking-wide text-slate-500">Tu equipo</div>
+        <h3 class="text-2xl font-semibold text-ink mt-1"><span id="orgName">—</span> · <span id="teamSizeBadge" class="chip">0 personas</span></h3>
       </div>
-
-      <div class="actions">
-        <button class="btn sm" id="btnCancelPlan">Cancelar</button>
-        <button class="btn primary sm" id="btnSavePlan" disabled>Confirmar cambio</button>
+      <div class="flex flex-wrap items-center gap-2">
+        <button class="btn secondary sm" id="btnAdd"><i class="fa-solid fa-user-plus"></i> Añadir</button>
+        <button class="btn sm" id="btnRefresh"><i class="fa-solid fa-rotate"></i> Actualizar</button>
       </div>
-      <p id="planMsg" class="muted-sm" style="margin-top:.5rem;"></p>
     </div>
+
+    <div class="mt-4 overflow-x-auto">
+      <table class="table" id="teamTable" aria-describedby="orgName">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th class="right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="teamBody">
+          <tr><td colspan="4" class="muted-sm">Cargando equipo…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<!--#include "partials/footer.html" -->
+
+<div class="modal-backdrop" id="modalMember" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal" role="document">
+    <h3 id="memberTitle" class="text-xl font-semibold text-ink">Añadir miembro</h3>
+    <div class="grid gap-4">
+      <label>Nombre
+        <input id="fName" class="input" placeholder="Nombre y apellidos" />
+      </label>
+      <label>Email
+        <input id="fEmail" class="input" type="email" placeholder="persona@empresa.com" />
+      </label>
+      <label>Rol
+        <select id="fRole" class="input">
+          <option value="worker">Técnico</option>
+          <option value="manager">Manager</option>
+          <option value="admin">Admin</option>
+        </select>
+      </label>
+      <label class="input-inline">
+        <input type="checkbox" id="fActive" checked />
+        <span>Activo</span>
+      </label>
+    </div>
+    <div class="actions">
+      <button class="btn sm" id="btnCancelMember">Cancelar</button>
+      <button class="btn primary sm" id="btnSaveMember">Guardar</button>
+    </div>
+    <p id="memberMsg" class="muted-sm"></p>
   </div>
+</div>
+
+<div class="modal-backdrop modal-wide" id="modalPlan" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal" role="document">
+    <h3 class="text-xl font-semibold text-ink">Cambiar plan / tamaño de equipo</h3>
+    <div class="grid gap-4">
+      <label>Plan
+        <select id="mPlan" class="input">
+          <option value="Solo">Solo</option>
+          <option value="Team">Team</option>
+        </select>
+      </label>
+      <div id="teamSelector" class="inline">
+        <label for="mTeamSize" class="font-semibold">Personas</label>
+        <select id="mTeamSize" class="input min-w-[120px]">
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8+</option>
+        </select>
+      </div>
+      <div class="summary" id="priceSummary">
+        <div><strong>Resumen de precio</strong></div>
+        <div class="muted-sm" id="priceText">—</div>
+      </div>
+      <label class="input-inline">
+        <input type="checkbox" id="ackPrice" />
+        <span>Entiendo y acepto el cambio de precio.</span>
+      </label>
+    </div>
+    <div class="actions">
+      <button class="btn sm" id="btnCancelPlan">Cancelar</button>
+      <button class="btn primary sm" id="btnSavePlan" disabled>Confirmar cambio</button>
+    </div>
+    <p id="planMsg" class="muted-sm"></p>
+  </div>
+</div>
 
 <script type="module">
 import { formatEUR, computeTeamMonthly } from '/js/pricing-lib.js';
 
-/* ====== Config ====== */
 const token = localStorage.getItem('token') || '';
 
 let PRICING = null;
@@ -192,35 +148,28 @@ async function loadPricing(){
 
 await loadPricing();
 
-/* ====== Header/Footer includes ====== */
-(async function mountHF(){
-  try {
-    const [h, f] = await Promise.all([
-      fetch('/header.html').then(r => r.text()),
-      fetch('/footer.html').then(r => r.text()),
-    ]);
-    document.getElementById('headerMount').innerHTML = h;
-    document.getElementById('footerMount').innerHTML = f;
-  } catch(e) { console.warn('No header/footer include', e); }
-})();
-
-/* ====== State ====== */
 let org = { id:null, name:'—', plan:'Solo', teamMembers: 1 };
 let team = [];
 let editingMemberId = null;
 
-/* ====== Utils ====== */
 const $ = (id) => document.getElementById(id);
 function authHeaders() {
   const h = { 'Content-Type': 'application/json' };
   if (token) h['Authorization'] = 'Bearer ' + token;
   return h;
 }
+async function saveJSON(url, payload){
+  const res = await fetch(url, {
+    method:'PUT',
+    headers: authHeaders(),
+    body: JSON.stringify(payload)
+  });
+  if(!res.ok) throw new Error('request');
+}
 function fmtEUR(x){ return formatEUR(x); }
-function show(el){ el.style.display='grid'; el.removeAttribute('aria-hidden'); }
-function hide(el){ el.style.display='none'; el.setAttribute('aria-hidden','true'); }
+function show(el){ el.classList.add('show'); el.classList.remove('hidden'); el.setAttribute('aria-hidden','false'); }
+function hide(el){ el.classList.remove('show'); el.classList.add('hidden'); el.setAttribute('aria-hidden','true'); }
 
-/* ====== Load Org & Team ====== */
 async function loadOrg(){
   try{
     const res = await fetch(`/api-v1/org/me`, { headers: authHeaders() });
@@ -233,7 +182,6 @@ async function loadOrg(){
       teamMembers: data?.teamMembers ?? 1
     };
   }catch(e){
-    // DEMO fallback
     org = { id:'demo-org', name:'DEMO: ACME', plan:'Team', teamMembers: 3 };
   } finally {
     renderPlan();
@@ -247,7 +195,6 @@ async function loadTeam(){
     const data = await res.json();
     team = Array.isArray(data?.items) ? data.items : [];
   }catch(e){
-    // DEMO fallback
     team = [
       { id:'1', email:'pepito@example.com', name:'Pepito', role:'worker', active:true },
       { id:'2', email:'maria@example.com', name:'María', role:'manager', active:true },
@@ -259,7 +206,6 @@ async function loadTeam(){
   }
 }
 
-/* ====== Render ====== */
 function renderPlan(){
   $('planName').textContent = org.plan;
   $('planNote').textContent = (org.plan.toLowerCase()==='team')
@@ -268,9 +214,9 @@ function renderPlan(){
   $('orgName').textContent = org.name;
   $('teamSizeBadge').textContent = `${org.teamMembers} persona${org.teamMembers>1?'s':''}`;
   if (org.plan.toLowerCase()==='team') {
-    document.getElementById('teamCard').classList.remove('hide');
+    $('teamCard').classList.remove('hide');
   } else {
-    document.getElementById('teamCard').classList.add('hide');
+    $('teamCard').classList.add('hide');
   }
 }
 function roleLabel(r){ return r==='admin'?'Admin':(r==='manager'?'Manager':'Técnico'); }
@@ -289,12 +235,12 @@ function renderTeam(skipWhenSolo=false){
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>
-        <div style="font-weight:700">${m.name || '(sin nombre)'}</div>
+        <div class="font-semibold text-ink">${m.name || '(sin nombre)'}</div>
         <div class="muted-sm">${m.email || ''}</div>
       </td>
       <td><span class="chip">${roleLabel(m.role)}</span></td>
-      <td>${m.active ? '<span class="chip" style="border-color:#86efac;">Activo</span>' : '<span class="chip" style="border-color:#fecaca;">Inactivo</span>'}</td>
-      <td class="right">
+      <td>${m.active ? '<span class="badge ok">Activo</span>' : '<span class="badge error">Inactivo</span>'}</td>
+      <td class="right space-x-2">
         <button class="btn sm" data-act="toggle" data-id="${m.id}">${m.active?'<i class="fa-regular fa-circle-pause"></i> Desactivar':'<i class="fa-regular fa-circle-play"></i> Activar'}</button>
         <button class="btn secondary sm" data-act="edit" data-id="${m.id}"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
         <button class="btn danger sm" data-act="del" data-id="${m.id}"><i class="fa-regular fa-trash-can"></i> Eliminar</button>
@@ -304,7 +250,6 @@ function renderTeam(skipWhenSolo=false){
   body.querySelectorAll('button').forEach(b=>b.addEventListener('click', onRowAction));
 }
 
-/* ====== Team row actions ====== */
 async function onRowAction(e){
   const id = e.currentTarget.getAttribute('data-id');
   const act = e.currentTarget.getAttribute('data-act');
@@ -317,7 +262,6 @@ async function onRowAction(e){
   }
 }
 
-/* ====== Member modal ====== */
 function openMember(m){
   editingMemberId = m?.id || null;
   $('memberTitle').textContent = editingMemberId ? 'Editar miembro' : 'Añadir miembro';
@@ -366,7 +310,6 @@ async function deleteMember(id){
   await loadTeam();
 }
 
-/* ====== Change Plan / Team size modal ====== */
 function openPlanModal(){
   $('mPlan').value = org.plan;
   $('mTeamSize').value = String(Math.min(Math.max(org.teamMembers||1,1),7));
@@ -378,7 +321,9 @@ function openPlanModal(){
   show($('modalPlan'));
 }
 function toggleTeamSelector(){
-  $('teamSelector').style.display = ($('mPlan').value === 'Team') ? 'flex' : 'none';
+  const wrap = $('teamSelector');
+  const isTeam = $('mPlan').value === 'Team';
+  wrap.classList.toggle('hidden', !isTeam);
   refreshPriceSummary();
 }
 function refreshPriceSummary(){
@@ -398,40 +343,34 @@ function refreshPriceSummary(){
   }
   $('priceText').textContent = text;
 }
+
+$('btnChangePlan').onclick = openPlanModal;
+$('btnCancelPlan').onclick = () => hide($('modalPlan'));
 $('mPlan').addEventListener('change', toggleTeamSelector);
 $('mTeamSize').addEventListener('change', refreshPriceSummary);
-$('ackPrice').addEventListener('change', ()=> $('btnSavePlan').disabled = !$('ackPrice').checked);
-$('btnChangePlan').addEventListener('click', openPlanModal);
-$('btnCancelPlan').addEventListener('click', ()=> hide($('modalPlan')));
-
-$('btnSavePlan').addEventListener('click', async ()=>{
-  const plan = $('mPlan').value;
-  const body = { plan, acknowledge: true };
-  if (plan === 'Team') body.teamMembers = Number($('mTeamSize').value);
-
-  try{
-    const res = await fetch(`/api-v1/org`, {
-      method:'PATCH', headers: authHeaders(), body: JSON.stringify(body)
-    });
-    if(!res.ok) throw 0;
-  }catch(e){
-    $('planMsg').textContent = 'No se pudo actualizar el plan. Inténtalo de nuevo.';
-    return;
-  }
-  hide($('modalPlan'));
-  await loadOrg();
-  await loadTeam();
+$('ackPrice').addEventListener('change', () => {
+  $('btnSavePlan').disabled = !$('ackPrice').checked;
 });
+$('btnSavePlan').onclick = async () => {
+  $('planMsg').textContent = '';
+  try{
+    await saveJSON(`/api-v1/org/plan`, {
+      plan: $('mPlan').value,
+      seats: Number($('mTeamSize').value || 1)
+    });
+    $('planMsg').textContent = 'Cambio solicitado.';
+    await loadOrg();
+    await loadTeam();
+  }catch(e){
+    $('planMsg').textContent = 'No se pudo guardar.';
+  }
+};
 
-/* ====== Misc buttons ====== */
-$('btnAdd').addEventListener('click', ()=> openMember(null));
-$('btnRefresh').addEventListener('click', loadTeam);
+$('btnAdd').onclick = () => openMember();
+$('btnRefresh').onclick = () => loadTeam();
 
-/* ====== Init ====== */
- (async function init(){
-  await loadOrg();
-  await loadTeam();
-})();
+await loadOrg();
+await loadTeam();
 </script>
 </body>
 </html>

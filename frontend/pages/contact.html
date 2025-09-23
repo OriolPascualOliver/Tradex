@@ -1,85 +1,85 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contacto · FixHub</title>
-  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FixHub · Contacto</title>
+  <!--#include "partials/tailwind.html" -->
 </head>
 <body>
-    <!--# include virtual="/partials/header.html" -->
+  <!--#include "partials/header.html" -->
 
-  <main>
-    <h2 style="text-align: center;" >¡Hablemos! ¿Tienes alguna pregunta o necesitas ayuda?</h2>
-    <h4 style="text-align: center;">En Fixhub estamos aquí para ayudarte. Si tienes alguna duda, sugerencia, o necesitas asistencia, no dudes en ponerte en contacto con nosotros.<br>
-    Puedes enviarnos un correo electrónico a "opotek+fixhub@protonmail.com" o utilizar el formulario a continuación para enviarnos un mensaje directamente.</h4>
-    <form>
+  <main class="page-container">
+    <header class="flex flex-col items-center gap-4 text-center">
+      <h1 class="section-heading">¡Hablemos! ¿Necesitas ayuda?</h1>
+      <p class="section-subheading">En FixHub estamos para ayudarte. Escríbenos si tienes dudas, sugerencias o quieres conocer mejor la plataforma.</p>
+      <p class="muted">También puedes escribir a <a class="text-sky-600" href="mailto:opotek+fixhub@protonmail.com">opotek+fixhub@protonmail.com</a>.</p>
+    </header>
+
+    <form class="contact-form" id="contactForm">
       <label for="name">Nombre y apellidos *</label>
-      <input id="name" name="name" required/>
+      <input id="name" name="name" class="input" required />
 
       <label for="company">Empresa</label>
-      <input id="company" name="company"/>
+      <input id="company" name="company" class="input" />
 
       <label for="email">Email *</label>
-      <input id="email" type="email" name="email"  required/>
+      <input id="email" type="email" name="email" class="input" required />
 
       <label for="phone">Teléfono</label>
-      <input id="phone" name="phone"/>
+      <input id="phone" name="phone" class="input" />
 
       <label for="interest">Interés principal</label>
-      <input id="interest" name="interest" placeholder="Planificación, presupuestos, partes, materiales, facturas..."/>
+      <input id="interest" name="interest" class="input" placeholder="Planificación, presupuestos, materiales…" />
 
       <label for="msg">Mensaje</label>
-      <textarea id="msg" name="msg" placeholder="Cuéntanos tu flujo de trabajo actual y qué te gustaría simplificar" required></textarea>
+      <textarea id="msg" name="msg" class="input" placeholder="Cuéntanos tu flujo de trabajo actual y qué te gustaría simplificar" required></textarea>
 
-      <button type="submit">Enviar</button>
-      <br>
-      * Campos obligatorios
-
+      <button type="submit" class="btn primary self-start">Enviar</button>
+      <p class="hint">* Campos obligatorios</p>
+      <p id="formStatus" class="muted" aria-live="polite"></p>
     </form>
   </main>
 
-    <!--# include virtual="/partials/footer.html" -->
-</body>
-<script src="/js/apiClient.js"></script>
-<script>
-  const form = document.querySelector('form');
-  const status = document.createElement('p');
-  status.id = 'formStatus';
-  form.appendChild(status);
+  <!--#include "partials/footer.html" -->
 
-  function ensureDeviceId(){
-    if (!localStorage.getItem('deviceId')){
-      const newId = self.crypto?.randomUUID ? self.crypto.randomUUID() : Math.random().toString(36).slice(2);
-      localStorage.setItem('deviceId', newId);
-    }
-    return localStorage.getItem('deviceId');
-  }
+  <script src="/js/apiClient.js"></script>
+  <script>
+    const form = document.getElementById('contactForm');
+    const status = document.getElementById('formStatus');
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    status.textContent = '';
-    ensureDeviceId();
-    const data = {
-      name: document.getElementById('name').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      message: document.getElementById('msg').value.trim(),
-      other: {
-        company: document.getElementById('company').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        interest: document.getElementById('interest').value.trim(),
+    function ensureDeviceId(){
+      if (!localStorage.getItem('deviceId')){
+        const newId = self.crypto?.randomUUID ? self.crypto.randomUUID() : Math.random().toString(36).slice(2);
+        localStorage.setItem('deviceId', newId);
       }
-    };
-    try {
-      await apiClient.post('contact', data);
-      status.style.color = 'green';
-      status.textContent = 'Mensaje enviado correctamente.';
-      form.reset();
-    } catch (err) {
-      status.style.color = 'red';
-      status.textContent = err.message || 'No se pudo enviar el mensaje.';
+      return localStorage.getItem('deviceId');
     }
-  });
-</script>
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = '';
+      ensureDeviceId();
+      const data = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        message: document.getElementById('msg').value.trim(),
+        other: {
+          company: document.getElementById('company').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          interest: document.getElementById('interest').value.trim(),
+        }
+      };
+      try {
+        await apiClient.post('contact', data);
+        status.style.color = '#16a34a';
+        status.textContent = 'Mensaje enviado correctamente.';
+        form.reset();
+      } catch (err) {
+        status.style.color = '#dc2626';
+        status.textContent = err.message || 'No se pudo enviar el mensaje.';
+      }
+    });
+  </script>
+</body>
 </html>

@@ -4,171 +4,115 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>InstaQuote · Demo de flujo interactivo</title>
-  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <style>
-    /* --- InstaQuote demo styles (lean, uses site tokens) --- */
-    .iq-grid{ display:grid; grid-template-columns: 300px 1fr 360px; gap: var(--s5); align-items:start; }
-    @media (max-width: 1100px){ .iq-grid{ grid-template-columns: 1fr; } }
-
-    .iq-sidebar{ position: sticky; top: var(--s4); height: fit-content; }
-    .iq-flow{ display:grid; gap: var(--s4); position:relative; }
-    .iq-node{
-      position:relative; background:#fff; border:1px solid var(--border); border-radius: var(--radius);
-      padding: var(--s4); box-shadow: var(--shadow-sm);
-    }
-    .iq-node.done{ border-color: rgba(37,99,235,.45); }
-    .iq-node:not(:first-child)::before{
-      content:""; position:absolute; left:32px; top:-16px; width:2px; height:16px;
-      background: linear-gradient(180deg, #cbd5e1, #94a3b8);
-    }
-    .iq-node .q-title{ font-weight:700; color:var(--steel); margin-bottom:.4rem; }
-    .iq-options{ display:grid; gap:.35rem; margin-top:.35rem; }
-    .iq-options .opt{
-      display:flex; align-items:center; gap:.55rem; padding:.5rem .65rem; border:1px solid var(--border); border-radius:10px; cursor:pointer;
-    }
-    .iq-options .opt:hover{ background: rgba(2,6,23,.04); }
-    .iq-inline{
-      display:flex; gap:.5rem; align-items:center; flex-wrap:wrap;
-    }
-    .iq-summary .split{ display:grid; grid-template-columns: 1fr auto; gap:.35rem; }
-    .pill{ display:inline-block; padding:.3rem .55rem; border-radius:999px; background:rgba(2,6,23,.06); font-weight:700; font-size:.85rem; }
-    .muted-sm{ color:var(--muted); font-size:.9rem; }
-    .money{ font-weight:800; font-size:1.4rem; }
-    .kpi-ghost{ background:var(--paper); border:1px dashed var(--border); border-radius: var(--radius); padding: var(--s4); text-align:center; color:var(--muted); }
-    .connector-tip{ font-size:.9rem; color:var(--muted); }
-    .small{ font-size:.92rem; }
-    .input{ padding:10px 12px; border:1px solid var(--border); border-radius:10px; }
-    .copy-input{ width:100%; font:inherit; padding:10px 12px; border:1px dashed var(--border); border-radius:10px; background:#fff; }
-
-    .iq-badge{ display:inline-flex; gap:.4rem; align-items:center; padding:.3rem .5rem; border-radius:999px;
-      background: rgba(37,99,235,.1); color: var(--sky); font-weight:700; font-size:.85rem; }
-    .iq-badge i{ font-size:.9rem; }
-
-    .req-list{ margin: .5rem 0 0; padding-left: 1.1rem; display:grid; gap:.25rem; }
-    .req-list li{ margin-left: .2rem; }
-    .est-breakdown{ display:grid; gap:.4rem; margin-top:.6rem; }
-    .est-breakdown .row{ display:flex; align-items:center; justify-content:space-between; }
-    .est-breakdown .row .label{ color:var(--muted); }
-    .est-breakdown .row .value{ font-weight:700; }
-    .range{ font-weight:800; font-size:1.1rem; }
-
-    .hint{ color:var(--muted); font-size:.9rem; }
-    .iq-footer{ margin-top: var(--s4); display:flex; justify-content:space-between; gap: var(--s3); flex-wrap:wrap; }
-    .iq-footer .btn{ padding:10px 14px; }
-
-    .ghost-uploader{ padding:10px; border:1px dashed var(--border); border-radius:10px; color:var(--muted); display:flex; gap:.5rem; align-items:center; }
-    .ghost-uploader input{ display:none; }
-    .ghost-uploader label{ cursor:pointer; font-weight:700; }
-
-    .tag{ display:inline-block; background:#eef2ff; color:#3730a3; padding:.2rem .5rem; border-radius:8px; font-size:.8rem; font-weight:700; }
-
-    .toast{ position: fixed; right: 16px; bottom: 16px; background:#111827; color:#fff; padding:10px 12px; border-radius:10px; opacity:0; transform: translateY(10px); transition: all .18s ease; }
-    .toast.show{ opacity:1; transform: translateY(0); }
-  </style>
+  <!--#include "partials/tailwind.html" -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pIVp9sPu0YdHDi3uL1l5X8GZFODdgNpTi27C1l2qCkCmZJLdnOjFkWDXLI4YAlnXrhIR3IuAeGHGZk+y3OC/qw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <!--#include "partials/header.html" -->
 
-<main class="iq-grid" style="padding: var(--s5);">
+<main class="iq-grid">
   <!-- Left: catálogo & presets -->
   <aside class="iq-sidebar">
-    <div class="aside-card">
+    <div class="aside-card space-y-4">
       <div class="iq-badge"><i class="fa-solid fa-bolt"></i> InstaQuote demo</div>
-      <h3 style="margin:.6rem 0 0;">Catálogo</h3>
-      <label style="display:block; margin-top:.6rem;">Oficio
-        <select class="input" id="tradeSelect"></select>
+      <h3 class="text-xl font-semibold text-ink">Catálogo</h3>
+      <label class="block text-sm font-semibold text-slate-600">
+        Oficio
+        <select class="input mt-2" id="tradeSelect"></select>
       </label>
-      <label style="display:block; margin-top:.6rem;">Trabajo
-        <select class="input" id="taskSelect"></select>
+      <label class="block text-sm font-semibold text-slate-600">
+        Trabajo
+        <select class="input mt-2" id="taskSelect"></select>
       </label>
 
-      <div class="toolbar" style="margin-top:.8rem;">
+      <div class="toolbar mt-4">
         <button class="btn secondary" id="startBtn"><i class="fa-solid fa-play"></i> Iniciar</button>
         <button class="btn" id="resetBtn"><i class="fa-solid fa-rotate-left"></i> Reiniciar</button>
       </div>
 
-      <div style="margin-top: var(--s4);">
-        <strong>Pre-cargar por URL</strong>
-        <p class="hint small">Ejemplo: <code>?trade=lampista&task=cambiar_caldera&potencia=24&ubicacion=interior</code></p>
+      <div class="space-y-3">
+        <strong class="text-sm font-semibold text-ink">Pre-cargar por URL</strong>
+        <p class="hint">Ejemplo: <code>?trade=lampista&task=cambiar_caldera&potencia=24&ubicacion=interior</code></p>
         <input id="shareInput" class="copy-input" readonly value=""/>
-        <div class="toolbar" style="margin-top:.5rem;">
+        <div class="toolbar">
           <button class="btn secondary" id="copyBtn"><i class="fa-regular fa-copy"></i> Copiar enlace</button>
         </div>
       </div>
     </div>
 
-    <div class="aside-card" style="margin-top: var(--s4);">
-      <h4>Tarifas demo</h4>
-      <div class="grid" style="grid-template-columns:1fr 1fr;">
-        <label>€/hora <input class="input" id="rateHour" type="number" value="45"/></label>
-        <label>Desplaz. € <input class="input" id="rateCallout" type="number" value="25"/></label>
-        <label>Markup mat. (%) <input class="input" id="rateMarkup" type="number" value="20"/></label>
-        <label>IVA (%) <input class="input" id="rateVAT" type="number" value="21"/></label>
+    <div class="aside-card mt-6 space-y-4">
+      <h4 class="text-lg font-semibold text-ink">Tarifas demo</h4>
+      <div class="grid gap-3 sm:grid-cols-2">
+        <label class="text-sm font-semibold text-slate-600">€/hora <input class="input mt-2" id="rateHour" type="number" value="45"/></label>
+        <label class="text-sm font-semibold text-slate-600">Desplaz. € <input class="input mt-2" id="rateCallout" type="number" value="25"/></label>
+        <label class="text-sm font-semibold text-slate-600">Markup mat. (%) <input class="input mt-2" id="rateMarkup" type="number" value="20"/></label>
+        <label class="text-sm font-semibold text-slate-600">IVA (%) <input class="input mt-2" id="rateVAT" type="number" value="21"/></label>
       </div>
-      <p class="hint small">Sólo a efectos de cálculo del rango estimado.</p>
+      <p class="hint">Sólo a efectos de cálculo del rango estimado.</p>
     </div>
 
-    <div class="aside-card" style="margin-top: var(--s4);">
-      <h4>Atajos</h4>
-      <div class="grid">
-        <a class="link" href="?trade=lampista&task=cambiar_caldera&tipo=gas&potencia=24&ubicacion=interior&adaptar=no">Lampista → Cambio de caldera</a>
-        <a class="link" href="?trade=lampista&task=reparacion_grifo&tipo=monomando&urgente=no">Lampista → Reparación de grifo</a>
-        <a class="link" href="?trade=lampista&task=desatasco&lugar=fregadero&severidad=parcial&longitud=4">Lampista → Desatasco</a>
+    <div class="aside-card mt-6 space-y-3">
+      <h4 class="text-lg font-semibold text-ink">Atajos</h4>
+      <div class="grid gap-2 text-sm">
+        <a class="text-sky-600 hover:text-sky-500" href="?trade=lampista&task=cambiar_caldera&tipo=gas&potencia=24&ubicacion=interior&adaptar=no">Lampista → Cambio de caldera</a>
+        <a class="text-sky-600 hover:text-sky-500" href="?trade=lampista&task=reparacion_grifo&tipo=monomando&urgente=no">Lampista → Reparación de grifo</a>
+        <a class="text-sky-600 hover:text-sky-500" href="?trade=lampista&task=desatasco&lugar=fregadero&severidad=parcial&longitud=4">Lampista → Desatasco</a>
       </div>
     </div>
   </aside>
 
   <!-- Middle: flow -->
-  <section>
-    <h3 style="margin:0 0 .5rem;">Flujo de preguntas</h3>
-    <p class="connector-tip">Responde en orden; el flujo se adapta a tus respuestas.</p>
+  <section class="grid gap-4">
+    <h3 class="text-2xl font-semibold text-ink">Flujo de preguntas</h3>
+    <p class="muted-sm">Responde en orden; el flujo se adapta a tus respuestas.</p>
     <div id="flow" class="iq-flow">
-      <div class="kpi-ghost">Selecciona un trabajo y pulsa <strong>Iniciar</strong></div>
+      <div class="wire text-center text-slate-500">Selecciona un trabajo y pulsa <strong>Iniciar</strong></div>
     </div>
-    <div class="iq-footer">
+    <div class="mt-6 flex flex-wrap items-center justify-between gap-3">
       <div class="hint">* Precio orientativo (±15%) sujeto a visita.</div>
-      <div>
-        <button class="btn tertiary" id="generateShareNow"><i class="fa-solid fa-link"></i> Crear enlace con respuestas</button>
-      </div>
+      <button class="btn tertiary" id="generateShareNow"><i class="fa-solid fa-link"></i> Crear enlace con respuestas</button>
     </div>
   </section>
 
   <!-- Right: summary -->
-  <aside class="aside-card iq-summary">
-    <h3>Resumen</h3>
-    <div>
-      <div class="split">
+  <aside class="aside-card iq-summary space-y-4">
+    <h3 class="text-xl font-semibold text-ink">Resumen</h3>
+    <div class="space-y-3">
+      <div class="flex items-center justify-between gap-2">
         <div class="muted-sm">Importe estimado</div>
         <div class="tag" id="taxTag">IVA incluido</div>
       </div>
-      <div id="estimateMain" class="money" style="margin-top:.2rem;">— €</div>
+      <div id="estimateMain" class="money">— €</div>
       <div class="muted-sm">Rango: <span id="estimateRange" class="range">— € – — €</span></div>
 
-      <div class="est-breakdown">
-        <div class="row"><span class="label">Mano de obra</span><span class="value" id="valLabor">— €</span></div>
-        <div class="row"><span class="label">Desplazamiento</span><span class="value" id="valCallout">— €</span></div>
-        <div class="row"><span class="label">Materiales</span><span class="value" id="valMaterials">— €</span></div>
+      <div class="space-y-2 text-sm text-slate-600">
+        <div class="flex items-center justify-between"><span>Mano de obra</span><span id="valLabor">— €</span></div>
+        <div class="flex items-center justify-between"><span>Desplazamiento</span><span id="valCallout">— €</span></div>
+        <div class="flex items-center justify-between"><span>Materiales</span><span id="valMaterials">— €</span></div>
       </div>
     </div>
 
-    <hr style="margin: var(--s4) 0; border-color: var(--border);"/>
+    <hr class="my-6 border-slate-200"/>
 
-    <div>
-      <h4 style="margin:.2rem 0;">Datos solicitados</h4>
-      <ul id="reqList" class="req-list"></ul>
+    <div class="space-y-3">
+      <h4 class="text-lg font-semibold text-ink">Datos solicitados</h4>
+      <ul id="reqList" class="list-disc space-y-2 pl-5 text-sm text-slate-600"></ul>
     </div>
 
-    <hr style="margin: var(--s4) 0; border-color: var(--border);"/>
+    <hr class="my-6 border-slate-200"/>
 
-    <div>
-      <h4 style="margin:.2rem 0;">Siguiente paso</h4>
+    <div class="space-y-3">
+      <h4 class="text-lg font-semibold text-ink">Siguiente paso</h4>
       <p class="muted-sm">Deja tus datos y adjunta fotos para agilizar el presupuesto.</p>
-      <div class="grid" style="grid-template-columns:1fr;">
+      <div class="grid gap-3">
         <input class="input" placeholder="Nombre y apellidos"/>
         <input class="input" placeholder="Email o teléfono"/>
         <input class="input" placeholder="Dirección (opcional)"/>
-        <div class="ghost-uploader"><i class="fa-regular fa-image"></i> <label for="fileUp">Subir fotos (opcional)</label><input id="fileUp" type="file" multiple/></div>
+        <div class="ghost-uploader">
+          <i class="fa-regular fa-image"></i>
+          <label class="cursor-pointer font-semibold" for="fileUp">Subir fotos (opcional)</label>
+          <input class="hidden" id="fileUp" type="file" multiple/>
+        </div>
         <button class="btn secondary"><i class="fa-solid fa-paper-plane"></i> Enviar solicitud</button>
       </div>
     </div>
@@ -376,7 +320,7 @@ function startFlow(){
 
 function resetFlow(){
   state.trade = null; state.task = null; state.answers = {};
-  els.flow.innerHTML = '<div class="kpi-ghost">Selecciona un trabajo y pulsa <strong>Iniciar</strong></div>';
+  els.flow.innerHTML = '<div class="wire text-center text-slate-500">Selecciona un trabajo y pulsa <strong>Iniciar</strong></div>';
   els.estimateMain.textContent = '— €';
   els.estimateRange.textContent = '— € – — €';
   els.valLabor.textContent = '— €';
@@ -395,7 +339,7 @@ function renderFlow(){
     node.dataset.qid = q.id;
 
     const title = document.createElement('div');
-    title.className = 'q-title';
+    title.className = 'mb-2 text-sm font-semibold text-slate-700';
     title.textContent = q.label;
     node.appendChild(title);
 
@@ -405,7 +349,7 @@ function renderFlow(){
         const o = document.createElement('div'); o.className = 'opt';
         const radio = document.createElement('input'); radio.type='radio'; radio.name=q.id; radio.value=opt.value;
         radio.checked = state.answers[q.id] === opt.value;
-        const lab = document.createElement('label'); lab.textContent = opt.label; lab.style.cursor='pointer';
+        const lab = document.createElement('label'); lab.textContent = opt.label; lab.className = 'cursor-pointer text-sm text-slate-700';
         o.appendChild(radio); o.appendChild(lab);
         o.addEventListener('click', () => { state.answers[q.id] = opt.value; pruneAfter(q.id); recalcAndRender(); });
         wrap.appendChild(o);

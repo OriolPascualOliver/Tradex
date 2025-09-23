@@ -1,69 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Área PRO · FixHub</title>
-  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <style>
-    /* --- Layout PRO --- */
-    .pro-wrap{ display:grid; grid-template-columns: 280px 1fr; gap: var(--s5); }
-    @media (max-width: 1100px){ .pro-wrap{ grid-template-columns: 1fr; } }
-
-    .pro-aside{
-      background: var(--paper); border:1px solid var(--border); border-radius: var(--radius);
-      padding: var(--s4); position: sticky; top: var(--s4); height: fit-content;
-    }
-    .pro-menu{ list-style:none; padding:0; margin:0; display:grid; gap:.35rem; }
-    .pro-menu li a{
-      display:flex; align-items:center; justify-content:space-between; gap:.6rem;
-      padding:.6rem .75rem; border-radius:10px; color:var(--ink); text-decoration:none;
-    }
-    .pro-menu li a:hover{ background: rgba(2,6,23,.04); }
-    .pro-menu .count{ font-weight:800; min-width:1.5rem; text-align:right; }
-    .pro-section{ display:grid; gap: var(--s5); }
-    .pro-head{
-      display:flex; align-items:center; justify-content:center; padding: .25rem 0;
-      color: var(--muted); font-weight:700;
-    }
-
-    .pro-grid{ display:grid; grid-template-columns: 2fr 1fr; gap: var(--s5); }
-    @media (max-width: 1100px){ .pro-grid{ grid-template-columns: 1fr; } }
-
-    .card{ background:var(--paper); border:1px solid var(--border); border-radius:var(--radius); padding:var(--s5); }
-    .calendar{
-      display:grid; grid-template-columns: 1fr 1fr; gap: var(--s4);
-    }
-    .cal-box{
-      border:1px solid var(--border); border-radius:12px; padding: var(--s4); min-height:160px;
-      display:flex; align-items:center; justify-content:center; color:var(--muted);
-    }
-    .today-list{ display:grid; gap:.6rem; }
-    .pill{ display:inline-block; padding:.35rem .6rem; border-radius:999px; background:rgba(2,6,23,.04); font-weight:700; font-size:.85rem; }
-    .job-pill{ display:flex; align-items:center; justify-content:space-between; gap:.6rem; padding:.55rem .7rem; border:1px solid var(--border); border-radius:10px; }
-    .job-id{ font-weight:800; }
-    .muted-sm{ color:var(--muted); font-size:.9rem; }
-
-    .tasks-list{ display:grid; gap:.6rem; }
-    .task-item{ display:flex; gap:.6rem; align-items:flex-start; }
-    .task-item i{ color:#9ca3af; margin-top:.15rem; }
-    .task-item strong{ font-weight:600; }
-
-    .add-btn{
-      width:28px; height:28px; border-radius:999px; display:inline-grid; place-items:center;
-      border:1px solid var(--border); background:#fff; color:var(--ink); cursor:pointer;
-    }
-    .add-btn:hover{ background:rgba(2,6,23,.04); }
-    .menu-left{ display:flex; align-items:center; gap:.6rem; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FixHub · Área PRO</title>
+  <!--#include "partials/tailwind.html" -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pIVp9sPu0YdHDi3uL1l5X8GZFODdgNpTi27C1l2qCkCmZJLdnOjFkWDXLI4YAlnXrhIR3IuAeGHGZk+y3OC/qw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-<!--# include virtual="/partials/header.html" -->
-
+<!--#include "partials/header.html" -->
 
 <main class="pro-wrap">
-  <!-- Sidebar -->
   <aside class="pro-aside">
     <ul class="pro-menu">
       <li>
@@ -72,18 +19,16 @@
           <span class="count" id="tasksCount">3</span>
         </a>
       </li>
-
       <li><a href="#"><span class="menu-left"><i class="fa-regular fa-file-lines"></i> Presupuestos</span><button class="add-btn" title="Nuevo"><i class="fa-solid fa-plus"></i></button></a></li>
       <li><a href="#"><span class="menu-left"><i class="fa-regular fa-user"></i> Clientes</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></a></li>
       <li><a href="#"><span class="menu-left"><i class="fa-solid fa-file-invoice-dollar"></i> Facturas</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></a></li>
       <li><a href="#"><span class="menu-left"><i class="fa-solid fa-screwdriver-wrench"></i> Trabajos</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></a></li>
       <li><a href="./tasks.html"><span class="menu-left"><i class="fa-solid fa-clipboard-check"></i> Tareas</span><button class="add-btn"><i class="fa-solid fa-plus"></i></button></a></li>
-
       <li><a href="#"><span class="menu-left"><i class="fa-solid fa-cart-flatbed"></i> Compras**</span></a></li>
       <li><a href="#"><span class="menu-left"><i class="fa-regular fa-calendar"></i> Calendario</span></a></li>
     </ul>
 
-    <hr style="margin: var(--s4) 0; border-color: var(--border);"/>
+    <hr class="my-6 border-slate-200" />
 
     <ul class="pro-menu">
       <li><a href="./settings.html"><span class="menu-left"><i class="fa-solid fa-gear"></i> Ajustes</span></a></li>
@@ -94,51 +39,48 @@
     </ul>
   </aside>
 
-  <!-- Main -->
   <section class="pro-section">
     <div class="pro-head">Mantenimiento ACME</div>
 
     <div class="pro-grid">
-      <!-- Columna izquierda: trabajos + calendario -->
-      <div class="card">
-        <div style="display:flex; gap: var(--s5); flex-wrap:wrap; align-items:baseline;">
-          <h3 style="margin:0;">2 Trabajos hoy</h3>
+      <div class="card grid gap-4">
+        <div class="flex flex-wrap items-baseline gap-4">
+          <h3 class="text-2xl font-semibold text-ink">2 Trabajos hoy</h3>
           <span class="muted-sm">7 horas</span>
-          <h3 style="margin:0;">· 3 Trabajos mañana</h3>
+          <h3 class="text-2xl font-semibold text-ink">· 3 Trabajos mañana</h3>
           <span class="muted-sm">2 horas</span>
         </div>
 
-        <div class="today-list" style="margin-top: var(--s4);">
+        <div class="today-list">
           <div class="job-pill">
             <span><span class="job-id pill">TR210</span> Cambio filtro y revisión</span>
-            <a class="link" href="#">Ver</a>
+            <a class="text-sky-600" href="#">Ver</a>
           </div>
           <div class="job-pill">
             <span><span class="job-id pill">TR201</span> Urgencia caldera</span>
-            <a class="link" href="#">Ver</a>
+            <a class="text-sky-600" href="#">Ver</a>
           </div>
           <div class="job-pill">
             <span><span class="job-id pill">TR204</span> Mantenimiento anual</span>
-            <a class="link" href="#">Ver</a>
+            <a class="text-sky-600" href="#">Ver</a>
           </div>
         </div>
 
-        <h4 style="margin-top: var(--s5);">Calendario</h4>
-        <div id="miniCal" class="card" style="padding: var(--s4);">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:.75rem;">
-            <button class="btn secondary" id="calPrev" style="padding:.4rem .7rem;">◀</button>
-            <div id="calTitle" style="font-weight:800;"></div>
-            <button class="btn secondary" id="calNext" style="padding:.4rem .7rem;">▶</button>
+        <h4 class="text-xl font-semibold text-ink">Calendario</h4>
+        <div id="miniCal" class="card grid gap-4">
+          <div class="flex items-center justify-between">
+            <button class="btn secondary sm" id="calPrev">◀</button>
+            <div id="calTitle" class="font-extrabold text-ink"></div>
+            <button class="btn secondary sm" id="calNext">▶</button>
+          </div>
+          <div id="calGrid" class="grid grid-cols-7 gap-2 text-center text-sm text-slate-600"></div>
+          <p class="hint">* Eventos y trabajos del día aparecerán con un punto.</p>
         </div>
-        <div id="calGrid" style="display:grid; grid-template-columns:repeat(7,1fr); gap:.4rem;"></div>
-        <div class="hint" style="margin-top:.5rem;">* Eventos y trabajos del día aparecerán con un punto.</div>
-        </div>
+      </div>
 
-
-      <!-- Columna derecha: tareas pendientes -->
       <aside class="card">
-        <h3>3 Tareas pendientes</h3>
-        <div class="tasks-list" style="margin-top: var(--s3);">
+        <h3 class="text-xl font-semibold text-ink">3 Tareas pendientes</h3>
+        <div class="tasks-list mt-3">
           <div class="task-item">
             <i class="fa-solid fa-triangle-exclamation"></i>
             <div><strong>comprar material TR205</strong></div>
@@ -152,19 +94,17 @@
             <div>cambio aceite furgoneta</div>
           </div>
         </div>
-
-        <div style="margin-top: var(--s5); text-align:center;">
-          <a class="link" href="#">Lista</a>
+        <div class="mt-6 text-center">
+          <a class="text-sky-600" href="#">Lista</a>
         </div>
       </aside>
     </div>
   </section>
 </main>
 
-<!--# include virtual="/partials/footer.html" -->
+<!--#include "partials/footer.html" -->
 
 <script>
-  // (Opcional) ejemplo mínimo para sincronizar contador de tareas
   const tasksCount = document.getElementById('tasksCount');
   const pending = document.querySelectorAll('.tasks-list .task-item').length;
   tasksCount.textContent = pending;

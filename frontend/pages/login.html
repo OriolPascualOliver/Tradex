@@ -4,79 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FixHub — Área PRO</title>
-  <link rel="stylesheet" href="/css/style.css?v={cachebust}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <style>
-    :root {
-      --bg: #f9fafb; --card: #ffffff; --text: #111827; --muted: #6b7280;
-      --primary: var(--sky, #2563eb); --error: #dc2626; --error-bg: #fee2e2;
-      --border: #e5e7eb; --ring: rgba(37,99,235,.35);
-    }
-    body.login {
-      background: radial-gradient(1200px 600px at 50% -100px, #e0f2fe 0%, transparent 60%) var(--bg);
-    }
-    main.auth-wrap { display:grid; place-items:center; padding:2rem; }
-    .card {
-      width:100%; max-width:460px; background:var(--card); border:1px solid var(--border);
-      border-radius:16px; box-shadow:0 10px 25px rgba(0,0,0,.06); padding:1.25rem;
-    }
-    .header { display:flex; align-items:center; gap:.6rem; margin-bottom:.75rem; }
-    .minilogo { width:28px; height:28px; border-radius:8px; background:linear-gradient(135deg, #2563eb, #60a5fa); }
-    h1 { font-size:1.25rem; margin:0; }
-    .subtitle { font-size:.95rem; color:var(--muted); margin:.25rem 0 1rem; }
-
-    label { display:block; font-weight:600; font-size:.9rem; margin:.6rem 0 .35rem; }
-    .row { display:flex; gap:.6rem; align-items:center; }
-    .input {
-      width:100%; padding:.75rem .85rem; border:1px solid var(--border); border-radius:12px;
-      font-size:.95rem; background:#fff; outline:none;
-      transition: box-shadow .15s ease, border-color .15s ease, transform .08s ease;
-    }
-    .input:focus { border-color: var(--primary); box-shadow:0 0 0 4px var(--ring); }
-    .btn {
-      appearance:none; border:0; cursor:pointer; background:var(--primary); color:#fff; font-weight:700;
-      padding:.85rem 1rem; border-radius:12px; width:100%;
-      transition: transform .06s ease, filter .15s ease, box-shadow .15s ease;
-      box-shadow:0 8px 14px rgba(37,99,235,.25); margin-top:1rem;
-    }
-    .btn:disabled { filter:saturate(.4) opacity:.7; cursor:not-allowed; }
-    .btn:active { transform:translateY(1px); }
-    .link { color:var(--primary); text-decoration:none; font-weight:600; }
-    .foot { margin-top:1rem; display:flex; justify-content:space-between; align-items:center; font-size:.9rem; }
-
-    .alert {
-      display:flex; gap:.6rem; align-items:flex-start;
-      background:var(--error-bg); color:var(--error);
-      border:1px solid #fecaca; border-radius:12px; padding:.8rem .9rem;
-      margin-bottom:1rem; animation: pop .2s ease-out;
-    }
-    .alert svg { flex:0 0 auto; margin-top:2px; }
-    .hidden{ display:none !important; }
-
-    @keyframes pop { from { transform: scale(.98); opacity:.6 } to { transform: scale(1); opacity:1 } }
-    .shake { animation: shake .3s ease-in-out; }
-    @keyframes shake {
-      0%,100% { transform: translateX(0) }
-      20% { transform: translateX(-6px) }
-      40% { transform: translateX(6px) }
-      60% { transform: translateX(-4px) }
-      80% { transform: translateX(4px) }
-    }
-  </style>
+  <!--#include "partials/tailwind.html" -->
 </head>
-<body class="login">
-  <!--# include virtual="/partials/header.html" -->
+<body class="auth-body">
+  <!--#include "partials/header.html" -->
 
   <main class="auth-wrap">
-    <section class="card" aria-labelledby="t">
-      <div class="header">
-        <div class="minilogo" aria-hidden="true"></div>
-        <h1 id="t">FixHub — Área PRO</h1>
+    <section class="auth-card" aria-labelledby="t">
+      <div class="auth-header">
+        <div class="auth-logo" aria-hidden="true"></div>
+        <h1 id="t" class="text-xl font-bold text-ink">FixHub — Área PRO</h1>
       </div>
-      <p class="subtitle" id="subtitle">Acceso a la plataforma</p>
+      <p class="auth-subtitle" id="subtitle">Acceso a la plataforma</p>
 
       <div id="alert" class="alert hidden" role="alert" aria-live="assertive" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="mt-0.5 text-rose-600">
           <path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <div>
@@ -85,52 +27,48 @@
         </div>
       </div>
 
-      <!-- LOGIN -->
-      <form id="loginForm" novalidate>
+      <form id="loginForm" class="grid gap-4" novalidate>
         <label for="email">Correo electrónico o usuario</label>
-        <div class="row">
-          <input id="email" name="email" type="email" class="input" style="flex:1" autocomplete="off" required />
-        </div>
+        <input id="email" name="email" type="email" class="input" autocomplete="off" required />
 
         <label for="password">Contraseña</label>
-        <div class="row">
-          <input id="password" name="password" type="password" class="input" autocomplete="off" aria-describedby="pwd-hint" style="flex:1" required />
-          <button type="button" id="togglePwd" class="input" style="width:auto; padding:.6rem .8rem;">Mostrar</button>
+        <div class="flex items-center gap-3">
+          <input id="password" name="password" type="password" class="input flex-1" autocomplete="off" aria-describedby="pwd-hint" required />
+          <button type="button" id="togglePwd" class="btn ghost px-4 py-2">Mostrar</button>
         </div>
 
-        <button class="btn" type="submit">Iniciar sesión</button>
+        <button class="btn primary" type="submit">Iniciar sesión</button>
       </form>
 
-      <!-- FORGOT -->
-      <form id="forgotForm" class="hidden" novalidate>
+      <form id="forgotForm" class="hidden grid gap-4" novalidate>
         <label for="fEmail">Correo electrónico o usuario</label>
         <input id="fEmail" name="email" type="text" class="input" autocomplete="off" required />
-        <button class="btn" type="submit">Enviar</button>
+        <button class="btn primary" type="submit">Enviar</button>
         <div id="forgotMsg" class="hint"></div>
       </form>
 
-      <!-- RESET (placeholder de vista; conecta cuando tengas el endpoint) -->
-      <form id="resetForm" class="hidden" novalidate>
+      <form id="resetForm" class="hidden grid gap-4" novalidate>
         <label for="newPassword">Nueva contraseña</label>
         <input id="newPassword" type="password" class="input" autocomplete="off" required />
         <label for="confirmPassword">Confirmar contraseña</label>
         <input id="confirmPassword" type="password" class="input" autocomplete="off" required />
-        <button class="btn" type="submit">Restablecer contraseña</button>
+        <button class="btn primary" type="submit">Restablecer contraseña</button>
       </form>
 
-      <div class="foot">
-        <a class="link" href="#" id="forgotLink">¿Olvidaste la contraseña?</a>
-        <a class="link hidden" href="#" id="loginLink">Iniciar sesión</a>
-        <a class="link" href="/">Volver al inicio</a>
+      <div class="auth-foot">
+        <div class="flex flex-wrap items-center gap-3">
+          <a class="text-sky-600 hover:text-sky-500" href="#" id="forgotLink">¿Olvidaste la contraseña?</a>
+          <a class="text-sky-600 hover:text-sky-500 hidden" href="#" id="loginLink">Iniciar sesión</a>
+        </div>
+        <a class="text-slate-600 hover:text-slate-900" href="/">Volver al inicio</a>
       </div>
     </section>
   </main>
 
-  <!--# include virtual="/partials/footer.html" -->
+  <!--#include "partials/footer.html" -->
 
   <script src="/js/apiClient.js"></script>
   <script>
-    // --------- Utilidades UI
     const loginForm = document.getElementById('loginForm');
     const forgotForm = document.getElementById('forgotForm');
     const resetForm = document.getElementById('resetForm');
@@ -143,7 +81,7 @@
     const pwd = document.getElementById('password');
     const forgotLink = document.getElementById('forgotLink');
     const loginLink = document.getElementById('loginLink');
-    const submitBtn = loginForm.querySelector('.btn');
+    const submitBtn = loginForm.querySelector('button[type="submit"]');
     let throttled = false;
     let lastForgot = 0;
 
@@ -152,7 +90,9 @@
       alertHint.textContent = hint || '';
       alertBox.classList.remove('hidden');
       alertBox.removeAttribute('aria-hidden');
-      alertBox.classList.remove('shake'); void alertBox.offsetWidth; alertBox.classList.add('shake');
+      alertBox.classList.remove('animation-shake');
+      void alertBox.offsetWidth;
+      alertBox.classList.add('animation-shake');
       alertBox.setAttribute('tabindex','-1'); alertBox.focus({preventScroll:true});
     }
     function hideAlert(){ alertBox.classList.add('hidden'); alertBox.setAttribute('aria-hidden','true'); }
@@ -184,7 +124,6 @@
     forgotLink.addEventListener('click', (e) => { e.preventDefault(); showView('forgot'); });
     loginLink.addEventListener('click',  (e) => { e.preventDefault(); showView('login');  });
 
-    // Mostrar / ocultar password
     togglePwd.addEventListener('click', () => {
       const isPwd = pwd.type === 'password';
       pwd.type = isPwd ? 'text' : 'password';
@@ -192,7 +131,6 @@
       pwd.focus();
     });
 
-    // --------- Device Id
     function getDeviceId(){
       const k = 'fixhub_device_id';
       let id = localStorage.getItem(k);
@@ -205,90 +143,47 @@
       return id;
     }
 
-    // --------- API helpers
-    function errMsg(status){
-      switch(status){
-        case 401: return 'Credenciales inválidas.';
-        case 403: return 'Acceso denegado.';
-        case 409: return 'La cuenta ya existe o está en conflicto.';
-        case 422: return 'Datos inválidos.';
-        case 429: return 'Demasiadas solicitudes. Inténtalo más tarde.';
-        case 500: return 'Error del servidor.';
-        default:  return 'No se pudo procesar la solicitud.';
-      }
-    }
-
-    // --------- Login
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (throttled) return;
-      const username = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      if (!username || !password){ showAlert('Introduce usuario y contraseña.'); return; }
-
-      throttled = true; submitBtn.disabled = true;
-      setTimeout(() => { throttled = false; submitBtn.disabled = false; }, 4000);
-
+      hideAlert();
+      submitBtn.disabled = true;
+      const payload = {
+        email: document.getElementById('email').value.trim(),
+        password: pwd.value,
+        deviceId: getDeviceId(),
+      };
       try {
-        const res = await fetch('/api-v1/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password, device: getDeviceId() })
-        });
-
-        if (res.status !== 200) {
-          showAlert(errMsg(res.status), 'Comprueba tus datos e inténtalo de nuevo.');
-          return;
-        }
-        const data = await res.json().catch(()=> ({}));
-        // Guardar lo que devuelva tu backend (tokens/jwt)
-        if (data?.tokens) localStorage.setItem('tokens', JSON.stringify(data.tokens));
-        if (data?.user)   localStorage.setItem('user', JSON.stringify(data.user));
-        window.location.href = '/'; // o /pro.html si ya lo tienes
+        await apiClient.post('auth/login', payload);
+        window.location = '/dashboard.html';
       } catch (err) {
-        console.error(err);
-        showAlert('No se pudo conectar con el servidor.', 'Inténtalo de nuevo más tarde.');
+        showAlert('No se pudo iniciar sesión', err.message || 'Comprueba los datos e inténtalo de nuevo.');
+      } finally {
+        submitBtn.disabled = false;
       }
     });
 
-    // --------- Forgot password
     forgotForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const username = document.getElementById('fEmail').value.trim();
-      if (!username){ forgotMsg.textContent = 'Escribe tu correo/usuario.'; return; }
-
       const now = Date.now();
-      if (now - lastForgot < 5000) { forgotMsg.textContent = 'Espera unos segundos antes de reenviar.'; return; }
+      if (now - lastForgot < 15000) {
+        forgotMsg.textContent = 'Espera unos segundos antes de reenviar.';
+        return;
+      }
       lastForgot = now;
       forgotMsg.textContent = '';
-
       try {
-        const res = await fetch('/v1/auth/forgotpassword', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, device: getDeviceId() })
-        });
-        if (![200,204].includes(res.status)) {
-          forgotMsg.textContent = errMsg(res.status);
-          return;
-        }
-        forgotMsg.textContent = 'Si existe una cuenta asociada, recibirás un correo con instrucciones.';
+        await apiClient.post('auth/forgot', { email: document.getElementById('fEmail').value.trim() });
+        forgotMsg.textContent = 'Si existe una cuenta, recibirás instrucciones.';
       } catch (err) {
-        console.error(err);
-        forgotMsg.textContent = 'No se pudo procesar la solicitud. Inténtalo más tarde.';
+        forgotMsg.textContent = err.message || 'No se pudo enviar el correo.';
       }
     });
-
-    // --------- Reset (vista placeholder)
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('mode') === 'forgot') showView('forgot');
-    else if (params.get('mode') === 'reset') showView('reset');
-    else showView('login');
 
     resetForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      showAlert('Pendiente de integrar endpoint de reset.', 'Solicita enlace desde “¿Olvidaste…?”');
+      showAlert('Función no disponible', 'Activa el endpoint de restablecimiento para completar esta vista.');
     });
   </script>
-</body>  
+</body>
 </html>
