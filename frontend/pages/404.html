@@ -1,150 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>404 · FixHub</title>
-  <link rel="stylesheet" href="/css/style.css?v=2025-09-02-404"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <style>
-    /* 404-specific styles (keeps your global look) */
-    .oops {
-      max-width: 980px; margin: var(--s8) auto var(--s7);
-      display: grid; gap: var(--s5);
-      grid-template-columns: 1.2fr .8fr;
-      align-items: center; padding: 0 var(--s5);
-    }
-    @media (max-width: 960px){ .oops { grid-template-columns: 1fr; } }
-
-    .oops h1 {
-      font-size: clamp(2.2rem, 4vw + 1rem, 4rem);
-      margin: 0 0 var(--s3);
-      line-height: 1.05;
-    }
-    .oops .lead { font-size: var(--lead); color: var(--muted); }
-
-    .cta-row { display:flex; gap: var(--s3); flex-wrap: wrap; margin-top: var(--s4); }
-    .cta-row .btn { min-width: 200px; }
-
-    /* Little scene: toolbox + flying wrench */
-    .scene {
-      position: relative; min-height: 260px; isolation: isolate;
-      background: var(--paper); border:1px solid var(--border);
-      border-radius: var(--radius); box-shadow: var(--shadow-sm);
-      display:grid; place-items:center; overflow:hidden;
-    }
-    .grid-bg::before{
-      content:""; position:absolute; inset:0;
-      background-image:
-        linear-gradient(rgba(37,99,235,.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(37,99,235,.06) 1px, transparent 1px);
-      background-size: 28px 28px; opacity:.45; pointer-events:none;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.1));
-    }
-
-    .toolbox {
-      width: 160px; height: 90px; border-radius: 12px;
-      background: linear-gradient(180deg, #ff7a18, #ff3d00);
-      border: 2px solid rgba(0,0,0,.06);
-      box-shadow: 0 20px 35px rgba(0,0,0,.15);
-      position: relative;
-    }
-    .toolbox::before{
-      content:""; position:absolute; left: 18px; right: 18px; top: -22px; height: 22px;
-      border-radius: 8px 8px 0 0;
-      background: linear-gradient(180deg, #f59e0b, #ea580c);
-      box-shadow: inset 0 0 0 2px rgba(255,255,255,.22);
-    }
-    .toolbox::after{
-      content:"FIX"; position:absolute; right: 10px; bottom: 8px;
-      font-weight: 800; font-size: .9rem; color: rgba(255,255,255,.9);
-      letter-spacing: .5px;
-    }
-
-    .wrench {
-      --size: 46px;
-      position: absolute; width: var(--size); height: var(--size);
-      border-radius: 8px; color: var(--sky);
-      display:grid; place-items:center;
-      background: radial-gradient(120% 120% at 30% 20%, rgba(37,99,235,.14), rgba(37,99,235,.04));
-      border: 1px solid rgba(37,99,235,.3);
-      left: -60px; top: 26%;
-      animation: fly 5.2s cubic-bezier(.22,.61,.36,1) infinite;
-    }
-    .wrench i { font-size: 1.3rem; }
-
-    @keyframes fly {
-      0%   { transform: translate(0, 0) rotate(-20deg); opacity: .0; }
-      10%  { opacity: 1; }
-      45%  { transform: translate(420px, -24px) rotate(20deg); }
-      60%  { transform: translate(520px, 6px) rotate(12deg); }
-      80%  { transform: translate(660px, -18px) rotate(28deg); }
-      100% { transform: translate(880px, -4px) rotate(40deg); opacity: 0; }
-    }
-
-    .code {
-      display:inline-flex; align-items:center; gap:.4rem;
-      background: rgba(2,6,23,.04); border:1px solid var(--border);
-      color: var(--steel); padding: .45rem .65rem; border-radius: 10px; font-weight: 800;
-    }
-
-    .gear {
-  font-size: 3rem; color: var(--sky);
-  animation: wobble 1.5s infinite ease-in-out;
-  }
-  @keyframes wobble {
-    0%,100% { transform: rotate(0deg); }
-    25% { transform: rotate(-15deg); }
-    75% { transform: rotate(15deg); }
-  }
-      .helmet {
-      font-size: 3rem; color: var(--amber);
-      animation: bounce 2s infinite;
-    }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
-        .hammer, .nail { font-size: 2.5rem; position:absolute; }
-    .hammer { left:20%; top:40%; animation: hammer-move 2s infinite linear; color: var(--steel); }
-    .nail { right:20%; top:40%; color: var(--muted); }
-
-    @keyframes hammer-move {
-      0% { transform: rotate(0deg) translateX(0); }
-      50% { transform: rotate(-40deg) translateX(40px); }
-      100% { transform: rotate(0deg) translateX(0); }
-    }
-
-
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FixHub · Página no encontrada</title>
+  <!--#include "partials/tailwind.html" -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pIVp9sPu0YdHDi3uL1l5X8GZFODdgNpTi27C1l2qCkCmZJLdnOjFkWDXLI4YAlnXrhIR3IuAeGHGZk+y3OC/qw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-  <!--# include virtual="/partials/header.html" -->
+  <!--#include "partials/header.html" -->
 
   <main>
     <section class="oops">
       <div>
         <div class="code">Error <span>404</span> · Página no encontrada</div>
-        <h1>Se nos ha <em>perdido algo</em> por aquí…</h1>
-        <p class="lead">
-          La ruta que buscabas no existe o cambió de sitio.
-          Te llevamos de vuelta para que sigas <strong>arreglando el mundo</strong>.
+        <h1 class="mt-6 text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Se nos ha perdido algo por aquí…</h1>
+        <p class="mt-4 text-lg text-slate-600">
+          La ruta que buscabas no existe o cambió de sitio. Te llevamos de vuelta para que sigas <strong>arreglando el mundo</strong>.
         </p>
         <div class="cta-row">
-          <a class="btn primary" href="./index.html"><i class="fa-solid fa-house"></i>&nbsp; Volver al inicio</a>
-          <a class="btn secondary" href="./pro.html"><i class="fa-solid fa-screwdriver-wrench"></i>&nbsp; Ir al Área PRO</a>
-          <a class="btn" style="background-image: linear-gradient(180deg,#6b7280,#4b5563)" href="./contact.html">
-            <i class="fa-regular fa-paper-plane"></i>&nbsp; Avisar al soporte
-          </a>
+          <a class="btn primary" href="./index.html"><i class="fa-solid fa-house"></i> Volver al inicio</a>
+          <a class="btn secondary" href="./pro.html"><i class="fa-solid fa-screwdriver-wrench"></i> Ir al Área PRO</a>
+          <a class="btn tertiary" href="./contact.html"><i class="fa-regular fa-paper-plane"></i> Avisar al soporte</a>
         </div>
       </div>
-
-    <div class="scene grid-bg" aria-hidden="true">
-      <div class="gear"><i class="fa-solid fa-gear"></i></div>
-    </div>
+      <div class="scene" aria-hidden="true">
+        <div class="toolbox"></div>
+        <div class="wrench"><i class="fa-solid fa-wrench"></i></div>
+        <div class="gear"><i class="fa-solid fa-gear"></i></div>
+        <div class="helmet absolute top-10 right-10"><i class="fa-solid fa-helmet-safety"></i></div>
+      </div>
     </section>
   </main>
 
-  <!--# include virtual="/partials/footer.html" -->
+  <!--#include "partials/footer.html" -->
 </body>
 </html>

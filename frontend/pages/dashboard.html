@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard · FixHub</title>
-  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FixHub · Dashboard</title>
+  <!--#include "partials/tailwind.html" -->
 </head>
 <body>
-<!--# include virtual="/partials/header.html" -->
+<!--#include "partials/header.html" -->
 
-<main>
-  <h2>Dashboard</h2>
+<main class="page-container">
+  <header class="flex flex-col gap-2">
+    <h1 class="section-heading">Dashboard</h1>
+    <p class="muted">Resumen operativo de tu negocio. Personaliza las métricas conectando tus datos reales.</p>
+  </header>
 
   <section class="kpis">
     <div class="kpi">
@@ -31,26 +34,26 @@
     </div>
   </section>
 
-  <section class="grid" style="grid-template-columns: 2fr 1fr;">
+  <section class="grid gap-6 lg:grid-cols-[2fr_1fr]">
     <div class="card wire">
-      <h3>Evolución de facturación</h3>
-      <div style="height:260px;"></div>
+      <h2 class="text-xl font-semibold text-ink">Evolución de facturación</h2>
+      <div class="mt-6 h-64 rounded-xl bg-slate-100"></div>
     </div>
     <div class="card wire">
-      <h3>Trabajos por empleado</h3>
-      <div style="height:260px;"></div>
+      <h2 class="text-xl font-semibold text-ink">Trabajos por empleado</h2>
+      <div class="mt-6 h-64 rounded-xl bg-slate-100"></div>
     </div>
   </section>
 
-  <section class="card wire" style="margin-top: var(--s5);">
-    <h3>Tiempo estimado vs. real (últimos trabajos)</h3>
-    <table class="table">
+  <section class="card wire">
+    <h2 class="text-xl font-semibold text-ink">Tiempo estimado vs. real (últimos trabajos)</h2>
+    <table class="table mt-4">
       <thead><tr><th>Trabajo</th><th>Empleado</th><th>Estimado</th><th>Real</th><th>Δ</th></tr></thead>
       <tbody><tr><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody>
     </table>
   </section>
 </main>
 
-<!--# include virtual="/partials/footer.html" -->
+<!--#include "partials/footer.html" -->
 </body>
 </html>

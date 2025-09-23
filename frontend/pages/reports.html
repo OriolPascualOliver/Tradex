@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Informes · FixHub</title>
-  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FixHub · Informes</title>
+  <!--#include "partials/tailwind.html" -->
 </head>
 <body>
-<!--# include virtual="/partials/header.html" -->
+<!--#include "partials/header.html" -->
 
-<main>
-  <h2>Informes y documentación</h2>
+<main class="page-container">
+  <header class="flex flex-col gap-2">
+    <h1 class="section-heading">Informes y documentación</h1>
+    <p class="muted">Filtra y consulta documentación de trabajos, pagos y materiales en un mismo lugar.</p>
+  </header>
 
   <section class="card">
-    <div class="toolbar">
-      <input class="input" placeholder="Buscar por cliente, trabajo o ID">
-      <select class="input">
+    <div class="toolbar flex-wrap">
+      <input class="input flex-1 min-w-[200px]" placeholder="Buscar por cliente, trabajo o ID" />
+      <select class="input max-w-[180px]">
         <option>Todos los estados</option>
         <option>Abierto</option>
         <option>En curso</option>
         <option>Cerrado</option>
         <option>Facturado</option>
       </select>
-      <input class="input" type="date">
-      <input class="input" type="date">
+      <input class="input max-w-[160px]" type="date" />
+      <input class="input max-w-[160px]" type="date" />
       <button class="btn secondary">Filtrar</button>
     </div>
 
-    <div class="wire" style="margin-top: var(--s4);">
+    <div class="wire mt-6 overflow-x-auto">
       <table class="table">
         <thead>
           <tr>
@@ -37,7 +40,7 @@
         <tbody>
           <tr>
             <td>—</td><td>—</td><td>—</td><td>Presupuesto/Factura</td><td>—</td><td>—</td>
-            <td><a href="#" class="link">Ver</a></td>
+            <td><a href="#" class="text-sky-600">Ver</a></td>
           </tr>
         </tbody>
       </table>
@@ -45,6 +48,6 @@
   </section>
 </main>
 
-<!--# include virtual="/partials/footer.html" -->
+<!--#include "partials/footer.html" -->
 </body>
 </html>

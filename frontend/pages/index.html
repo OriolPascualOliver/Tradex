@@ -3,101 +3,92 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FixHub </title>
-    <link rel="stylesheet" href="/css/style.css?v={cachebust}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <meta name="description" content="Unifica presupuestos, partes, materiales y facturas. Planifica rutas y coordina a todo tu equipo de oficio con FixHub."/>
+    <title>FixHub · Gestión total para oficios</title>
+    <!--#include "partials/tailwind.html" -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pIVp9sPu0YdHDi3uL1l5X8GZFODdgNpTi27C1l2qCkCmZJLdnOjFkWDXLI4YAlnXrhIR3IuAeGHGZk+y3OC/qw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta name="description" content="Unifica presupuestos, partes, materiales y facturas. Planifica rutas y coordina a todo tu equipo de oficio con FixHub." />
   </head>
   <body>
-    <!--# include virtual="/partials/header.html" -->
+    <!--#include "partials/header.html" -->
 
-    <section class="hero">
-      <div class="maxw">
-        <div class="intro">Descubre el futuro de la gestión de trabajos · Pruébalo 2 meses gratis, sin riesgo, sin compromisos.</div>
-        <h2>Todo en un solo sistema.</h2>
-        <p class="lead">Deja de perder tiempo con mil herramientas: organiza presupuestos, partes, materiales y facturas. Planifica rutas y coordina a tu equipo en minutos.</p>
-
-        <div class="cta-buttons">
-          <a class="btn primary" href="./register.html">¡Pruébalo gratis!</a>
-          <a class="btn secondary" href="./features.html">Ver funcionalidades</a>
-          <a class="btn tertiary" href="./login.html">Area PRO</a>
+    <main>
+      <section class="blueprint-section">
+        <div class="mx-auto flex max-w-6xl flex-col items-center px-6 py-24 text-center">
+          <span class="intro-badge">Descubre el futuro de la gestión de trabajos · Demo gratuita durante 2 meses</span>
+          <h1 class="mt-8 text-4xl font-extrabold tracking-tight sm:text-5xl">Todo en un solo sistema.</h1>
+          <p class="mt-6 max-w-3xl text-lg text-slate-100/90">
+            Deja de saltar entre aplicaciones. Organiza presupuestos, partes, materiales y facturas desde un único panel. Planifica rutas y coordina a tu equipo en minutos, estés donde estés.
+          </p>
+          <div class="mt-10 flex flex-wrap justify-center gap-4">
+            <a class="btn primary" href="./register.html">¡Pruébalo gratis!</a>
+            <a class="btn secondary" href="./features.html">Ver funcionalidades</a>
+            <a class="btn tertiary" href="./login.html">Área PRO</a>
+          </div>
+          <p class="mt-10 max-w-3xl text-lg text-slate-100/90">
+            FixHub es <strong>tu oficina en el bolsillo</strong>. Pensado para profesionales: electricistas, fontaneros, pintores, empresas de reformas o mantenimiento. Desde la solicitud del cliente hasta la factura electrónica, siempre contigo.
+          </p>
         </div>
-        <div> <br></div>
-        <p class="lead">
-          FixHub:  <strong>tu oficina en el bolsillo.</strong> Para profesionales. Electricistas, fontaneros, pintores, reformistas, técnicos de mantenimiento... 
-          Desde la solicitud del cliente hasta la factura electrónica. Todo en un solo lugar, siempre contigo.
-        </p>
-      </div>
-    </section>
-    <section class="services">
-      <h3>Todo lo que necesitas para gestionar trabajos</h3>
-      <div class="service-grid">
-        <div class="service-card">
-          <i class="fa-solid fa-file-invoice"></i>
-          <span>Presupuestos al instante</span>
-          <p class="muted">Automáticamente tal y como los harías tú. Envío por email o WhatsApp. <strong>Gana tiempo libre</strong>. </p>
+      </section>
+
+      <section class="services">
+        <div class="mx-auto flex max-w-6xl flex-col items-center gap-6 px-6">
+          <h2 class="section-heading text-center">Todo lo que necesitas para gestionar trabajos</h2>
+          <div class="service-grid">
+            <article class="service-card">
+              <i class="fa-solid fa-file-invoice"></i>
+              <span>Presupuestos al instante</span>
+              <p class="muted">Automáticamente tal y como los harías tú. Envío por email o WhatsApp. <strong>Gana tiempo libre</strong>.</p>
+            </article>
+            <article class="service-card">
+              <i class="fa-solid fa-file-shield"></i>
+              <span>Facturación electrónica</span>
+              <p class="muted">Emite facturas y albaranes en un clic. <strong>Cumple con las últimas exigencias fiscales</strong>.</p>
+            </article>
+            <article class="service-card">
+              <i class="fa-solid fa-credit-card"></i>
+              <span>Pago integrado</span>
+              <p class="muted">Cobra al momento con SafePay. Facilita el pago y asegúrate de cobrar cada trabajo.</p>
+            </article>
+            <article class="service-card">
+              <i class="fa-solid fa-users-gear"></i>
+              <span>Equipo y permisos</span>
+              <p class="muted">Asigna trabajos, define roles y sigue el progreso. <strong>Coordina tu negocio sin estrés</strong>.</p>
+            </article>
+            <article class="service-card">
+              <i class="fa-solid fa-clipboard-list"></i>
+              <span>Partes y notas del trabajo</span>
+              <p class="muted">Checklists, fotos y firma del cliente desde el móvil. <strong>Cierra cada trabajo al momento</strong>.</p>
+            </article>
+            <article class="service-card">
+              <i class="fa-solid fa-boxes-stacked"></i>
+              <span>Materiales</span>
+              <p class="muted">Listas automáticas para cada intervención. <strong>Evita viajes de urgencia</strong>.</p>
+            </article>
+            <article class="service-card">
+              <i class="fa-solid fa-plug"></i>
+              <span>Integraciones</span>
+              <p class="muted">Correo, WhatsApp, Google Calendar… y más en camino.</p>
+            </article>
+            <article class="service-card">
+              <i class="fa-solid fa-clock"></i>
+              <span>Control horario</span>
+              <p class="muted">Incorpora fichaje horario en los planes Team.</p>
+            </article>
+            <article class="service-card">
+              <i class="fa-solid fa-stopwatch"></i>
+              <span>Temporizador inteligente</span>
+              <p class="muted">Inicia el temporizador y factura automáticamente según el tiempo real invertido.</p>
+            </article>
+            <article class="service-card">
+              <i class="fa-solid fa-house-chimney"></i>
+              <span>Dedica tiempo a lo importante</span>
+              <p class="muted">Automatiza la burocracia y céntrate en el trabajo que aporta valor.</p>
+            </article>
+          </div>
         </div>
+      </section>
+    </main>
 
-        <div class="service-card">
-          <i class="fa-solid fa-file-shield"></i>
-          <span>Facturación electrónica</span>
-          <p class="muted">Emite facturas y albaranes en un clic. <strong>Cumple con las últimas exigencias fiscales</strong></p>
-        </div>
-
-        <div class="service-card">
-          <i class="fa-solid fa-credit-card"></i>
-          <span>Pago integrado</span>
-          <p class="muted">Cobra al momento desde la aplicación con SafePay. Facilita el pago y asegúrate de cobrar.</p>
-        </div>
-
-        <div class="service-card">
-          <i class="fa-solid fa-users-gear"></i>
-          <span>Equipo y permisos</span>
-          <p class="muted">Asigna trabajos, define roles y sigue el progreso. <strong>Coordina tu negocio sin estrés</strong></p>
-        </div>
-
-        <div class="service-card">
-          <i class="fa-solid fa-clipboard-list"></i>
-          <span>Partes y notas del trabajo</span>
-          <p class="muted">Checklists, fotos y firma del cliente desde el móvil. <strong>Cierra cada trabajo en el acto</strong></p>
-        </div>
-
-        <div class="service-card">
-          <i class="fa-solid fa-boxes-stacked"></i>
-          <span>Materiales</span>
-          <p class="muted">Listas automáticas. <strong>Nunca más viajes de urgencia por falta de material</strong></p>
-        </div>
-
-        <div class="service-card">
-          <i class="fa-solid fa-plug"></i>
-          <span>Integraciones</span>
-          <p class="muted">Correo, WhatsApp, Google Calendar… <br> y más en camino.</p>
-        </div>
-
-
-        <div class="service-card">
-          <i class="fa-solid fa-clock"></i>
-          <span>Control horario de trabajadores</span>
-          <p class="muted">Incorpora control de fichaje en los planes team.</p>
-        </div>
-
-        <div class="service-card">
-          <i class="fa-solid fa-stopwatch"></i>
-          <span>¿Dificil de presupuestar?</span>
-          <p class="muted">Inicia el temporizador y factura automaticamente basado en el tiempo transcurrido.</p>
-        </div>
-
-        <div class="service-card">
-          <i class="fa-solid fa-house-chimney"></i>
-          <span>Dedica tiempo a lo importante</span>
-          <p class="muted">Automatiza la burocracia y céntrate en lo que aporta valor.</p>
-        </div>
-      </div>
-    </section>
-
-
-
-    <!--# include virtual="/partials/footer.html" -->
+    <!--#include "partials/footer.html" -->
   </body>
 </html>
-

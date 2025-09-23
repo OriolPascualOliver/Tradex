@@ -1,0 +1,687 @@
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ["Inter", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
+        },
+        colors: {
+          ink: "#0b1220",
+          "ink-2": "#111827",
+          steel: "#1f2937",
+          sky: "#2563eb",
+          "sky-600": "#1d4ed8",
+          amber: "#f59e0b",
+          orange: "#f97316",
+          mint: "#10b981",
+          rose: "#ef4444",
+          paper: "#ffffff",
+          "paper-2": "#f8fafc",
+        },
+        boxShadow: {
+          soft: "0 8px 24px rgba(15, 23, 42, 0.12)",
+          elevated: "0 16px 40px rgba(15, 23, 42, 0.14)",
+          lifted: "0 24px 60px rgba(15, 23, 42, 0.18)",
+        },
+        keyframes: {
+          fly: {
+            "0%": { transform: "translate(0,0) rotate(-20deg)", opacity: "0" },
+            "10%": { opacity: "1" },
+            "45%": { transform: "translate(420px, -24px) rotate(20deg)" },
+            "60%": { transform: "translate(520px, 6px) rotate(12deg)" },
+            "80%": { transform: "translate(660px, -18px) rotate(28deg)" },
+            "100%": { transform: "translate(880px, -4px) rotate(40deg)", opacity: "0" },
+          },
+          wobble: {
+            "0%, 100%": { transform: "rotate(0deg)" },
+            "25%": { transform: "rotate(-15deg)" },
+            "75%": { transform: "rotate(15deg)" },
+          },
+          bouncey: {
+            "0%, 100%": { transform: "translateY(0)" },
+            "50%": { transform: "translateY(-12px)" },
+          },
+          shake: {
+            "0%, 100%": { transform: "translateX(0)" },
+            "20%": { transform: "translateX(-6px)" },
+            "40%": { transform: "translateX(6px)" },
+            "60%": { transform: "translateX(-4px)" },
+            "80%": { transform: "translateX(4px)" },
+          },
+          spinny: {
+            to: { transform: "rotate(360deg)" },
+          },
+        },
+        animation: {
+          fly: "fly 5.2s cubic-bezier(.22,.61,.36,1) infinite",
+          wobble: "wobble 1.5s infinite ease-in-out",
+          bouncey: "bouncey 2s infinite",
+          shake: "shake .3s ease-in-out",
+          spinny: "spinny .6s linear infinite",
+        },
+      },
+    },
+  };
+</script>
+<style type="text/tailwindcss">
+  @layer base {
+    html {
+      @apply h-full scroll-smooth;
+    }
+    body {
+      @apply flex min-h-screen flex-col bg-gradient-to-b from-slate-100 via-slate-100 to-slate-200 font-sans text-ink-2 antialiased;
+    }
+    main {
+      @apply flex-1;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      @apply font-semibold text-ink;
+    }
+    strong {
+      @apply font-semibold text-ink;
+    }
+    p {
+      @apply leading-relaxed;
+    }
+    a {
+      @apply text-sky-600 transition-colors duration-150;
+    }
+    a:hover {
+      @apply text-sky-500;
+    }
+    table {
+      @apply w-full border-collapse;
+    }
+    th {
+      @apply text-left font-semibold text-ink;
+    }
+  }
+
+  @layer components {
+    .page-container {
+      @apply mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-16;
+    }
+    .section-heading {
+      @apply text-3xl font-semibold tracking-tight text-ink sm:text-4xl;
+    }
+    .section-subheading {
+      @apply mx-auto mt-4 max-w-3xl text-lg text-slate-600;
+    }
+
+    .site-header {
+      @apply sticky top-0 z-50 border-b border-slate-900/10 bg-slate-950/90 text-white backdrop-blur;
+    }
+    .site-header-inner {
+      @apply mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4;
+    }
+    .logo {
+      @apply flex items-center gap-2 text-lg font-extrabold tracking-wide text-white;
+    }
+    .logo-icon {
+      @apply inline-flex h-7 w-7 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 via-sky-500 to-orange-400 text-white shadow-inner shadow-white/30;
+    }
+    .nav-list {
+      @apply flex items-center gap-5 text-sm font-semibold uppercase tracking-wide text-white/80;
+    }
+    .nav-link {
+      @apply relative inline-flex items-center gap-1 text-sm font-semibold text-white/90 transition;
+    }
+    .nav-link::after {
+      content: "";
+      @apply absolute inset-x-0 -bottom-1 h-0.5 origin-left scale-x-0 bg-gradient-to-r from-amber-300 to-sky-400 transition;
+    }
+    .nav-link:hover::after,
+    .nav-link:focus-visible::after {
+      @apply scale-x-100;
+    }
+    .nav-link:focus-visible {
+      @apply outline-none ring-2 ring-white/70 ring-offset-2 ring-offset-transparent;
+    }
+
+    .site-footer {
+      @apply mt-auto border-t border-slate-900/10 bg-slate-950/95 text-slate-200;
+    }
+    .site-footer-inner {
+      @apply mx-auto flex w-full max-w-6xl flex-col gap-3 px-6 py-8 text-sm md:flex-row md:items-center md:justify-between;
+    }
+    .site-footer a {
+      @apply text-slate-200 hover:text-white;
+    }
+
+    .btn {
+      @apply inline-flex items-center justify-center gap-2 rounded-2xl border px-5 py-3 text-sm font-semibold tracking-wide transition duration-150 ease-out;
+    }
+    .btn:focus-visible {
+      @apply outline-none ring-2 ring-offset-2 ring-sky-400;
+    }
+    .btn.primary {
+      @apply border-sky-600 bg-sky-600 text-white shadow-elevated hover:bg-sky-500 hover:shadow-lifted;
+    }
+    .btn.secondary {
+      @apply border-slate-900 bg-slate-900 text-white shadow-soft hover:bg-slate-800 hover:shadow-elevated;
+    }
+    .btn.tertiary {
+      @apply border-sky-200 bg-white text-sky-600 hover:border-sky-300 hover:text-sky-500;
+    }
+    .btn.ghost {
+      @apply border-transparent bg-transparent text-slate-600 hover:text-slate-900;
+    }
+    .btn.danger {
+      @apply border-rose-500 bg-rose-500 text-white hover:bg-rose-600;
+    }
+    .btn.gray {
+      @apply border-slate-500 bg-gradient-to-b from-slate-400 to-slate-600 text-white hover:from-slate-500 hover:to-slate-700;
+    }
+    .btn.dark {
+      @apply border-slate-900 bg-gradient-to-b from-slate-800 to-slate-950 text-white hover:from-slate-700 hover:to-slate-900;
+    }
+    .btn.sm {
+      @apply rounded-xl px-4 py-2 text-sm;
+    }
+
+    .muted {
+      @apply text-slate-600;
+    }
+    .muted-sm {
+      @apply text-sm text-slate-500;
+    }
+    .hint {
+      @apply text-sm text-slate-500;
+    }
+    .lead {
+      @apply text-lg text-slate-600;
+    }
+
+    .chip {
+      @apply inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600;
+    }
+    .pill {
+      @apply inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600;
+    }
+    .badge {
+      @apply inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-600;
+    }
+    .badge.idle {
+      @apply text-slate-500;
+    }
+    .badge.processing {
+      @apply border-sky-200 bg-sky-50 text-sky-600;
+    }
+    .badge.ok {
+      @apply border-emerald-200 bg-emerald-50 text-emerald-600;
+    }
+    .badge.error {
+      @apply border-rose-200 bg-rose-50 text-rose-600;
+    }
+
+    .card {
+      @apply rounded-2xl border border-slate-200/80 bg-white/90 p-8 shadow-soft backdrop-blur-sm;
+    }
+    .card h3 {
+      @apply text-2xl font-semibold text-ink;
+    }
+    .card h4 {
+      @apply text-xl font-semibold text-ink;
+    }
+    .aside-card {
+      @apply rounded-2xl border border-slate-200/70 bg-white/85 p-6 shadow-soft backdrop-blur-sm;
+    }
+    .wire {
+      @apply rounded-2xl border border-dashed border-slate-200/80 bg-white/60 p-5 text-slate-500;
+    }
+
+    .toolbar {
+      @apply flex flex-wrap items-center gap-3;
+    }
+    .toolbar-right {
+      @apply ml-auto flex flex-wrap items-center gap-3;
+    }
+
+    .table {
+      @apply w-full border-separate border-spacing-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft;
+    }
+    .table thead {
+      @apply bg-slate-900/95 text-white;
+    }
+    .table th,
+    .table td {
+      @apply px-4 py-3 text-sm;
+    }
+    .table tbody tr:nth-child(even) {
+      @apply bg-slate-50/70;
+    }
+
+    .table-compare {
+      @apply w-full border-separate border-spacing-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft;
+    }
+    .table-compare thead {
+      @apply bg-slate-900/95 text-white;
+    }
+    .table-compare th,
+    .table-compare td {
+      @apply px-4 py-3 text-sm;
+    }
+    .table-compare tbody tr:nth-child(even) {
+      @apply bg-slate-50/70;
+    }
+
+    label {
+      @apply block text-sm font-semibold text-slate-700;
+    }
+    .input,
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="tel"],
+    input[type="date"],
+    select,
+    textarea {
+      @apply w-full rounded-xl border border-slate-300/70 bg-white px-4 py-3 text-base text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-4 focus:ring-sky-500/20;
+    }
+    textarea {
+      @apply min-h-[140px] resize-vertical;
+    }
+    input[type="checkbox"],
+    input[type="radio"] {
+      @apply h-5 w-5 rounded border-slate-300 text-sky-600 focus:ring-sky-500/40;
+    }
+    .input-inline {
+      @apply flex items-center gap-3 text-sm text-slate-600;
+    }
+
+    .alert {
+      @apply flex items-start gap-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700;
+    }
+    .alert.ok {
+      @apply border-emerald-200 bg-emerald-50 text-emerald-700;
+    }
+    .alert.err {
+      @apply border-rose-200 bg-rose-50 text-rose-700;
+    }
+
+    .pw-meter {
+      @apply mt-2 h-2.5 w-full rounded-full bg-slate-200;
+    }
+    .pw-meter > span {
+      @apply block h-full w-0 rounded-full bg-rose-500 transition-all duration-200;
+    }
+    .pw-w1 {
+      @apply bg-rose-500;
+    }
+    .pw-w2 {
+      @apply bg-amber-400;
+    }
+    .pw-w3 {
+      @apply bg-mint;
+    }
+
+    .modal-backdrop {
+      @apply fixed inset-0 z-50 hidden place-items-center bg-slate-900/60 backdrop-blur;
+    }
+    .modal-backdrop.show {
+      @apply grid;
+    }
+    .modal {
+      @apply w-full max-w-lg rounded-2xl border border-slate-200/80 bg-white/95 p-6 shadow-lifted;
+    }
+    .modal-wide .modal {
+      @apply max-w-2xl;
+    }
+    .modal .actions {
+      @apply mt-6 flex flex-wrap justify-end gap-3;
+    }
+    .danger-text {
+      @apply text-rose-600;
+    }
+
+    .blueprint-section {
+      @apply relative overflow-hidden text-white;
+      background: radial-gradient(1200px 600px at 110% -10%, rgba(37,99,235,0.35), transparent 60%), linear-gradient(135deg, #16233a 0%, #0d1b2a 48%, #162a4e 100%);
+    }
+    .blueprint-section::before {
+      content: "";
+      @apply absolute inset-0;
+      background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.2));
+      pointer-events: none;
+    }
+    .blueprint-section::after {
+      content: "";
+      @apply absolute inset-x-0 -bottom-1 h-20;
+      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #f6f7fb 56%);
+      clip-path: polygon(0 0, 100% 40%, 100% 100%, 0 100%);
+    }
+    .blueprint-section > * {
+      @apply relative z-10;
+    }
+    .intro-badge {
+      @apply inline-flex items-center gap-2 rounded-full border border-amber-300/70 bg-amber-500/20 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white shadow-inner shadow-white/10 backdrop-blur;
+    }
+
+    .services {
+      @apply py-16 md:py-24;
+    }
+    .service-grid {
+      @apply mx-auto grid max-w-6xl gap-6 px-6 sm:grid-cols-2 lg:grid-cols-3;
+    }
+    .service-card {
+      @apply card flex h-full flex-col gap-3 text-left;
+    }
+    .service-card i {
+      @apply text-2xl text-sky-600;
+    }
+    .service-card span {
+      @apply text-lg font-semibold text-ink;
+    }
+    .service-card p {
+      @apply text-sm text-slate-600;
+    }
+
+    .pricing-hero {
+      @apply blueprint-section;
+    }
+    .pricing-grid {
+      @apply mx-auto grid w-full max-w-6xl gap-8 px-6 py-16 md:grid-cols-2 lg:grid-cols-3;
+    }
+    .price-card {
+      @apply card flex h-full flex-col items-center gap-5 text-center;
+    }
+    .price-card .price {
+      @apply text-4xl font-extrabold text-ink;
+    }
+    .price-card .price small {
+      @apply text-base font-semibold text-slate-500;
+    }
+    .price-card .features {
+      @apply w-full list-none space-y-3 p-0 text-left text-slate-600;
+    }
+    .price-card .features li {
+      @apply flex items-start gap-3 text-sm;
+    }
+    .price-card .features li::before {
+      content: "\f00c";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      @apply text-mint;
+    }
+    .price-card .features li.unavailable {
+      @apply line-through text-slate-400;
+    }
+    .price-card .features li.unavailable::before {
+      content: "\f00d";
+      @apply text-slate-400;
+    }
+    .billing-toggle-wrap {
+      @apply mt-10 flex justify-center;
+    }
+    .billing-toggle {
+      @apply inline-flex items-center gap-2 rounded-full bg-slate-900/80 p-1 text-slate-300 shadow-soft backdrop-blur;
+    }
+    .billing-toggle button {
+      @apply rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-300 transition;
+    }
+    .billing-toggle button.active {
+      @apply bg-slate-900 text-white shadow-soft;
+    }
+    .billing-toggle .save-badge {
+      @apply ml-2 inline-flex items-center rounded-full bg-emerald-100 px-2 py-1 text-xs font-semibold text-emerald-700;
+    }
+    .foot-note {
+      @apply mt-10 text-center text-sm text-slate-500;
+    }
+
+    .about-grid {
+      @apply mx-auto grid w-full max-w-6xl gap-8 px-6 py-16;
+    }
+    .about-2col {
+      @apply grid gap-8 lg:grid-cols-[1.2fr_0.8fr];
+    }
+    .list-check {
+      @apply grid gap-3 text-sm text-slate-600;
+    }
+    .list-check li {
+      @apply flex items-start gap-2;
+    }
+    .list-check i {
+      @apply mt-1 text-sky-600;
+    }
+    .stat-grid {
+      @apply grid gap-6 md:grid-cols-2 xl:grid-cols-3;
+    }
+    .stat {
+      @apply card text-center;
+    }
+    .stat .num {
+      @apply text-3xl font-extrabold text-ink;
+    }
+
+    .kpis {
+      @apply grid gap-6 md:grid-cols-2 xl:grid-cols-4;
+    }
+    .kpi {
+      @apply card bg-white/95 text-left shadow-soft;
+    }
+    .kpi .title {
+      @apply text-sm font-semibold uppercase tracking-wide text-slate-500;
+    }
+    .kpi .value {
+      @apply mt-2 text-3xl font-extrabold text-ink;
+    }
+
+    .job-pill {
+      @apply flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink;
+    }
+    .tasks-list {
+      @apply grid gap-3;
+    }
+    .task-item {
+      @apply flex items-start gap-3 text-sm text-slate-600;
+    }
+    .task-item i {
+      @apply mt-1 text-slate-400;
+    }
+
+    .auth-body {
+      @apply bg-gradient-to-b from-slate-100 via-slate-100 to-slate-200;
+    }
+    .auth-wrap {
+      @apply flex items-center justify-center px-6 py-16;
+    }
+    .auth-card {
+      @apply card w-full max-w-lg;
+    }
+    .auth-header {
+      @apply mb-4 flex items-center gap-3;
+    }
+    .auth-logo {
+      @apply h-8 w-8 rounded-xl bg-gradient-to-br from-sky-500 to-blue-400 shadow-inner shadow-white/40;
+    }
+    .auth-subtitle {
+      @apply mb-6 text-sm text-slate-600;
+    }
+    .auth-foot {
+      @apply mt-6 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600;
+    }
+
+    .blueprint-section .btn {
+      @apply border-white/10;
+    }
+
+    .pro-wrap {
+      @apply mx-auto grid w-full max-w-6xl gap-8 px-6 py-16 lg:grid-cols-[280px_1fr];
+    }
+    .pro-aside {
+      @apply sticky top-6 self-start rounded-2xl border border-slate-200/80 bg-white/90 p-6 shadow-soft;
+    }
+    .pro-menu {
+      @apply grid gap-2 text-sm;
+    }
+    .pro-menu a {
+      @apply flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-slate-700 transition hover:bg-slate-100;
+    }
+    .pro-menu .count {
+      @apply text-right text-sm font-extrabold text-slate-600;
+    }
+    .pro-section {
+      @apply grid gap-8;
+    }
+    .pro-head {
+      @apply text-center text-sm font-semibold uppercase tracking-wide text-slate-500;
+    }
+    .today-list {
+      @apply mt-6 grid gap-3;
+    }
+    .menu-left {
+      @apply flex items-center gap-2;
+    }
+    .add-btn {
+      @apply inline-grid h-8 w-8 place-items-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100;
+    }
+    .summary {
+      @apply rounded-2xl border border-dashed border-sky-200 bg-sky-50/70 p-4 text-sm text-slate-600;
+    }
+
+    .legal-hero {
+      @apply blueprint-section;
+    }
+    .legal-section {
+      @apply mx-auto flex w-full max-w-4xl flex-col gap-6 px-6 py-16;
+    }
+    .callout {
+      @apply rounded-2xl border border-dashed border-sky-200 bg-sky-50/70 p-6 text-slate-700;
+    }
+
+    .oops {
+      @apply mx-auto grid max-w-5xl items-center gap-10 px-6 py-16 lg:grid-cols-[1.2fr_0.8fr];
+    }
+    .code {
+      @apply inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-100 px-3 py-1 text-sm font-semibold uppercase tracking-wide text-slate-700;
+    }
+    .cta-row {
+      @apply mt-6 flex flex-wrap gap-3;
+    }
+    .scene {
+      @apply relative flex min-h-[220px] items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft;
+    }
+    .scene::before {
+      content: "";
+      @apply absolute inset-0;
+      background-image: linear-gradient(rgba(37,99,235,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.1));
+      pointer-events: none;
+    }
+    .gear {
+      @apply text-4xl text-sky-600;
+      animation: wobble 1.5s infinite ease-in-out;
+    }
+    .helmet {
+      @apply text-4xl text-amber-500;
+      animation: bouncey 2s infinite;
+    }
+    .toolbox {
+      @apply absolute left-10 top-1/2 h-24 w-40 -translate-y-1/2 rounded-2xl border border-slate-200 bg-gradient-to-b from-orange-400 to-orange-600 shadow-elevated;
+    }
+    .wrench {
+      @apply absolute left-0 top-1/4 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-sky-200 bg-sky-50 text-sky-600;
+      animation: fly 5.2s cubic-bezier(.22,.61,.36,1) infinite;
+    }
+
+    .contact-form {
+      @apply mx-auto flex w-full max-w-3xl flex-col gap-4 px-6 py-16;
+    }
+
+    .section-head {
+      @apply flex flex-wrap items-center gap-3;
+    }
+    .hint-right {
+      @apply ml-auto text-sm text-slate-500;
+    }
+    .inline {
+      @apply flex flex-wrap items-center gap-3;
+    }
+    .row {
+      @apply flex flex-wrap items-end gap-4;
+    }
+    .w240 {
+      @apply w-60;
+    }
+    .preview-box {
+      @apply grid min-h-[140px] place-items-center rounded-2xl border border-dashed border-slate-200 text-slate-500;
+    }
+    .spinner {
+      @apply inline-block h-4 w-4 rounded-full border-2 border-slate-300 border-t-sky-500;
+      animation: spinny .6s linear infinite;
+    }
+
+    .wrap {
+      @apply mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-16;
+    }
+    .right {
+      @apply text-right;
+    }
+    .hide {
+      @apply hidden;
+    }
+
+    .iq-grid {
+      @apply mx-auto grid w-full max-w-6xl gap-8 px-6 py-16 lg:grid-cols-[300px_1fr_360px];
+    }
+    .iq-sidebar {
+      @apply sticky top-6 grid gap-6 self-start;
+    }
+    .iq-flow {
+      @apply relative grid gap-4;
+    }
+    .iq-node {
+      @apply relative rounded-2xl border border-slate-200 bg-white p-5 shadow-soft;
+    }
+    .iq-node.done {
+      @apply border-sky-300;
+    }
+    .iq-node:not(:first-child)::before {
+      content: "";
+      @apply absolute left-8 top-0 h-4 w-0.5 bg-gradient-to-b from-slate-300 to-slate-400;
+      transform: translateY(-1rem);
+    }
+    .iq-options {
+      @apply grid gap-2;
+    }
+    .iq-options .opt {
+      @apply flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-100;
+    }
+    .iq-inline {
+      @apply flex flex-wrap items-center gap-2;
+    }
+    .iq-summary {
+      @apply aside-card;
+    }
+    .money {
+      @apply text-3xl font-extrabold text-ink;
+    }
+    .range {
+      @apply font-semibold text-ink;
+    }
+    .ghost-uploader {
+      @apply flex items-center gap-3 rounded-2xl border border-dashed border-slate-300 px-3 py-2 text-sm text-slate-500;
+    }
+    .copy-input {
+      @apply w-full rounded-xl border border-dashed border-slate-300 bg-white px-3 py-2 text-sm text-slate-700;
+    }
+    .tag {
+      @apply inline-flex items-center gap-2 rounded-lg bg-indigo-100 px-2 py-1 text-xs font-semibold text-indigo-700;
+    }
+    .toast {
+      @apply fixed bottom-4 right-4 rounded-xl bg-slate-900 px-4 py-3 text-sm text-white opacity-0 shadow-elevated transition;
+    }
+    .toast.show {
+      @apply translate-y-0 opacity-100;
+    }
+    .animation-shake {
+      animation: shake .3s ease-in-out;
+    }
+  }
+</style>

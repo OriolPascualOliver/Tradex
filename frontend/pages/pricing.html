@@ -1,105 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Precios · FixHub</title>
-  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <style>
-    .disabled{
-      opacity:0.45;
-      pointer-events:none;
-      filter:grayscale(100%);
-    }
-    /* Toggle estilo Proton */
-    .billing-toggle-wrap{display:flex;justify-content:center;margin:var(--s6) 0 0}
-    .billing-toggle{display:inline-flex;align-items:center;gap:4px;background:#0f172a;color:#fff;padding:6px;border-radius:999px}
-    .billing-toggle button{border:0;background:transparent;color:#cbd5e1;font-weight:800;padding:8px 16px;border-radius:999px;cursor:pointer}
-    .billing-toggle button.active{background:#111827;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
-    .billing-toggle .save-badge{margin-left:8px;font-size:.85rem;font-weight:800;padding:.25rem .6rem;border-radius:999px;background:#99f6e4;color:#065f46}
-
-    .pricing-hero{
-      padding: var(--s8) var(--s5) var(--s7);
-      text-align:center; color:#fff;
-      background: linear-gradient(135deg, #16233a 0%, #0d1b2a 48%, #162a4e 100%);
-      position: relative; overflow: hidden;
-    }
-    .pricing-hero::before{
-      content:""; position:absolute; inset:0;
-      background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),
-                       linear-gradient(90deg, rgba(255,255,255,.06) 1px,transparent 1px);
-      background-size: 28px 28px; opacity:.35; pointer-events:none;
-    }
-    .pricing-hero h1{ font-size: var(--h1); margin:0 0 var(--s3); }
-    .pricing-hero p{ max-width: 820px; margin:0 auto; font-size: var(--lead); opacity:.95; }
-
-    .pricing-grid {
-      max-width:1100px; margin: var(--s7) auto;
-      display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: var(--s5);
-      padding: 0 var(--s5);
-    }
-    .price-card {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: var(--s6);
-      box-shadow: var(--shadow-sm);
-      text-align: center;
-      display:flex; flex-direction:column; gap: var(--s4);
-    }
-    .price-card h3 { margin:0; font-size: var(--h2); }
-    .price { font-weight:800; font-size:2rem; }
-    .price small { font-size:.9rem; color:var(--muted); }
-    .features {
-      margin:0;
-      padding:0;
-      list-style:none;
-      text-align:left;
-    }
-    .features li {
-      margin:.4rem 0;
-      color:var(--muted);
-      display:flex;
-      align-items:center;
-      gap:.5rem;
-    }
-    .features li::before {
-      content:"\f00c";
-      font-family:"Font Awesome 6 Free";
-      font-weight:900;
-      color:var(--mint);
-    }
-    .features li.unavailable{
-      text-decoration:line-through;
-    }
-    .features li.unavailable::before{
-      content:"\f00d";
-      color:var(--muted);
-    }
-    .badge {
-      display:inline-block; font-size:.8rem; font-weight:700;
-      padding:.35rem .75rem; border-radius:999px;
-      background:rgba(37,99,235,.1); color:var(--sky);
-    }
-    .select-row{ display:flex; justify-content:center; align-items:center; gap:.4rem; }
-    .select-row select{
-      padding:6px 10px;
-      border-radius:8px; border:1px solid var(--border); font:inherit;
-    }
-    .card-cta{ margin-top:auto; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FixHub · Planes y precios</title>
+  <!--#include "partials/tailwind.html" -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pIVp9sPu0YdHDi3uL1l5X8GZFODdgNpTi27C1l2qCkCmZJLdnOjFkWDXLI4YAlnXrhIR3IuAeGHGZk+y3OC/qw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta name="description" content="Elige el plan de FixHub que mejor se adapte a tu equipo. Tarifa Solo para profesionales y plan Team para coordinar cuadrillas." />
 </head>
 <body>
-<!--# include virtual="/partials/header.html" -->
+<!--#include "partials/header.html" -->
 
 <section class="pricing-hero">
-    <h1>Planes claros, para cada tipo de profesional</h1>
-    <p>Desde una prueba gratuita hasta la gestión completa de tu equipo. Elige el plan que más te conviene y
-      lleva tu negocio al siguiente nivel.</p>
-
-    <!-- Toggle Mensual / Anual (-10%) -->
+  <div class="mx-auto flex max-w-5xl flex-col items-center px-6 py-24 text-center">
+    <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Planes claros para cada profesional</h1>
+    <p class="mt-6 max-w-3xl text-lg text-slate-100/90">Desde una prueba gratuita hasta la gestión completa de tu equipo. Elige el plan que más se ajuste a tu negocio y lleva tu operación al siguiente nivel.</p>
     <div class="billing-toggle-wrap">
       <div class="billing-toggle" role="tablist" aria-label="Periodicidad">
         <button id="btnMonthly" class="active" role="tab" aria-selected="true">Mensual</button>
@@ -107,16 +22,16 @@
         <span class="save-badge">−10%</span>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
 <main>
   <section class="pricing-grid">
-    <!-- Gratis -->
     <article class="price-card" id="freeCard">
       <span class="badge">Prueba</span>
-      <h3>Gratis</h3>
+      <h2 class="text-3xl font-semibold text-ink">Gratis</h2>
       <div class="price"><span id="freePrice">0</span>€ <small id="freePeriod">/ 2 meses</small></div>
-      <p>Accede a las funcionalidades basicas <strong>excepto facturación electrónica</strong> durante 60 días naturales.</p>
+      <p class="muted">Accede a las funcionalidades básicas <strong>excepto facturación electrónica</strong> durante 60 días naturales.</p>
       <ul class="features">
         <li>Gestión de trabajos</li>
         <li>Planificación y sincronización</li>
@@ -126,38 +41,36 @@
         <li>Pago integrado**</li>
         <li class="unavailable">Facturación electrónica</li>
       </ul>
-      <div class="card-cta">
+      <div class="card-cta mt-auto">
         <a id="freeBtn" class="btn primary" href="./register.html?planVal=demoM">Empieza gratis</a>
       </div>
-      <a class="hint">* Pago integrado con comisiones del 10% en plan gratuito</a>
+      <p class="hint mt-4">* Pago integrado con comisiones del 10% en plan gratuito</p>
     </article>
 
-    <!-- Solo -->
     <article class="price-card">
       <span class="badge">Autónomos</span>
-      <h3>Solo</h3>
+      <h2 class="text-3xl font-semibold text-ink">Solo</h2>
       <div class="price"><span id="soloPrice">49</span>€ <small id="soloPeriod">/ mes*</small></div>
-      <p>Todas las funcionalidades de FixHub que un profesional necesita.</p>
+      <p class="muted">Todas las funcionalidades de FixHub que un profesional necesita.</p>
       <ul class="features">
         <li>Incluye facturación electrónica</li>
-        <li>Incluye pago integrado desde la aplicación</li>
-        <li>Presupuestos automátizados y fáciles, tal y como los harías tú</li>
+        <li>Pago integrado desde la aplicación</li>
+        <li>Presupuestos automatizados y fáciles</li>
         <li>Gestión de clientes y materiales</li>
         <li>Soporte estándar</li>
       </ul>
-      <div class="card-cta">
+      <div class="card-cta mt-auto">
         <a id="soloBtn" class="btn secondary" href="./register.html?planVal=soloM">Elegir plan Solo</a>
       </div>
-      <a class="hint">* Pago integrado con comisiones del 5% en plan Solo</a>
+      <p class="hint mt-4">* Pago integrado con comisiones del 5%</p>
     </article>
 
-    <!-- Equipo -->
     <article class="price-card" id="teamCard">
       <span class="badge">Empresas</span>
-      <h3>Team</h3>
-      <div class="select-row">
-        <label for="teamSize"><strong>Personas:</strong></label>
-        <select id="teamSize">
+      <h2 class="text-3xl font-semibold text-ink">Team</h2>
+      <div class="flex items-center justify-center gap-3 text-sm">
+        <label for="teamSize" class="font-semibold">Personas:</label>
+        <select id="teamSize" class="input max-w-[140px]">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3" selected>3</option>
@@ -169,164 +82,150 @@
         </select>
       </div>
       <div class="price"><span id="teamPriceNum">105</span>€ <small id="teamPeriod">/ mes*</small></div>
-      <p class="note" id="teamNote">Precio por persona: <strong>35€</strong></p>
+      <p class="muted" id="teamNote">Precio por persona: <strong>35€</strong></p>
       <ul class="features">
-        <li>Plan Han Solo</li>
+        <li>Plan Solo completo</li>
         <li>Roles y permisos por equipo</li>
         <li>Agenda compartida y coordinación</li>
         <li>Soporte prioritario</li>
         <li>Próximamente: métricas y SLA</li>
       </ul>
-      <div class="card-cta">
+      <div class="card-cta mt-auto">
         <a id="teamBtn" class="btn primary" href="./register.html?planVal=teamM&seats=3">Crear equipo</a>
       </div>
-      <a class="hint">* Pago integrado con comisiones del 5% en plan Team</a>
+      <p class="hint mt-4">* Pago integrado con comisiones del 5%</p>
     </article>
-</section>
+  </section>
 
-  <div class="center" style="margin-top: var(--s5);">
+  <div class="mx-auto mt-10 flex justify-center px-6">
     <a href="./features.html" class="btn tertiary">Comparar características <i class="fa-solid fa-arrow-right"></i></a>
   </div>
 
-    <p class="foot-note">* IVA no incluido</p>
+  <p class="foot-note">* IVA no incluido</p>
 </main>
 
-<!--# include virtual="/partials/footer.html" -->
+<!--#include "partials/footer.html" -->
 
 <script type="module">
 import { pricePerSeatFromTiers, computeAnnual } from '/js/pricing-lib.js';
 
-  let PRICING = null;
-  async function loadPricing(){
-    try{
-
-      const res = await fetch('/api-v1/pricing?t=' + Date.now(), {
+let PRICING = null;
+async function loadPricing(){
+  try{
+    const res = await fetch('/api-v1/pricing?t=' + Date.now(), {
       headers: { 'Accept': 'application/json' },
       cache: 'no-store'
-      });
-      if(!res.ok) throw 0;
-      PRICING = await res.json();
-    }catch(e){
-      PRICING = {
-        currency:'EUR', vatIncluded:false, annualDiscount:0.10,
-        solo:{ monthly:49 },
-        team:{ tiers:[
-          {maxSeats:1,price:45},{maxSeats:2,price:45},{maxSeats:3,price:35},
-          {maxSeats:4,price:33},{maxSeats:5,price:30},{maxSeats:6,price:28},
-          {maxSeats:7,price:27},{maxSeats:99,price:27}
-        ]}
-      };
-    }
+    });
+    if(!res.ok) throw 0;
+    PRICING = await res.json();
+  }catch(e){
+    PRICING = {
+      currency:'EUR', vatIncluded:false, annualDiscount:0.10,
+      solo:{ monthly:49 },
+      team:{ tiers:[
+        {maxSeats:1,price:45},{maxSeats:2,price:45},{maxSeats:3,price:35},
+        {maxSeats:4,price:33},{maxSeats:5,price:30},{maxSeats:6,price:28},
+        {maxSeats:7,price:27},{maxSeats:99,price:27}
+      ]}
+    };
   }
+}
 
-  await loadPricing();
+await loadPricing();
 
-  // ---- Constantes toggle ----
-  const MONTHLY = 'monthly';
-  const YEARLY  = 'yearly';
-  let billing = MONTHLY;
+const MONTHLY = 'monthly';
+const YEARLY  = 'yearly';
+let billing = MONTHLY;
 
-  const btnMonthly = document.getElementById('btnMonthly');
-  const btnYearly  = document.getElementById('btnYearly');
+const btnMonthly = document.getElementById('btnMonthly');
+const btnYearly  = document.getElementById('btnYearly');
+const freeCard   = document.getElementById('freeCard');
+const freePrice  = document.getElementById('freePrice');
+const freePeriod = document.getElementById('freePeriod');
+const freeBtn    = document.getElementById('freeBtn');
 
-  // ---- FREE (ids para deshabilitar) ----
-  const freeCard   = document.getElementById('freeCard');
-  const freePrice  = document.getElementById('freePrice');
-  const freePeriod = document.getElementById('freePeriod');
-  const freeBtn    = document.getElementById('freeBtn');
+let soloMonthly = PRICING.solo.monthly;
+const soloPriceEl  = document.getElementById('soloPrice');
+const soloPeriodEl = document.getElementById('soloPeriod');
+const soloBtn      = document.getElementById('soloBtn');
 
-  // ---- SOLO ----
-  let soloMonthly = PRICING.solo.monthly;
-  const soloPriceEl  = document.getElementById('soloPrice');
-  const soloPeriodEl = document.getElementById('soloPeriod');
-  const soloBtn      = document.getElementById('soloBtn');
+const teamSizeEl   = document.getElementById('teamSize');
+const teamPriceNum = document.getElementById('teamPriceNum');
+const teamPeriodEl = document.getElementById('teamPeriod');
+const teamNoteEl   = document.getElementById('teamNote');
+const teamBtn      = document.getElementById('teamBtn');
 
-  // ---- TEAM ----
-  const teamSizeEl   = document.getElementById('teamSize');
-  const teamPriceNum = document.getElementById('teamPriceNum');
-  const teamPeriodEl = document.getElementById('teamPeriod');
-  const teamNoteEl   = document.getElementById('teamNote');
-  const teamBtn      = document.getElementById('teamBtn');
+function perSeatPrice(n){
+  return pricePerSeatFromTiers(n, PRICING.team.tiers);
+}
 
-  // Precio por asiento mensual (según tamaño)
-  function perSeatPrice(n){
-    return pricePerSeatFromTiers(n, PRICING.team.tiers);
+function yearlyTotal(monthly){ return computeAnnual(monthly, PRICING.annualDiscount).yearly }
+function fmt(n){ const v = Number(n); return (v%1===0)? v.toString() : v.toFixed(2).replace('.', ',') }
+
+function updateFree(){
+  if (billing === MONTHLY){
+    freeCard.classList.remove('opacity-50', 'pointer-events-none');
+    freePrice.textContent = '0';
+    freePeriod.textContent = '/ 2 meses';
+    freeBtn.textContent = 'Empieza gratis';
+    freeBtn.setAttribute('href','./register.html?planVal=demoM');
+  } else {
+    freeCard.classList.add('opacity-50', 'pointer-events-none');
+    freePrice.textContent = '—';
+    freePeriod.textContent = '/ no disponible';
+    freeBtn.textContent = 'No disponible en anual';
+    freeBtn.removeAttribute('href');
   }
+}
 
-  // Helpers
-  function yearlyTotal(monthly){ return computeAnnual(monthly, PRICING.annualDiscount).yearly }
-  function fmt(n){ const v = Number(n); return (v%1===0)? v.toString() : v.toFixed(2).replace('.', ',') }
-
-  // --- Actualiza FREE (disabled en anual) ---
-  function updateFree(){
-    if (billing === MONTHLY){
-      freeCard.classList.remove('disabled');
-      freePrice.textContent = '0';
-      freePeriod.textContent = '/ 2 meses';
-      freeBtn.textContent = 'Empieza gratis';
-      freeBtn.setAttribute('href','./register.html?planVal=demoM');
-    } else {
-      freeCard.classList.add('disabled');
-      freePrice.textContent = '—';
-      freePeriod.textContent = '/ no disponible';
-      freeBtn.textContent = 'No disponible en anual';
-      freeBtn.removeAttribute('href');
-    }
+function updateSolo(){
+  const suf = billing === YEARLY ? 'A' : 'M';
+  if (billing === MONTHLY){
+    soloPriceEl.textContent = fmt(soloMonthly);
+    soloPeriodEl.textContent = '/ mes*';
+  } else {
+    soloPriceEl.textContent = fmt(yearlyTotal(soloMonthly));
+    soloPeriodEl.textContent = '/ año*';
   }
+  soloBtn.setAttribute('href', `./register.html?planVal=solo${suf}`);
+}
 
-  // --- Actualiza SOLO ---
-  function updateSolo(){
-    const suf = billing === YEARLY ? 'A' : 'M';
-    if (billing === MONTHLY){
-      soloPriceEl.textContent = fmt(soloMonthly);
-      soloPeriodEl.textContent = '/ mes*';
-    } else {
-      soloPriceEl.textContent = fmt(yearlyTotal(soloMonthly));
-      soloPeriodEl.textContent = '/ año*';
-    }
-    soloBtn.setAttribute('href', `./register.html?planVal=solo${suf}`);
+function updateTeam(){
+  const n = parseInt(teamSizeEl.value,10);
+  const seat = perSeatPrice(n);
+  const mTotal = n * seat;
+
+  const suf = billing === YEARLY ? 'A' : 'M';
+  if (billing === MONTHLY){
+    teamPriceNum.textContent = fmt(mTotal);
+    teamPeriodEl.textContent = '/ mes*';
+    teamNoteEl.innerHTML = 'Precio por persona: <strong>'+fmt(seat)+'€</strong>';
+  } else {
+    const { yearly } = computeAnnual(mTotal, PRICING.annualDiscount);
+    teamPriceNum.textContent = fmt(yearly);
+    teamPeriodEl.textContent = '/ año*';
+    teamNoteEl.innerHTML = 'Equivale a <strong>'+fmt(seat*(1-PRICING.annualDiscount))+'€</strong> / persona / mes (−'+(PRICING.annualDiscount*100)+'% anual).';
   }
+  teamBtn.setAttribute('href', `./register.html?planVal=team${suf}&seats=${n}`);
+}
 
-  // --- Actualiza TEAM ---
-  function updateTeam(){
-    const n = parseInt(teamSizeEl.value,10);
-    const seat = perSeatPrice(n);
-    const mTotal = n * seat;
+function setBilling(mode){
+  billing = mode;
+  btnMonthly.classList.toggle('active', billing===MONTHLY);
+  btnMonthly.setAttribute('aria-selected', billing===MONTHLY);
+  btnYearly.classList.toggle('active', billing===YEARLY);
+  btnYearly.setAttribute('aria-selected', billing===YEARLY);
 
-    const suf = billing === YEARLY ? 'A' : 'M';
-    if (billing === MONTHLY){
-      teamPriceNum.textContent = fmt(mTotal);
-      teamPeriodEl.textContent = '/ mes*';
-      teamNoteEl.innerHTML = 'Precio por persona: <strong>'+fmt(seat)+'€</strong>';
-    } else {
-      const { yearly } = computeAnnual(mTotal, PRICING.annualDiscount);
-      teamPriceNum.textContent = fmt(yearly);
-      teamPeriodEl.textContent = '/ año*';
-      teamNoteEl.innerHTML = 'Equivale a <strong>'+fmt(seat*(1-PRICING.annualDiscount))+'€</strong> / persona / mes (−'+(PRICING.annualDiscount*100)+'% anual).';
-    }
-    teamBtn.setAttribute('href', `./register.html?planVal=team${suf}&seats=${n}`);
-  }
+  updateFree();
+  updateSolo();
+  updateTeam();
+}
 
-  // --- Toggle ---
-  function setBilling(mode){
-    billing = mode;
-    btnMonthly.classList.toggle('active', billing===MONTHLY);
-    btnMonthly.setAttribute('aria-selected', billing===MONTHLY);
-    btnYearly.classList.toggle('active', billing===YEARLY);
-    btnYearly.setAttribute('aria-selected', billing===YEARLY);
+btnMonthly.addEventListener('click', () => setBilling(MONTHLY));
+btnYearly .addEventListener('click', () => setBilling(YEARLY));
+teamSizeEl.addEventListener('change', updateTeam);
 
-    updateFree();
-    updateSolo();
-    updateTeam();
-  }
-
-  // Eventos
-  btnMonthly.addEventListener('click', () => setBilling(MONTHLY));
-  btnYearly .addEventListener('click', () => setBilling(YEARLY));
-  teamSizeEl.addEventListener('change', updateTeam);
-
-  // Init
-  setBilling(MONTHLY);
+setBilling(MONTHLY);
 </script>
 </body>
 </html>

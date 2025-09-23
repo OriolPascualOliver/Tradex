@@ -1,35 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tareas · FixHub</title>
-  <link rel="stylesheet" href="/css/style.css?v={cachebust}"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FixHub · Tareas</title>
+  <!--#include "partials/tailwind.html" -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pIVp9sPu0YdHDi3uL1l5X8GZFODdgNpTi27C1l2qCkCmZJLdnOjFkWDXLI4YAlnXrhIR3IuAeGHGZk+y3OC/qw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-<!--# include virtual="/partials/header.html" -->
+<!--#include "partials/header.html" -->
 
-<main class="grid" style="max-width: 980px;">
+<main class="page-container">
   <section class="card">
-    <h3>Tareas</h3>
-
-    <form id="taskForm" class="toolbar" style="margin-top: .5rem;">
-      <input id="taskTitle" class="input" placeholder="Nueva tarea…" required/>
+    <h1 class="text-2xl font-semibold text-ink">Tareas</h1>
+    <form id="taskForm" class="mt-4 flex flex-wrap items-center gap-3" novalidate>
+      <input id="taskTitle" class="input flex-1" placeholder="Nueva tarea…" required />
       <label class="input-inline" title="Urgente">
-        <input id="taskUrgent" type="checkbox"/>
+        <input id="taskUrgent" type="checkbox" />
         <span>Urgente</span>
       </label>
-      <button class="btn" type="submit" style="width:auto;">Añadir</button>
+      <button class="btn primary" type="submit">Añadir</button>
     </form>
-
-    <div id="tasksBox" style="margin-top: var(--s4);">
-      <!-- rows injected -->
-    </div>
+    <div id="tasksBox" class="mt-6 grid gap-3"></div>
   </section>
 </main>
 
-<!--# include virtual="/partials/footer.html" -->
+<!--#include "partials/footer.html" -->
 
 <script src="/js/apiClient.js"></script>
 <script>
@@ -49,22 +45,20 @@
     }
     items.forEach(t => {
       const row = document.createElement('div');
-      row.className = 'job-pill';
-      row.style.marginBottom = '.5rem';
+      row.className = 'job-pill flex-wrap';
       row.innerHTML = `
-        <label class="input-inline" style="gap:.6rem;">
+        <label class="input-inline gap-2">
           <input type="checkbox" ${t.done ? 'checked' : ''} data-id="${t.id}" class="chk">
-          <span ${t.done ? 'style="text-decoration:line-through; opacity:.7;"' : ''}>${t.title}</span>
+          <span class="${t.done ? 'line-through text-slate-400' : ''}">${t.title}</span>
         </label>
-        <div style="display:flex; gap:.5rem; align-items:center;">
+        <div class="flex items-center gap-2">
           ${t.urgent ? '<span class="pill" title="Urgente">⚠</span>' : ''}
-          <button class="btn secondary del" data-id="${t.id}" style="padding:.45rem .7rem;">Eliminar</button>
+          <button class="btn secondary sm del" data-id="${t.id}">Eliminar</button>
         </div>
       `;
       box.appendChild(row);
     });
 
-    // bind events
     box.querySelectorAll('.chk').forEach(chk => {
       chk.addEventListener('change', async (e) => {
         const id = e.target.dataset.id;
@@ -73,7 +67,7 @@
           headers: {'Content-Type':'application/json'},
           body: JSON.stringify({ done: e.target.checked })
         });
-        loadTasks(); // re-render
+        loadTasks();
       });
     });
     box.querySelectorAll('.del').forEach(btn => {
@@ -94,7 +88,8 @@
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify(payload)
     });
-    title.value = ''; urgent.checked = false;
+    title.value = '';
+    urgent.checked = false;
     loadTasks();
   });
 
