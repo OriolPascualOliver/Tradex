@@ -46,16 +46,44 @@
     items.forEach(t => {
       const row = document.createElement('div');
       row.className = 'job-pill flex-wrap';
-      row.innerHTML = `
-        <label class="input-inline gap-2">
-          <input type="checkbox" ${t.done ? 'checked' : ''} data-id="${t.id}" class="chk">
-          <span class="${t.done ? 'line-through text-slate-400' : ''}">${t.title}</span>
-        </label>
-        <div class="flex items-center gap-2">
-          ${t.urgent ? '<span class="pill" title="Urgente">⚠</span>' : ''}
-          <button class="btn secondary sm del" data-id="${t.id}">Eliminar</button>
-        </div>
-      `;
+
+      const label = document.createElement('label');
+      label.className = 'input-inline gap-2';
+
+      const chk = document.createElement('input');
+      chk.type = 'checkbox';
+      if (t.done) chk.checked = true;
+      chk.setAttribute('class', 'chk');
+      chk.setAttribute('data-id', t.id);
+
+      const titleSpan = document.createElement('span');
+      if (t.done) titleSpan.classList.add('line-through', 'text-slate-400');
+      titleSpan.textContent = t.title;
+
+      label.appendChild(chk);
+      label.appendChild(titleSpan);
+
+      const actions = document.createElement('div');
+      actions.className = 'flex items-center gap-2';
+
+      if (t.urgent) {
+        const urgentSpan = document.createElement('span');
+        urgentSpan.className = 'pill';
+        urgentSpan.title = 'Urgente';
+        urgentSpan.textContent = '⚠';
+        actions.appendChild(urgentSpan);
+      }
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'btn secondary sm del';
+      deleteBtn.setAttribute('data-id', t.id);
+      deleteBtn.textContent = 'Eliminar';
+      actions.appendChild(deleteBtn);
+
+      row.innerHTML = '';
+      row.appendChild(label);
+      row.appendChild(actions);
+
       box.appendChild(row);
     });
 
