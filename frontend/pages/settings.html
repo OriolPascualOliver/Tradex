@@ -355,6 +355,8 @@ document.getElementById('btnSaveEmail').onclick = () => saveJSON(`/api-v1/settin
     document.getElementById('taxId').value = s.fiscal?.tax_id ?? '';
     document.getElementById('taxAddress').value = s.fiscal?.address ?? '';
     document.getElementById('taxCityZip').value = s.fiscal?.city_zip ?? '';
+    document.getElementById('admnEmail').value = s.admin?.email ?? '';
+    document.getElementById('admntlf').value = s.admin?.phone ?? '';
     document.getElementById('emailSubject').value = s.email?.subject ?? '';
     document.getElementById('emailBody').value = s.email?.body ?? '';
     renderAIStatus(s.ai?.status || 'idle');

@@ -189,6 +189,18 @@
     .hint {
       @apply text-sm text-slate-500;
     }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
     .lead {
       @apply text-lg text-slate-600;
     }
@@ -402,16 +414,14 @@
       @apply flex items-start gap-3 text-sm;
     }
     .price-card .features li::before {
-      content: "\f00c";
-      font-family: "Font Awesome 6 Free";
-      font-weight: 900;
+      content: "✓";
       @apply text-mint;
     }
     .price-card .features li.unavailable {
       @apply line-through text-slate-400;
     }
     .price-card .features li.unavailable::before {
-      content: "\f00d";
+      content: "✕";
       @apply text-slate-400;
     }
     .billing-toggle-wrap {
